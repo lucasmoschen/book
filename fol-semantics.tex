@@ -1,6 +1,38 @@
 \section{Semântica}
     
    A seção anterior abordou a sintaxe da lógica de primeira ordem, ou seja, apresentou os símbolos e estruturas das fórmulas deste sistema. A semântica, por outro lado, define a verdade das fórmulas pela \textbf{interpretação} e \textbf{valoração}.
+   Analisemos alguns exemplos deste sistema lógico.
+   Sejam:
+   \begin{itemize}
+       \item $\mathbb{N}$ um domínio escolhido;
+       \item $0, 1, 2, 3$ símbolos constantes;
+       \item \textit{adicao} e \textit{sucessor} os símbolos de função que operam neste domínio;
+       \item  \textit{par}, \textit{impar}, \textit{menorDoQue},\textit{menorIgualDoQue} os simbolos de predicados.
+   \end{itemize}
+    A expressão 
+   \begin{center}
+       $\forall x \ ( \ menorDoQue(0, x) \ )$
+   \end{center}
+   
+   é falsa, uma vez que para $x$ assumindo o valor de $0$, a relação \textit{menorDoQue} não é válida. Já a expressão
+   
+   \begin{center}
+       $\forall x \ ( \ menorIgualDoQue( 0, x) \ )$
+   \end{center}
+    
+    é verdadeira no domínio $\mathbb{N}$, porém se o domínio de interesse fosse $\mathbb{Z}$ a expressão se tornaria falsa.
+    
+    Logo, o valor verdade de uma sentença depende de como os quantificadores, o domínio, funções, predicados e relações são interpretados. 
+    Porém, há algumas fórmulas que assumem sempre valor verdadeiro independente de qual for a interpretação, análogo à tautologia da lógica proposicional:
+    
+    \begin{center}
+        $\forall x \ ( \  par(x) \rightarrow par(x) \ )$
+    \end{center}
+    
+    Sentenças assim são chamadas \textbf{válidas}.
+    
+    Analogamente à valoração em lógica proposicional, há o \textbf{modelo} em lógica de primeira ordem. Enquanto a valoração permitia que atribuíssemos valores-verdade ( V ou F ) à todas as \textunderscore{fórmulas} da lógica proposicional, a escolha de um modelo permite a atribuição de valores-verdade a todas as \textunderscore{sentenças} da lógica de primeira ordem.
+    
     
     \subsection{Interpretações}
     
