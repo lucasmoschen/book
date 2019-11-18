@@ -101,7 +101,7 @@ E com seu correspondente no Lean, sendo:
 
 \vspace{5mm}
 \begin{lstlisting} 
-
+variables A B: Prop
 section
 variable h1 : A → B
 variable h2 : A
@@ -127,6 +127,7 @@ Enquanto no Lean:
 
 \vspace{5mm}
 \begin{lstlisting} 
+variables A B : Prop
 
 example : A → B :=
 assume h : A,
@@ -209,6 +210,7 @@ Em dedução natural a regra da inclusão bi-implicação evidencia a necessidad
 No lean, temos o comando "iff.intro" que introduz o símbolo dado a verdade das duas implicações:
 \vspace{5mm}
 \begin{lstlisting} 
+variables A B: Prop
 
 example : A ↔ B :=
 iff.intro
@@ -237,7 +239,7 @@ E seu correspondente no lean é feito pelos comandos de eliminação a direita e
 
 \vspace{5mm}
 \begin{lstlisting} 
-
+variables A B: Prop
 section
   variable h1 : A ↔ B
   variable h2 : A
@@ -433,18 +435,18 @@ show C, from h1 h4)
 (assume h4: B, 
 show C, from h2 h4)
 \end{lstlisting} 
-
-
 \subsection{Negação}
-%Incluir um exemplo de algum "quebra-cabeça"
 A negação de $A$ é  representada  em  símbolos por $\neg A $. 
 Mostrar que $\neg A $ ocorre, em termos lógicos, é o mesmo que mostrar que $A $ leva a uma contradição. Em dedução natural, temos uma prova que tem a seguinte árvore, na qual $\bot$ é o símbolo para falso, contradição ou absurdo:
 \begin{prooftree}
-    \AxiomC{A}
+    \AxiomC{}
+    \RightLabel{\scriptsize(1)}
+    \UnaryInfC{A}
     \noLine
     \UnaryInfC{$\vdots$}
     \noLine
     \UnaryInfC{$\bot$}
+    \RightLabel{\scriptsize(1) $\neg$ I}
     \UnaryInfC{$\neg A$}
 \end{prooftree}
 
@@ -456,8 +458,11 @@ Em dedução natural, representamos essa ideia por:
 \begin{prooftree}
     \AxiomC{$\neg B$}
     \AxiomC{B}
+    \RightLabel{\scriptsize $\neg $ E}
     \BinaryInfC{$\bot$}
 \end{prooftree}
+
+A tabela verdade reforça o fato de que é impossível que uma proposição e sua negação sejam ambas verdadeiras ao mesmo tempo.
 
 \begin{table}[htb]
 \centering
@@ -469,9 +474,7 @@ F          & V                            \\ \hline
 \end{tabular}
 \end{table}
 
-A tabela verdade reforça o fato de que é ímpossível que uma proposição e sua negação sejam ambas verdadeiras ao mesmo tempo.
-
-Ao utilizarmos o Lean, as regras de inferência de eliminação e introdução da negação podem ser obtidas atráves dos comandos a seguir: 
+Ao utilizarmos o Lean, as regras de inferência de eliminação e introdução da negação podem ser obtidas através dos comandos a seguir: 
 
 \begin{lstlisting} 
 variables p q : Prop
@@ -482,27 +485,101 @@ assume hp : P,
     show false, from h2 (h1 hp)
 \end{lstlisting} 
 
-Note que a hipotése que contém a negação vem primeiro após o \verb|from| e \textit{Q} é resultado do uso da regra de eliminação da implicação, além disso o símbolo $\neg Q$ é escrito como \verb| \not Q|. Na biblioteca padrão do Lean, $ \neg P$ é na verdade uma abreviação de $ P \rightarrow false $, ou seja, o fato de que $P$ implica uma contradição.
+Note que a hipótese que contém a negação vem primeiro após o \verb|from| e \textit{Q} é resultado do uso da regra de eliminação da implicação, além disso o símbolo $\neg Q$ é escrito como \verb| \not Q|. Na biblioteca padrão do Lean, $ \neg P$ é na verdade uma abreviação de $ P \rightarrow false $, ou seja, o fato de que $P$ implica uma contradição.
 
-Uma vez apresentado o símbolo para \textit{falso}, a seguir apresentamos o símbolo para \textit{verdadeiro}. No entanto,  \textit{verdadeiro} ou \textit{true} não possui regra de eliminação, apenas a regra de introdução:
-
+Uma vez apresentado o símbolo para \textit{falso}, a seguir apresentamos o símbolo para \textit{verdadeiro}. No entanto,  \textit{verdadeiro} ou \textit{true} não possui regra de eliminação, apenas uma regra de introdução:
+ \verb|true.intro: true|, às vezes abreviado como \verb|trivial: true|. Em outras palavras, verdadeiro é simplesmente verdadeiro e tem uma prova canônica, trivial.
+ 
 \begin{prooftree}
     \AxiomC{}
     \UnaryInfC{$\top $}
 \end{prooftree}
 
-%Citar mais alguma info sobre o símbolo true?
-\subsection{Prova por contradição}
-Existe um estilo de fazer matemático conhecido como "matemática construtivista" que nega a equivalência de $\neg \neg A$ e $ A$. Uma prova de que algo é verdadeiro deveria fornecer evidências explícitas de que uma declaração é falsa, em vez de evidências de que ela não pode ser falsa.
+E para $\bot $ , quais regras regem o mundo dos absurdos? A regra de eliminação para $\bot $ possui em latin o nome de \textit{ex falso sequitur quodlibet}, que significa que "a partir de uma contradição, qualquer coisa segue". Essa regra de eliminação é especialmente difícil de traçar um paralelo com o ponto de vista da linguagem natural. Parece não haver sentido em dizer que podemos concluir qualquer coisa a partir de uma contradição.
 
-Antes de utilizar a prova por absurdo precisamos abrir o modo clássico do Lean.
+\begin{prooftree}
+ \AxiomC{$\bot$}
+ \RightLabel{\scriptsize $\bot$ E}
+ \UnaryInfC{A}
+\end{prooftree}
+
+
+\subsection{Prova por contradição}
+% Sugestão de leitura : https://home.sandiego.edu/~shulman/papers/rabbithole.pdf
+Existe um estilo de fazer matemática conhecido como "matemática construtiva" que nega a equivalência de $\neg \neg A$ e $ A$. De modo que uma demonstração de que algo é verdadeiro deveria fornecer evidências explícitas de que uma declaração é falsa, em vez de evidências de que ela não pode ser falsa. Uma prova construtiva é aquela que realmente lhe diz como encontrar o objeto que se afirma existir. 
+
+A prova por contradição é informalmente utilizada para se referir a duas regras diferentes de inferência. Sendo elas:
+\begin{itemize}
+    \item Para provar "$\neg  P$"  é suficiente assumir "$P $" e derivar uma contradição;
+    \item Para provar $ P$, basta assumir "não $ P$"  e derivar uma contradição.
+\end{itemize}
+\bigbreak
+É importante que esteja bastante clara a diferença entre as duas regras. No primeiro argumento, uma negação é introduzida na conclusão, enquanto que no segundo, ela é eliminada da hipótese. A regra de inferência que conclui com a sentença positiva "$ P$" é chamada de redução ao absurdo (em latim, \textit{reductio ad absurdum}). De fato, a regra é equivalente ao princípio $ \neg \neg A \leftrightarrow A$. 
+
+A primeira vista é difícil perceber claramente porque em uma delas temos uma prova construtiva e na outra uma que utiliza do raciocínio clássico. Na lógica clássica além de todas as regras de inferência já expostas neste livro, temos o princípio do terceiro excluído que diz que uma proposição $A $ ou é verdadeira ou é falsa, não existindo uma terceira opção. Assim, se é impossível uma proposição $P$ ser falsa, logo ela só pode ser verdadeira. 
+
+Na linguagem natural, comumente tomamos a frase "Maria não não estava vestida de azul" como um modo redundante e agramatical de dizer que "Maria estava vestida de azul". Ao mesmo tempo que em "Eu não vi ninguém" as duas palavras negativas não se anulam. 
+
+Em dedução natural, a redução ao absurdo é expressa do seguinte modo, onde a hipótese $\neg A$ é cancelada no final da inferência:
+
+\begin{prooftree}
+ \AxiomC{}
+ \RightLabel{\scriptsize(1)}
+ \UnaryInfC{$\neg A$}
+ \noLine
+ \UnaryInfC{$\vdots$}
+ \noLine
+ \UnaryInfC{$\bot $}
+ \RightLabel{\scriptsize(1) R.A.A}
+ \UnaryInfC{$A $}
+\end{prooftree}
+
+As regras de introdução e eliminação que vimos até agora no Lean são todas construtivas, ou seja, refletem um entendimento computacional dos conectivos lógicos com base na correspondência proposições como tipos. Para utilizar os princípios da lógica clássica, você deve abrir o modo clássico com o comando \verb|open classical| no início do seu arquivo ou em qualquer lugar antes de usá-lo.
+
+\begin{lstlisting} 
+open classical
+
+variable P : Prop
+#check em P
+\end{lstlisting} 
+Na linha 4, o comando \verb|#check| permite verificar se expressões que escrevemos estão bem formadas, e também pedir ao sistema para nos dizer que tipo de objeto eles denotam. Para o exemplo acima obtemos como output:
+\begin{verbatim}
+4:0: information: check result
+em P : P ∨ ¬P
+\end{verbatim}
+
+No exemplo abaixo provamos $P$ a partir de $\neg \neg P$ utilizando redução ao absurdo. Note que não é preciso escrever explicitamente ao final o que queremos provar uma vez que o Lean, no caso da prova por contradição, infere que o resultado é ($\neg \neg P \to P $ ) a partir das hipóteses assumidas. 
+
+\begin{lstlisting}
+open classical
+
+variable P : Prop
+
+example (h : ¬¬ P) : P :=
+by_contradiction
+  (assume h1 : ¬ P,
+    show false, from h h1)
+
+\end{lstlisting}
+
+%Verificar se a árvore está correta
+\begin{prooftree}
+ \AxiomC{}
+ \RightLabel{\scriptsize(1)}
+ \UnaryInfC{$\neg P$}
+ \AxiomC{$\neg \neg P$}
+ \BinaryInfC{$\bot $}
+ \RightLabel{\scriptsize(1)}
+ \UnaryInfC{$\neg \neg P \to P$}
+\end{prooftree}
+
 
 \section{Exemplos adicionais de Dedução Natural}
 
 Nesta seção serão apresentados exemplos adicionais de provas de dedução natural e seus equivalentes no Lean. Também será explicado como construir essas árvores do zero, partindo somente do  que se quer provar.  
-\begin{itemize}
 
-\item Prova de A $\rightarrow$ C a partir de A $\rightarrow$ B e B $\rightarrow$ C
+
+\textbf{1. Prova de A $\rightarrow$ C a partir de A $\rightarrow$ B e B $\rightarrow$ C:}
 
 \begin{prooftree}
     \AxiomC{}
@@ -522,7 +599,7 @@ Como construir essa prova? Primeiro, começamos pelo que se quer provar: $A \rig
 \UnaryInfC{$A \rightarrow C $}
 \end{prooftree}
 
-Agora podemos considerar as hipóteses. Como a prova é de $A\rightarrow B$, vamos utilizar o $A$ em algum momento na árvore. Além disso, pelo enunciado, sabemos que vamos também utilizar o  $A \rightarrow B$ e $B \rightarrow C$. Então teremos uma estrutura razoavelmente parecida com essa: 
+Agora podemos considerar as hipóteses. Como a prova é de $A\rightarrow C$, vamos utilizar o $A$ em algum momento na árvore. Além disso, pelo enunciado, sabemos que vamos também utilizar o  $A \rightarrow B$ e $B \rightarrow C$. Então teremos uma estrutura razoavelmente parecida com essa: 
 
 \begin{prooftree}
     \AxiomC{}
@@ -557,10 +634,41 @@ A partir disso, é possível observar com mais facilidade quais regras de deduç
     \UnaryInfC{$A \rightarrow C $}
 \end{prooftree}
      
-Por fim, obtemos $C$ a partir de $B$ e de $B \rightarrow C$, formando a ávore apresentada de início. 
+Por fim, obtemos $C$ a partir de $B$ e de $B \rightarrow C$, formando a árvore apresentada de início. 
+
+No Lean, essa prova poderia ser feita da seguinte forma: 
+\begin{lstlisting}
+variables A B C: Prop
+example (h1: A → B) (h2: B → C): A → C :=
+assume h3: A,
+have h4: B, from h1 h3,
+h2 h4
+\end{lstlisting}
 
 
-Essa prova  também pode ser intuitivamente pensada como (A $\rightarrow$ B) $\land$ (B $\rightarrow$ C) $\rightarrow$ (A $\rightarrow$ C). Nesse caso, teria-se a seguinte árvore:
+Para escrevê-la, adicionamos ao lado de $example$ as hipóteses que não vão ser descartadas. No caso, como o enunciado diz que vamos utilizar $A\rightarrow B$ e $B\rightarrow C$ para realizar a prova, adicionamos os dois depois de $example$. Em seguida, adicionamos $:$ e o que queremos provar, seguido de $:=$. 
+
+Para o teor da prova, devemos considerar que a ordem no qual escrevemos no Lean importa. Logo, devemos seguir razoavelmente a ordem da árvore de dedução natural. Na árvore desse problema, é possível observar que a prova começa com o $A$ (do $A \rightarrow C$). Como essa é uma hipótese que vai ser descartada, escrevemos ela com o $assume$. Como a hipótese $A \rightarrow B$ já está escrita no $example$, podemos utilizá-la para encontrar $B$. Nesse caso, utilizamos o $have$ para atribuir o nome de uma variável ao $B$. Isso permite uma organização maior e evita que, em provas longas, tenha que se repetir muitas vezes como encontrar uma determinada variável. Contudo, não é necessário utilizar o $have$. Nesse caso, por exemplo, somente utilizamos o $B$ uma vez, para aplicá-lo ao $B \rightarrow C$. Logo, poderíamos ter escrito a prova no lean da seguinte forma no modo termo:
+
+\begin{lstlisting}
+variables A B C: Prop
+example (h1: A → B) (h2: B → C): A → C :=
+assume h3: A,
+h2 (h1 h3)
+\end{lstlisting}
+
+Ou ainda no modo táticas como:
+
+\begin{lstlisting}
+variables A B C: Prop
+example (h1: A→B) (h2: B→C): A→C :=
+begin
+intros,
+exact h2 (h1 a)  
+end
+\end{lstlisting}
+
+A prova acima também pode ser intuitivamente pensada como (A $\rightarrow$ B) $\land$ (B $\rightarrow$ C) $\rightarrow$ (A $\rightarrow$ C). Nesse caso, teria-se a seguinte árvore:
 
 \begin{prooftree}
     \AxiomC{}
@@ -582,7 +690,7 @@ Essa prova  também pode ser intuitivamente pensada como (A $\rightarrow$ B) $\l
                           \UnaryInfC{$(A \rightarrow B) \land (B \rightarrow C) \rightarrow (A \rightarrow C)$}
 \end{prooftree}
 
-Nesse caso, seria possível construir a árvore da seguinte forma: primeiro, começamos pelo que se quer provar ($(A \rightarrow B) \land (B \rightarrow C) \rightarrow (A \rightarrow C)$). Como vamos chegar em $A \rightarrow C$, podemos colocá-lo logo acima do que queremos provar. Ainda assim, continuamos com uma implicação, então podemos inserir o $C$ antes do $A \rightarrow C$. 
+Para construir a árvore acima, poderia-se adotar essa estratégia: primeiro, começamos pelo que se quer provar ($(A \rightarrow B) \land (B \rightarrow C) \rightarrow (A \rightarrow C)$). Como vamos chegar em $A \rightarrow C$, podemos colocá-lo logo acima do que queremos provar. Ainda assim, continuamos com uma implicação, então podemos inserir o $C$ antes do $A \rightarrow C$. 
 
 Como hipótese, teremos o o $A$ (de $A \rightarrow C$) e o $(A \rightarrow B) \land (B \rightarrow C)$ (vindo do resultado final: $(A \rightarrow B) \land (B \rightarrow C) \rightarrow (A \rightarrow C)$). Assim, teremos uma estrutura dessa forma: 
 \begin{prooftree}
@@ -605,10 +713,31 @@ Como hipótese, teremos o o $A$ (de $A \rightarrow C$) e o $(A \rightarrow B) \l
      
 Como sabemos que queremos chegar em um $C$, podemos utilizar o $B \rightarrow C$ para isso ($B \rightarrow C$ pode ser obtido a partir da operação de exclusão do $\land$ na hipótese de número 2) . Contudo, é necessário ter $B$ para realizar essa operação. O $B$ pode ser obtido a partir do $A$ e do $A \rightarrow B$. Logo, é possível construir a árvore. 
 
-Nos dois casos acima, podemos observar a utilização de números em determinadas hipóteses. Utilizamos esses para evidenciar onde descartamos as hipóteses marcadas. 
+No Lean essa prova poderia ser feita da seguinte forma no modo termo: 
+\begin{lstlisting}
+variables A B C: Prop
+example: ((A → B) ∧ (B → C)) → (A → C) :=
+assume h1: (A → B) ∧ (B → C),
+assume h2: A,
+have h3: B, from (and.left h1) h2,
+(and.right h1) h3
+\end{lstlisting}
 
+Ou no modo táticas:
+\begin{lstlisting}
+variables A B C: Prop
+example: ((A → B) ∧ (B → C)) → (A → C) :=
+begin
+intros,
+have h1: A → B, from a.left,
+have h2: B → C, from a.right,
+exact h2 (h1 a_1)  
+end
+\end{lstlisting}
 
-\item Prova de $Q\land S$ a partir de $(P\land Q)\land R$ e $S \land T$
+Nas duas árvores de deduçao natural acima, podemos observar a utilização de números em determinadas hipóteses. Utilizamos esses para evidenciar onde descartamos as hipóteses marcadas. 
+
+\textbf{2. Prova de $Q\land S$ a partir de $(P\land Q)\land R$ e $S \land T$:}
 
 \begin{prooftree}
     \AxiomC{$(P \land Q) \land S$}
@@ -638,7 +767,30 @@ Para construir essa prova, partimos também de onde queremos chegar: $Q \land S$
 
 É possível obter o $S$ a partir de qualquer uma das hipóteses. O $Q$ só é possível obter a partir de $(P \land Q) \land S$. Logo, a partir de uma série de operações de exclusão do $\land$, constrói-se a parte restante da prova. 
 
-\item Prova de $(A \rightarrow (B \rightarrow C)) \rightarrow (A \land B \rightarrow C)$ :
+No Lean, essa prova poderia ser feita da seguinte forma no modo termo: 
+
+\begin{lstlisting}
+variables P Q R S T: Prop
+example (h1: (P ∧ Q) ∧ R) (h2: S ∧ T): Q ∧ S :=
+have h3: Q, from and.right (and.left h1),
+have h4: S, from and.left h2,
+and.intro h3 h4
+\end{lstlisting}
+
+E no modo táticas:
+
+\begin{lstlisting}
+variables P Q R S T: Prop
+example (h1: (P ∧ Q) ∧ R) (h2: S ∧ T): Q ∧ S :=
+begin 
+intros,
+have h1: Q, from (h1.left).right,
+have h2: S, from h2.left,
+exact and.intro h1 h2
+end
+\end{lstlisting}
+
+\textbf{3. Prova de $(A \rightarrow (B \rightarrow C)) \rightarrow (A \land B \rightarrow C)$} :
 \begin{prooftree}
     \AxiomC{}
     \RightLabel{\scriptsize(2)}
@@ -658,10 +810,28 @@ Para construir essa prova, partimos também de onde queremos chegar: $Q \land S$
                                                       \RightLabel{\scriptsize(2)}
                                                       \UnaryInfC{$(A \rightarrow (B \rightarrow C)) \rightarrow (A \land B \rightarrow C) $}
 \end{prooftree}
+No lean essa prova pode ser feita no mod termo da seguinte forma:
+\begin{lstlisting}
+variables A B C: Prop
+example: (A → (B → C)) → (A ∧ B → C) :=
+assume h₁: A → (B → C),
+assume h₂: A ∧ B,
+show C, from h₁(h₂.left) h₂.right 
+\end{lstlisting}
 
-%essa prova é bem parecida com as outras, preciso explicar?
+E no modo táticas como:
+\begin{lstlisting}
+variables A B C: Prop
+example: (A → (B → C)) → (A ∧ B → C) :=
+begin
+intros,
+have h₁ :A, from a_1.left,
+have h₂ :B, from a_1.right,
+exact (a h₁) h₂  
+end
+\end{lstlisting}
 
-\item Prova de $A \land B \iff B \land A$:
+\textbf{4. Prova de $A \land B \iff B \land A$:}
 \begin{prooftree}
     \AxiomC{}
     \RightLabel{\scriptsize(1)}
@@ -685,7 +855,7 @@ Para construir essa prova, partimos também de onde queremos chegar: $Q \land S$
                                       \BinaryInfC{$A \land B \iff B \land A$}
 \end{prooftree}
 
-Para construir essa prova, partimos do $A \land B \iff B \land A$ ao final da prova. Para obtê-lo, precisamos partir de $B \land A$ e chegar no $A \land B$ e também partir de  $A \land B$ e chegar em $B \land A$. Sabendo que chegaremos nos dois, podemos escrevê-los na linha acima de  $A \land B \iff B \land A$. Sabendo que partiremos também dos dois, podemos escrevê-los como hipóteses. Teremos uma estrutura como essa: 
+Para construir essa prova, partimos do $A \land B \iff B \land A$ ao final da prova. Para obtê-lo, precisamos partir de $B \land A$ e chegar no $A \land B$ e também partir de  $A \land B$ e chegar em $B \land A$. Sabendo que chegaremos nos dois, podemos escrevê-los na linha acima de  $A \land B \iff B \land A$. Sabendo que partiremos também dos dois, podemos escrevê-los como hipóteses. Teremos, assim, uma estrutura como essa: 
 \begin{prooftree}
     \AxiomC{}
     \RightLabel{\scriptsize(1)}
@@ -707,7 +877,32 @@ Para construir essa prova, partimos do $A \land B \iff B \land A$ ao final da pr
 
 Para formar $A \land B$ e $B \land A$ precisamos de $A$ e $B$ separadamente. Estes podem ser obtidos a partir das hipóteses. Logo, repetindo as hipóteses e realizando a exclusão do $\land$, formamos a árvore final.
 
-\item Prova de $A \land (B \lor C) \rightarrow (A \land B) \lor (A \land C)$
+No Lean, essa prova poderia ser construída da seguinte forma no modo termo:
+\begin{lstlisting}
+variables A B C: Prop
+example: A ∧ B ↔ B ∧ A :=
+iff.intro 
+    (assume h1: A ∧ B,
+    and.intro (and.right h1) (and.left h1))
+    (assume h3: B ∧ A,
+    and.intro (and.right h3) (and.left h3))
+
+\end{lstlisting}
+
+E no modo táticas:
+\begin{lstlisting}
+variables A B C: Prop
+example: A ∧ B ↔ B ∧ A :=
+begin
+apply iff.intro
+     (assume h₁: A ∧ B,
+    and.intro (and.right h₁) (and.left h₁))
+    (assume h₂: B ∧ A,
+    and.intro (and.right h₂) (and.left h₂))
+end
+\end{lstlisting}
+
+\textbf{5. Prova de $A \land (B \lor C) \rightarrow (A \land B) \lor (A \land C)$:}
 
 \begin{prooftree}
 
@@ -756,15 +951,757 @@ Para escrever essa prova, podemos partir, como nas outras, do objetivo final: $A
     \UnaryInfC{$A \land (B \lor C) \rightarrow (A \land B) \lor (A \land C)$}
 \end{prooftree}
 
-Como proceder a partir dessa estrutura? Para formar o $(A \land B) \lor (A \land C)$ será necessário o $A \land B$ isoladamente ou o $A \land C$ (a partir de qualquer um dos dois é possível realizar a introdução do $\lor$ e assim chegar em $(A \land B) \lor (A \land C)$). Independente de qual dos dois serão utilizados, nota-se que, para formar o ``e'', será necessário: o $A$ e também o $B$ ou o $C$. O $A$ pode ser facilmente obtido  a partir da hipótese. Para obter $B$ ou $C$ isoladamente, será necessário realizar a exclusão do $B \lor C$ contido no ``e'' da hipótese. Nota-se que para realizar a exclusão do ``ou'', é necessário levantar $B$ e $C$ como hipótese. Assim, podemos formar tanto $A \land B$, quanto $A \land C$. Assim, é possível chegar no resultado final descrito acima. 
+Como proceder a partir dessa estrutura? Para formar o $(A \land B) \lor (A \land C)$ será necessário o $A \land B$ isoladamente ou o $A \land C$ (a partir de qualquer um dos dois é possível realizar a introdução do $\lor$ e assim chegar em $(A \land B) \lor (A \land C)$). Independente de qual dos dois serão utilizados, nota-se que, para formar o ``e'', será necessário: o $A$ e também o $B$ ou o $C$. O $A$ pode ser facilmente obtido  a partir da hipótese. Para obter $B$ ou $C$ isoladamente, será necessário realizar a exclusão do $B \lor C$ contido no ``e'' da hipótese. Nota-se que para realizar a exclusão do ``ou'', é necessário considerar $B$ e $C$ como hipótese. Assim, podemos formar tanto $A \land B$, quanto $A \land C$. Dessa forma, é possível chegar no resultado final descrito acima. 
 
+No Lean, essa prova poderia ser construída da seguinte forma no modo termo:
+\begin{lstlisting}
+variables A B C: Prop
+example: (A ∧ (B ∨ C)) → ((A ∧ B) ∨ (A ∧ C)) :=
+assume h1: A ∧ (B ∨ C),
+have h2: B ∨ C, from and.right h1,
+have h4: A, from and.left h1,
+or.elim h2
+    (assume h3: B, 
+    or.inl (and.intro h4 h3))
+    (assume h3: C,
+    or.inr (and.intro h4 h3))
+\end{lstlisting}
 
-\item Prova do PHP-3
-    O princípio da casa dos pombos afirma que  se n pombos devem ser postos em m casas, e se n > m, então pelo menos uma casa irá conter mais de um pombo. Apesar desse princípio  generalizado ser muito amplo para ser provado por árvores dedutivas, conseguimos provar o caso de 3 pombos e 2 casas de pombo utilizando árvores dedutivas.
+E no modo táticas:
+\begin{lstlisting}
+variables A B C: Prop
+example: (A ∧ (B ∨ C)) → ((A ∧ B) ∨ (A ∧ C)) :=
+begin
+intros,
+have h₁: A, from a.left,
+have h₂: B ∨ C, from a.right,
+cases h₂ with ha hb,
+    exact or.inl (and.intro h₁ ha),
+    exact or.inr (and.intro h₁ hb) 
+end
+\end{lstlisting}
+
+\textbf{6.Prova de $A \rightarrow \neg (\neg A \land B)$}
+\begin{prooftree}
+ \AxiomC{}
+ \RightLabel{\scriptsize(1)}
+ \UnaryInfC{$\neg A \land B$}
+ \UnaryInfC{$\neg A$}
+ \AxiomC{}
+ \RightLabel{\scriptsize(2)}
+ \UnaryInfC{A}
+ \BinaryInfC{$\bot$}
+ \RightLabel{\scriptsize(1)}
+ \UnaryInfC{$\neg (\neg A \land B)$}
+ \RightLabel{\scriptsize(2)}
+ \UnaryInfC{$A \rightarrow \neg(\neg A \land B)$}
+\end{prooftree}
+
+Como ja visto anteriormente, quando precisamos provar uma implicação partimos do objetivo final $A → ¬ (¬ A ∧ B)$ e como este é uma implicação, deveremos chegar em $ ¬ (¬ A ∧ B)$ tendo $A$ como hipótese. Pela regra da introdução da negação, sabemos que precisamos supor como hipótese $(¬ A ∧ B)$ e chegar em um absurdo para obter o resultado desejado. Com as hipóteses obtidas conseguimos montar a estrutura $\neg A $ $A$ que resulta em absurdo, que por sua vez nos possibilita chegar no objetivo final
+
+Em Lean, essa prova poderia ser construída da seguinte forma no modo termo:
+
+\begin{lstlisting}
+variables A B : Prop
+example : A → ¬ (¬ A ∧ B) :=
+assume h₁: A,
+assume h₂: ¬A ∧ B,
+show false, from h₂.left h₁ 
+\end{lstlisting}
+
+E no modo táticas:
+
+\begin{lstlisting}
+variables A B : Prop
+example : A → ¬ (¬ A ∧ B) :=
+begin
+intros h₁ h₂,
+have h₃: ¬ A, from h₂.left,
+contradiction
+end
+\end{lstlisting}
+
+%Usar a direção da implicação pra esquerda?
+\textbf{7. Prova de ¬ (A ↔ ¬ A) } %exercicio
+\begin{prooftree}
+ \AxiomC{}
+ \RightLabel{\scriptsize(1)} 
+ \UnaryInfC{ A$ \leftrightarrow \neg $A}
+ \UnaryInfC{ A$ \rightarrow \neg $A}
+ \AxiomC{}
+ \RightLabel{\scriptsize(2)} 
+ \UnaryInfC{A}
+ \BinaryInfC{$\neg $A}
+                            \AxiomC{}
+                            \RightLabel{\scriptsize(1)} 
+                            \UnaryInfC{A$ \leftrightarrow \neg $A}
+                            \UnaryInfC{ A$ \leftarrow \neg $A}
+                            \AxiomC{}
+                            \RightLabel{\scriptsize(3)}
+                            \UnaryInfC{$\neg$ A}
+                            \BinaryInfC{A}
+\RightLabel{\scriptsize(2,3)}
+\BinaryInfC{$\bot$}
+\RightLabel{\scriptsize(1)}
+\UnaryInfC{$\neg (A \leftrightarrow \neg A) $}
+
+\end{prooftree}
+
+Para construir a prova acima podemos começar deduzindo o passo anterior ao resultado final que é a negação de $(A \leftrightarrow \neg A) $. Essa será nossa hipótese inicial e com ela queremos chegar à uma contradição. A seguir:
+
+\begin{prooftree}
+ \AxiomC{}
+ \RightLabel{\scriptsize(1)} 
+ \UnaryInfC{ A$ \leftrightarrow \neg $A}
+ \UnaryInfC{$\vdots$}
+                            \AxiomC{}
+                            \RightLabel{\scriptsize(1)} 
+                            \UnaryInfC{A$ \leftrightarrow \neg $A}
+                            \UnaryInfC{$\vdots$}
+\BinaryInfC{$\bot$}
+\RightLabel{\scriptsize(1)}
+\UnaryInfC{$\neg (A \leftrightarrow \neg A) $}
+
+\end{prooftree}
+
+Observe que a dupla implicação aparece duas vezes como hipótese, pois utilizaremos a implicação nas direções esquerda e direita para chegar à um absurdo. Parece razoável considerar que podemos chegar de algum modo em $\neg A$ e $A$, um em cada galho (\textit{ou branch}),  e a partir daí obter $\bot$.
+
+Temos no código a seguir um modo de construir essa prova com o auxílio do \verb|have|. É importante ressaltar que existem diferentes modos de escrever no Lean uma mesma prova em dedução natural, aconselhamos que você tente reproduzir à seu modo as demonstrações aqui expostas!
+
+\begin{lstlisting} 
+variable A : Prop
+
+example : ¬ (A ↔ ¬ A) := 
+assume h₁ : A ↔ ¬ A, 
+show false, from
+    have h₃ : ¬ A, from
+        assume h₂ : A, 
+         show false, from 
+            (iff.elim_left h₁ h₂) h₂,
+            h₃ (iff.elim_right h₁ h₃)
+
+\end{lstlisting}
+
+\textbf{8. Prova de ¬ A ∨ ¬ B a partir de ¬ (A ∧ B)} % exercicio
+%Mencionar o escopo das variáveis
+\begin{lstlisting} 
+variables A B : Prop
+open classical
+
+example (h: ¬ (A ∧ B)): ¬ A ∨ ¬ B := 
+    by_contradiction 
+    (assume h₁ : ¬ (¬ A ∨ ¬ B),
+    have h₂ : ¬ A, from 
+        assume h₃ : A,
+        have h₄ : ¬ B, from
+            (assume h₅ : B, show false, from h (and.intro h₃ h₅)),
+        have h₅ : ¬ A ∨ ¬ B, from or.inr h₄,
+        show false, from h₁ h₅,   
+    have h₆ : ¬ A ∨ ¬ B, from or.inl h₂, 
+    show false, from h₁ h₆)
+\end{lstlisting}
+
+Um dos recursos sintáticos extras do Lean que costumam ser convenientes e, às vezes, tornam as provas mais bonitas é o uso do \verb|this|.
+
+Para rotular uma hipótese você pode usar números subscritos com uma barra invertida. Por exemplo, você pode escrever h₁ digitando \verb|h \ 1|. Os rótulos são irrelevantes para o Lean, você pode omitir o rótulo em uma declaração assumida, fornecendo uma hipótese "anônima". É possível consultar a última suposição anônima usando a palavra-chave this. Assim, o mesmo exemplo acima fica do seguinte modo a partir da linha 7:
+
+\begin{lstlisting}
+    have ¬ A, from 
+        assume h₁ : A,
+        have ¬ B, from
+            (assume h₂ : B, show false, from h (and.intro h₁ h₂)),
+        have h₄ : ¬ A ∨ ¬ B, from or.inr this,
+        show false, from h₃ h₄,   
+    have ¬ A ∨ ¬ B, from or.inl this, 
+    show false, from h₃ this)
+
+\end{lstlisting}
+
+No entanto, ao passo que a prova possa parecer \textit{mais bonita}, note que o entendimento imediato de alguns passos é dificultado, por isso cuidado ao utilizar esses recursos.
+
+\bigbreak
+\textbf{9. Prova do Princípio da Casa dos Pombos (PHP-3):}
+    O princípio da casa dos pombos afirma que se $n$ pombos devem ser postos em $m$ casas, e se $n > m$, então pelo menos uma casa irá conter mais de um pombo. Apesar desse princípio  generalizado ser muito amplo para ser provado por árvores dedutivas, conseguimos provar o caso de 3 pombos e 2 casas de pombo utilizando árvores dedutivas.
     %tentaremos por a árvore?%
 
+No Lean, essa prova poderia ser construída no modo termo seguinte forma: 
+\begin{lstlisting}
+variables P11 P12 P21 P22 P31 P32 : Prop
 
+example: ((P11 ∨ P12) ∧ (P21 ∨ P22)) ∧ (P31 ∨ P32) → (P22 ∧ P32) ∨ ((P11 ∧ P31) ∨ ((P12 ∧ P22) ∨ ((P11 ∧ P21) ∨ ((P12 ∧ P32) ∨ (P21 ∧ P31))))) :=
 
-\end{itemize}
+assume h: ((P11 ∨ P12) ∧ (P21 ∨ P22)) ∧ (P31 ∨ P32),
+have ha: P11 ∨ P12, from and.left (and.left h),
+or.elim ha
+    (assume h1: P11, 
+        have hb: P21 ∨ P22, from and.right (and.left h),
+            or.elim hb
+                (assume h2: P21, or.inr (or.inr (or.inr (or.inl (and.intro h1 h2)))))
+                (assume h2: P22, 
+                    have hc: P31 ∨ P32, from and.right h,
+                        or.elim hc
+                            (assume h3: P31, or.inr (or.inl (and.intro h1 h3)))
+                            (assume h3: P32, or.inl (and.intro h2 h3))))
+    (assume h1: P12, 
+        have hb: P21 ∨ P22, from and.right (and.left h),
+            or.elim hb
+                (assume h2: P21, 
+                    have hc: P31 ∨ P32, from and.right h,
+                        or.elim hc
+                            (assume h3: P31, or.inr (or.inr (or.inr (or.inr (or.inr (and.intro h2 h3))))))
+                            (assume h3: P32, or.inr (or.inr (or.inr (or.inr (or.inl (and.intro h1 h3)))))))
+                (assume h2: P22, or.inr (or.inr (or.inl (and.intro h1 h2)))))
+\end{lstlisting}
+
+E no modo táticas como:
+
+\begin{lstlisting}
+variables P11 P12 P21 P22 P31 P32 : Prop
+example: ((P11 ∨ P12) ∧ (P21 ∨ P22)) ∧ (P31 ∨ P32) → (P22 ∧ P32) ∨ ((P11 ∧ P31) ∨ ((P12 ∧ P22) ∨ ((P11 ∧ P21) ∨ ((P12 ∧ P32) ∨ (P21 ∧ P31))))) :=
+begin
+intros,
+have h₁:P11 ∨ P12, from (a.left).left,
+have h₂: P21 ∨ P22, from (a.left).right,
+have h₃: P31 ∨ P32, from a.right,
+
+cases h₂ with ha hb,
+    cases h₃ with hc hd,
+    exact or.inr(or.inr(or.inr(or.inr(or.inr (and.intro ha hc))))),
+        cases h₁ with he hf,
+        exact or.inr(or.inr(or.inr(or.inl(and.intro he ha)))),
+        exact or.inr(or.inr(or.inr(or.inr(or.inl (and.intro hf hd))))),
+            cases h₃ with hg hh,
+                cases h₁ with hi hj,
+                exact or.inr(or.inl (and.intro hi hg)),
+                exact or.inr(or.inr(or.inl(and.intro hj hb))),
+                exact or.inl (and.intro hb hh)
+end
+\end{lstlisting}
 
 \section{Exercícios}
+
+
+%Exemplos adicionais que eu tenho em Lean (temos que decidir quais vamos colocar como exercício, quais como exemplo e quais vamos fazer a árvore de dedução natural -- acho que faltam árvores contendo negação e contradição):
+
+% possivel exercicio
+\begin{lstlisting}
+open classical
+variables {A B C D E F P Q R : Prop}
+
+example : A ∧ (A → B) → B :=
+assume h: A ∧ (A → B),
+have h2: A → B, from and.right h,
+have h3: A, from and.left h,
+h2 h3
+\end{lstlisting}
+
+ % possivel exemplo 
+\begin{lstlisting}
+open classical
+variables {A B C D E F P Q R : Prop}
+example : ¬ (A ∧ B) → (A → ¬ B) :=
+assume h1: ¬ (A ∧ B),
+assume h2: A,
+assume h3: B,
+have h4: A ∧ B, from and.intro h2 h3,
+false.elim (h1 h4)
+\end{lstlisting}
+
+% possivel exercicio
+\begin{lstlisting}
+example (h1 : A ∨ B) (h2 : A → C) (h3 : B → D) : C ∨ D :=
+or.elim h1
+    (assume h: A, show C ∨ D, from or.inl (h2 h))
+    (assume h: B, show C ∨ D, from or.inr (h3 h))
+
+\end{lstlisting}
+
+%possivel exemplo
+\begin{lstlisting}
+example (h : ¬ A ∧ ¬ B) : ¬ (A ∨ B) :=
+assume h1: A ∨ B,
+or.elim h1
+    (assume h2: A, false.elim ((and.left h) h2))
+    (assume h2: B, false.elim((and.right h) h2))
+\end{lstlisting}
+
+%possivel exercicio
+\begin{lstlisting}
+example (h1 : A ∨ ¬ A) (h2: ¬ A → false) : A := 
+or.elim h1
+    (assume h: A, 
+    show A, from h)
+    (assume h: ¬ A, 
+    show A, from false.elim (h2 h))
+
+\end{lstlisting}
+
+
+%possivel exercicio
+\begin{lstlisting}
+lemma stepA (h₁ : ¬ (A ∧ B)) (h₂ : A) : ¬ A ∨ ¬ B :=
+have ¬ B, from (assume hk:B,
+show false, from h₁ (and.intro h₂ hk)),
+show ¬ A ∨ ¬ B, from or.inr this
+
+lemma stepB (h₁ : ¬ (A ∧ B)) (h₂ : ¬ (¬ A ∨ ¬ B)) : false :=
+have ¬ A, from
+  assume : A,
+  have ¬ A ∨ ¬ B, from stepA h₁ ‹A›,
+  show false, from h₂ this,
+show false, from (h₂ (or.inl this) )
+
+theorem stepC (h : ¬ (A ∧ B)) : ¬ A ∨ ¬ B :=
+by_contradiction
+  (assume h' : ¬ (¬ A ∨ ¬ B),
+    show false, from stepB h h')
+
+\end{lstlisting}
+
+%possivel exercicio
+\begin{lstlisting}
+example (h5: ¬P →(Q ∨ R)) (h6:¬ Q) (h7:¬ R) :P:=
+by_contradiction(
+assume hp: ¬ P,
+have hqr: Q ∨ R , from h5 hp,
+show false, from
+    or.elim hqr
+    (assume hi: Q,
+    show false, from h6 hi)
+    (assume hii: R,
+    show false, from h7 hii))
+
+\end{lstlisting}
+
+%possivel exemplo
+\begin{lstlisting}
+example (h8:A → B):¬ A ∨ B:=
+or.elim(em A)
+    (assume he: A,
+    show (¬ A ∨ B),from or.inr (h8 he) )
+    (assume hi: ¬ A,
+    show(¬ A ∨ B),from or.inl hi)
+
+\end{lstlisting}
+
+%possivel exercicio
+\begin{lstlisting}
+example :A → (A ∧ B) ∨ (A ∧ ¬ B):=
+assume h9: A,
+show (A ∧ B) ∨  (A ∧ ¬ B), from
+or.elim(em B)
+    (assume hr:B,
+    show (A ∧ B) ∨  (A ∧ ¬ B), from or.inl(and.intro h9 hr) )
+    (assume hw: ¬ B,
+    show (A ∧ B) ∨  (A ∧ ¬ B), from or.inr(and.intro h9 hw))
+
+\end{lstlisting}
+
+%possivel exercicio (qual é esse? Livro?)
+\begin{lstlisting}
+example: ((A ∨ B) ∧ (C ∨ D)) ∧ (E ∨ F) →  (((((((((A ∧ E) ∧ C) ∨ ((F ∧ B) ∧ D)) ∨ ((A ∧ F) ∧ C)) ∨ ((A ∧ E) ∧ D)) ∨ ((A ∧ F) ∧ D)) ∨ ((B ∧ E) ∧ C)) ∨ ((B ∧ F) ∧ C)) ∨ ((B ∧ E) ∧ D)) :=
+assume h: ((A ∨ B) ∧ (C ∨ D)) ∧ (E ∨ F),
+have ha: A ∨ B, from and.left (and.left h),
+or.elim ha
+    (assume h1: A, have hb: C ∨ D, from and.right (and.left h),
+    or.elim hb
+        (assume h2: C, have hc: E ∨ F, from and.right h,
+        or.elim hc
+            (assume h3: E, or.inl (or.inl (or.inl (or.inl (or.inl (or.inl (or.inl (and.intro (and.intro h1 h3) h2))))))))
+            (assume h3: F, or.inl (or.inl (or.inl (or.inl (or.inl (or.inr (and.intro (and.intro h1 h3) h2))))))))
+        (assume h2: D, have hc: E ∨ F, from and.right h,
+        or.elim hc
+            (assume h3: E, or.inl (or.inl (or.inl (or.inl (or.inr (and.intro (and.intro h1 h3) h2))))))
+            (assume h3: F, or.inl (or.inl (or.inl (or.inr (and.intro (and.intro h1 h3) h2)))))))
+    (assume h1: B, have hb: C ∨ D, from and.right (and.left h),
+    or.elim hb
+        (assume h2: C, have hc: E ∨ F, from and.right h,
+        or.elim hc
+            (assume h3: E, or.inl (or.inl (or.inr (and.intro (and.intro h1 h3) h2))))
+            (assume h3: F, or.inl (or.inr (and.intro (and.intro h1 h3) h2))))
+        (assume h2: D, have hc: E ∨ F, from and.right h,
+        or.elim hc
+            (assume h3: E, or.inr (and.intro (and.intro h1 h3) h2))
+            (assume h3: F, or.inl (or.inl (or.inl (or.inl (or.inl (or.inl (or.inr (and.intro (and.intro h3 h1) h2))))))))))
+
+
+\end{lstlisting}
+
+%possivel exercicio
+\begin{lstlisting}
+example (hl : ¬ B → ¬ A) : A → B :=
+assume h10: A, show B,from
+by_contradiction(
+    assume hnb: ¬ B,
+    show false, from (hl hnb) h10)
+\end{lstlisting}
+
+%possivel exercicio
+\begin{lstlisting}
+example (hp : A → B) : ¬ A ∨ B :=
+show ¬ A ∨ B, from
+or.elim (em A)
+    (assume ha1: A,
+    show ¬A ∨ B, from or.inr (hp ha1) )
+    (assume ha2: ¬ A,
+    show ¬A ∨ B, from or.inl ha2)
+\end{lstlisting}
+
+
+%% Acredito que os abaixo deveriam estar entre os exercicios então arrumei com título
+
+\textbf{Exercício dos vestidos}
+
+\begin{lstlisting}
+variables AA AB AP MA MB MP CA CB CP : Prop 
+variable h1: AA ∨ (AB ∨ AP)
+variable h2: MA ∨ (MB ∨ MP)
+variable h3: CA ∨ CB ∨ CP
+variable h4: AA → AB
+variable h5: CA → ¬ AB
+variable h6: AB → MB
+variable h7: CB → ¬ MB
+variable h8: AP → CB
+variable h9: CP → ¬ CB
+variable h10: ¬ AB
+variable h11: (AA → (¬ AB ∧ ¬ AP)) ∧ (AB → (¬ AA ∧ ¬ AP)) ∧ (AP → (¬ AB ∧ ¬ AA))
+variable h12: (MA → (¬ MB ∧ ¬ MP)) ∧ (MB → (¬ MA ∧ ¬ MP)) ∧ (MP → (¬ MB ∧ ¬ MA))
+variable h13: (CA → (¬ CB ∧ ¬ CP)) ∧ (CB → (¬ CA ∧ ¬ CP)) ∧ (CP → (¬ CB ∧ ¬ CA))
+variable h14: (AA → (¬ MA ∧ ¬ CA)) ∧ (AB → (¬ MB ∧ ¬ CB)) ∧ (AP → (¬ MP ∧ ¬ CP))
+variable h15: (MA → (¬ AA ∧ ¬ CA)) ∧ ((MB → (¬ AB ∧ ¬ CB)) ∧ (MP → (¬ AP ∧ ¬ CP)))
+variable h16: (CA → (¬ AA ∧ ¬ MA)) ∧ (CB → (¬ AB ∧ ¬ MB)) ∧ (CP → (¬ AP ∧ ¬ MP))
+
+example: ((AP ∧ CB) ∧ MA) :=
+
+have h17: AP, from 
+or.elim h1
+    (assume h18: AA, false.elim (h10 (h4 h18)))
+    (assume h18: AB ∨ AP,
+        or.elim h18
+            (assume h19: AB, false.elim (h10 h19))
+            (assume h19: AP, h19)),
+
+have h20: CB, from 
+(h8 h17),
+
+have h24: (AP ∧ CB), from and.intro h17 h20,
+
+have h21: MA, from 
+or.elim h2
+(assume h22: MA, h22)
+(assume h22: MB ∨ MP,
+or.elim h22
+(assume h23: MB, false.elim ((and.right ((and.left (and.right h15)) h23)) (and.right h24)))
+(assume h23: MP, false.elim ((and.left ((and.right (and.right h15)) h23)) (and.left h24)))),
+
+and.intro h24 h21
+\end{lstlisting}
+
+\textbf{Caminho hamiltoniano}
+\begin{lstlisting}
+open classical 
+variables {x11 x12 x13 x14 x21 x22 x23 x24 x31 x32 x33 x34 x41 x42 x43 x44 : Prop}
+
+/-     grafo:               caminho:
+     x1 ---- x2        x11 ∧ x22 ∧ x33 ∧ x44         
+     |        |       e, naturalmente ¬xij para
+     x4------x3       qualquer outro par i,j          
+-/
+
+
+--- REGRA 1 E 3 ---
+lemma rule_1and3 (h1: x11 ∧ x22 ∧ x33 ∧ x44):
+(((x11 ∨ x21 ∨ x31 ∨ x41)∧ 
+(x44 ∨ x14 ∨ x24 ∨ x34))∧
+(x33 ∨ x13 ∨ x23 ∨ x43))∧
+(x22 ∨ x12 ∨ x32 ∨ x42)
+  :=
+  show 
+  (((x11 ∨ x21 ∨ x31 ∨ x41)∧ 
+  (x44 ∨ x14 ∨ x24 ∨ x34))∧
+  (x33 ∨ x13 ∨ x23 ∨ x43))∧
+  (x22 ∨ x12 ∨ x32 ∨ x42), 
+  from and.intro 
+        (and.intro 
+            (and.intro 
+                (or.inl h1.left)
+                (or.inl h1.right.right.right))
+            (or.inl h1.right.right.left))
+        (or.inl h1.right.left)
+
+--- REGRA 2 ---
+
+--- para o nó 1 ---
+lemma rule_2_node1 (h2: x11 ∧ ¬x21 ∧ ¬x31 ∧ ¬x41 ∧ x22 ∧ x33 ∧ x44):
+  (((((¬ x11 ∨ ¬  x21)∧
+      (¬ x11 ∨ ¬  x31))∧ 
+      (¬ x11 ∨ ¬  x41))∧ 
+      (¬ x21 ∨ ¬  x31))∧ 
+      (¬ x21 ∨ ¬  x41))∧ 
+      (¬ x31 ∨ ¬  x41)
+  :=
+  show(((((¬ x11 ∨ ¬  x21)∧
+      (¬ x11 ∨ ¬  x31))∧ 
+      (¬ x11 ∨ ¬  x41))∧ 
+      (¬ x21 ∨ ¬  x31))∧ 
+      (¬ x21 ∨ ¬  x41))∧ 
+      (¬ x31 ∨ ¬  x41),
+  from and.intro
+          (and.intro
+                    (and.intro
+                          (and.intro
+                            (and.intro
+                              ( or.inr h2.right.left ) 
+                              ( or.inr h2.right.right.left ))
+                            (or.inr h2.right.right.right.left))
+                          (or.inl h2.right.left))
+                    (or.inl h2.right.left))
+          (or.inl h2.right.right.left)
+
+--- para o nó 2 ---
+lemma rule_2_node2 (h2: x11 ∧ ¬x12 ∧ ¬x32 ∧ ¬x42 ∧ x22 ∧ x33 ∧ x44):
+  (((((¬ x12 ∨ ¬  x22)∧
+      (¬ x12 ∨ ¬  x32))∧ 
+      (¬ x12 ∨ ¬  x42))∧ 
+      (¬ x22 ∨ ¬  x32))∧ 
+      (¬ x22 ∨ ¬  x42))∧ 
+      (¬ x32 ∨ ¬  x42):=
+  show
+    (((((¬ x12 ∨ ¬  x22)∧
+      (¬ x12 ∨ ¬  x32))∧ 
+      (¬ x12 ∨ ¬  x42))∧ 
+      (¬ x22 ∨ ¬  x32))∧ 
+      (¬ x22 ∨ ¬  x42))∧ 
+      (¬ x32 ∨ ¬  x42),
+  from and.intro
+          (and.intro
+                    (and.intro
+                          (and.intro
+                            (and.intro
+                              ( or.inl h2.right.left ) 
+                              ( or.inl h2.right.left ))
+                            (or.inl h2.right.left))
+                          (or.inr h2.right.right.left))
+                    (or.inr h2.right.right.right.left))
+          (or.inl h2.right.right.left)
+
+--- para o nó 3 ---
+lemma rule_2_node3 (h2: x11 ∧ ¬x13 ∧ ¬x43 ∧ ¬x23 ∧ x22 ∧ x33 ∧ x44):
+  (((((¬ x13 ∨ ¬  x23)∧
+      (¬ x13 ∨ ¬  x33))∧ 
+      (¬ x13 ∨ ¬  x43))∧ 
+      (¬ x23 ∨ ¬  x33))∧ 
+      (¬ x23 ∨ ¬  x43))∧ 
+      (¬ x33 ∨ ¬  x43):=
+  show
+   (((((¬ x13 ∨ ¬  x23)∧
+      (¬ x13 ∨ ¬  x33))∧ 
+      (¬ x13 ∨ ¬  x43))∧ 
+      (¬ x23 ∨ ¬  x33))∧ 
+      (¬ x23 ∨ ¬  x43))∧ 
+      (¬ x33 ∨ ¬  x43),
+  from and.intro
+          (and.intro
+                    (and.intro
+                          (and.intro
+                            (and.intro
+                              ( or.inl h2.right.left ) 
+                              ( or.inl h2.right.left ))
+                            (or.inl h2.right.left))
+                          (or.inl h2.right.right.right.left))
+                    (or.inl h2.right.right.right.left))
+          (or.inr h2.right.right.left)
+
+--- para o nó 4 ---
+lemma rule_2_node4 (h2: x11 ∧ ¬x14 ∧ ¬x34 ∧ ¬x24 ∧ x22 ∧ x33 ∧ x44):
+  (((((¬ x14 ∨ ¬  x24)∧
+      (¬ x14 ∨ ¬  x34))∧ 
+      (¬ x14 ∨ ¬  x44))∧ 
+      (¬ x24 ∨ ¬  x34))∧ 
+      (¬ x24 ∨ ¬  x44))∧ 
+      (¬ x34 ∨ ¬  x44):=
+  show
+   (((((¬ x14 ∨ ¬  x24)∧
+      (¬ x14 ∨ ¬  x34))∧ 
+      (¬ x14 ∨ ¬  x44))∧ 
+      (¬ x24 ∨ ¬  x34))∧ 
+      (¬ x24 ∨ ¬  x44))∧ 
+      (¬ x34 ∨ ¬  x44),
+  from and.intro
+          (and.intro
+                    (and.intro
+                          (and.intro
+                            (and.intro
+                              ( or.inl h2.right.left ) 
+                              ( or.inl h2.right.left ))
+                            (or.inl h2.right.left))
+                          (or.inl h2.right.right.right.left))
+                    (or.inl h2.right.right.right.left))
+          (or.inl h2.right.right.left)
+
+--- REGRA 4 ---
+
+--- para a posição 1 ---
+lemma rule_4_node1 (h2: ¬x12 ∧ ¬x13 ∧ ¬x14 ∧ x11 ∧ x22 ∧ x33 ∧ x44):
+  (((((¬ x11 ∨ ¬  x12)∧
+      (¬ x11 ∨ ¬  x13))∧ 
+      (¬ x11 ∨ ¬  x14))∧ 
+      (¬ x12 ∨ ¬  x13))∧ 
+      (¬ x12 ∨ ¬  x14))∧ 
+      (¬ x13 ∨ ¬  x14):=
+  show
+   (((((¬ x11 ∨ ¬  x12)∧
+      (¬ x11 ∨ ¬  x13))∧ 
+      (¬ x11 ∨ ¬  x14))∧ 
+      (¬ x12 ∨ ¬  x13))∧ 
+      (¬ x12 ∨ ¬  x14))∧ 
+      (¬ x13 ∨ ¬  x14),
+  from and.intro
+          (and.intro
+                    (and.intro
+                          (and.intro
+                            (and.intro
+                              ( or.inr h2.left ) 
+                              ( or.inr h2.right.left ))
+                            (or.inr h2.right.right.left))
+                          (or.inl h2.left))
+                    (or.inl h2.left))
+          (or.inl h2.right.left)
+
+--- para a posição 2 ---
+lemma rule_4_node2 (h2: ¬x21 ∧ ¬x23 ∧ ¬x24 ∧ x11 ∧ x22 ∧ x33 ∧ x44):
+  (((((¬ x21 ∨ ¬  x22)∧
+      (¬ x21 ∨ ¬  x23))∧ 
+      (¬ x21 ∨ ¬  x24))∧ 
+      (¬ x22 ∨ ¬  x23))∧ 
+      (¬ x22 ∨ ¬  x24))∧ 
+      (¬ x23 ∨ ¬  x24):=
+  show
+  (((((¬ x21 ∨ ¬  x22)∧
+      (¬ x21 ∨ ¬  x23))∧ 
+      (¬ x21 ∨ ¬  x24))∧ 
+      (¬ x22 ∨ ¬  x23))∧ 
+      (¬ x22 ∨ ¬  x24))∧ 
+      (¬ x23 ∨ ¬  x24),
+  from and.intro
+          (and.intro
+                    (and.intro
+                          (and.intro
+                            (and.intro
+                              ( or.inl h2.left ) 
+                              ( or.inl h2.left ))
+                            (or.inl h2.left))
+                          (or.inr h2.right.left))
+                    (or.inr h2.right.right.left))
+          (or.inl h2.right.left)
+
+--- para a posição 3 ---
+lemma rule_4_node3 (h2: ¬x31 ∧ ¬x32 ∧ ¬x34 ∧ x11 ∧ x22  ∧ x33 ∧ x44):
+  (((((¬ x31 ∨ ¬  x32)∧
+      (¬ x31 ∨ ¬  x33))∧ 
+      (¬ x31 ∨ ¬  x34))∧ 
+      (¬ x32 ∨ ¬  x33))∧ 
+      (¬ x32 ∨ ¬  x34))∧ 
+      (¬ x33 ∨ ¬  x34):=
+  show
+  (((((¬ x31 ∨ ¬  x32)∧
+      (¬ x31 ∨ ¬  x33))∧ 
+      (¬ x31 ∨ ¬  x34))∧ 
+      (¬ x32 ∨ ¬  x33))∧ 
+      (¬ x32 ∨ ¬  x34))∧ 
+      (¬ x33 ∨ ¬  x34),
+  from and.intro
+          (and.intro
+                    (and.intro
+                          (and.intro
+                            (and.intro
+                              ( or.inl h2.left ) 
+                              ( or.inl h2.left))
+                            (or.inl h2.left))
+                          (or.inl h2.right.left))
+                    (or.inl h2.right.left))
+          (or.inr h2.right.right.left)
+
+--- para a posição 4 ---
+lemma rule_4_node4 (h2: ¬x41 ∧ ¬x42 ∧ ¬x43 ∧  x11 ∧ x22  ∧ x33 ∧ x44):
+  (((((¬ x41 ∨ ¬  x42)∧
+      (¬ x41 ∨ ¬  x43))∧ 
+      (¬ x41 ∨ ¬  x44))∧ 
+      (¬ x42 ∨ ¬  x43))∧ 
+      (¬ x42 ∨ ¬  x44))∧ 
+      (¬ x43 ∨ ¬  x44):=
+  show
+  (((((¬ x41 ∨ ¬  x42)∧
+      (¬ x41 ∨ ¬  x43))∧ 
+      (¬ x41 ∨ ¬  x44))∧ 
+      (¬ x42 ∨ ¬  x43))∧ 
+      (¬ x42 ∨ ¬  x44))∧ 
+      (¬ x43 ∨ ¬  x44),
+  from and.intro
+          (and.intro
+                    (and.intro
+                          (and.intro
+                            (and.intro
+                              ( or.inl h2.left ) 
+                              ( or.inl h2.left))
+                            (or.inl h2.left))
+                          (or.inl h2.right.left))
+                    (or.inl h2.right.left))
+          (or.inl h2.right.right.left)
+
+--- REGRA 5 ---
+
+--- para os nós 1 e 3 ---
+lemma rule_5_edge13 (h2: ¬x23 ∧ ¬x21 ∧ ¬x43 ∧ ¬x41 ∧  x11 ∧ x22  ∧ x33 ∧ x44):
+  (((((¬ x11 ∨ ¬  x23)∧
+      (¬ x21 ∨ ¬  x33))∧ 
+      (¬ x31 ∨ ¬  x43))∧ 
+      (¬ x13 ∨ ¬  x21))∧ 
+      (¬ x23 ∨ ¬  x31))∧ 
+      (¬ x33 ∨ ¬  x41):=
+  show
+  (((((¬ x11 ∨ ¬  x23)∧
+      (¬ x21 ∨ ¬  x33))∧ 
+      (¬ x31 ∨ ¬  x43))∧ 
+      (¬ x13 ∨ ¬  x21))∧ 
+      (¬ x23 ∨ ¬  x31))∧ 
+      (¬ x33 ∨ ¬  x41),
+  from and.intro
+          (and.intro
+                    (and.intro
+                          (and.intro
+                            (and.intro
+                              ( or.inr h2.left ) 
+                              ( or.inl h2.right.left))
+                            (or.inr h2.right.right.left))
+                          (or.inr h2.right.left))
+                    (or.inl h2.left))
+          (or.inr h2.right.right.right.left)
+
+--- para os nós 3 e 4 ---
+lemma rule_5_edge24 (h2: ¬x12 ∧ ¬x24 ∧ ¬x34 ∧ ¬x32 ∧  x11 ∧ x22  ∧ x33 ∧ x44):
+  (((((¬ x12 ∨ ¬  x24)∧
+      (¬ x22 ∨ ¬  x34))∧ 
+      (¬ x32 ∨ ¬  x44))∧ 
+      (¬ x14 ∨ ¬  x24))∧ 
+      (¬ x24 ∨ ¬  x34))∧ 
+      (¬ x34 ∨ ¬  x44):=
+  show
+  (((((¬ x12 ∨ ¬  x24)∧
+      (¬ x22 ∨ ¬  x34))∧ 
+      (¬ x32 ∨ ¬  x44))∧ 
+      (¬ x14 ∨ ¬  x24))∧ 
+      (¬ x24 ∨ ¬  x34))∧ 
+      (¬ x34 ∨ ¬  x44),
+  from and.intro
+          (and.intro
+                    (and.intro
+                          (and.intro
+                            (and.intro
+                              ( or.inl h2.left ) 
+                              ( or.inr h2.right.right.left))
+                            (or.inl h2.right.right.right.left))
+                          (or.inr h2.right.left))
+                    (or.inl h2.right.left))
+          (or.inl h2.right.right.left)
+\end{lstlisting}
