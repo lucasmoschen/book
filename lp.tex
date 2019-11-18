@@ -1291,6 +1291,20 @@ end
 
 \bigbreak
 \textbf{10. Prova de $\neg (A \land B) \rightarrow (A \rightarrow \neg B)$:}
+A árvore de dedução natural seria:
+\begin{prooftree}
+\AxiomC{$\neg (A\land B)$}
+\AxiomC{A}
+\AxiomC{}
+\RightLabel{\scriptsize(1)}
+\UnaryInfC{B}
+\BinaryInfC{$A \land B$}
+\BinaryInfC{$\bot$}
+\RightLabel{\scriptsize(1)}
+\UnaryInfC{$\neg B$}
+\UnaryInfC{$A \rightarrow \neg B$}
+\UnaryInfC{$\neg (A \land B) \rightarrow (A \rightarrow \neg B)$}
+\end{prooftree}
 
 No Lean, é possível escrever essa prova no modo termo da seguinte forma:
 \begin{lstlisting}
@@ -1316,7 +1330,32 @@ end
 \end{lstlisting}
 
 \bigbreak
-\textbf{11. Prova de $\neg (A \lor B)$ a partir de $\neg A \and \neg B$:}
+\textbf{11. Prova de $\neg (A \lor B)$ a partir de $\neg A \land \neg B$:}
+
+A árvore de dedução natural seria:
+\begin{prooftree}
+\AxiomC{}
+\RightLabel{\scriptsize(1)}
+\UnaryInfC{$A \lor B$}
+
+\AxiomC{$\neg A \land \neg B$}
+\UnaryInfC{$\neg A$}
+\AxiomC{}
+\RightLabel{\scriptsize(1)}
+\UnaryInfC{A}
+\BinaryInfC{$\bot$}
+
+\AxiomC{$\neg A \land \neg B$}
+\UnaryInfC{$\neg B$}
+\AxiomC{}
+\RightLabel{\scriptsize(1)}
+\UnaryInfC{B}
+\BinaryInfC{$\bot$}
+
+\TrinaryInfC{$\bot$}
+\RightLabel{\scriptsize(1)}
+\UnaryInfC{$\neg (A \lor B)$}
+\end{prooftree}
 
 No Lean, é possível escrever essa prova no modo termo da seguinte forma:
 \begin{lstlisting}
@@ -1344,6 +1383,26 @@ end
 
 \bigbreak
 \textbf{12. Prova de $\neg A \lor B$ a partir de $A \rightarrow B$:}
+A árvore de dedução natural seria:
+\begin{prooftree}
+\AxiomC{}
+\RightLabel{\scriptsize(1)}
+\UnaryInfC{$A \lor \neg A$}
+
+\AxiomC{$A \rightarrow B$}
+\AxiomC{}
+\RightLabel{\scriptsize(1)}
+\UnaryInfC{A}
+\BinaryInfC{B}
+\UnaryInfC{$\neg A \lor B$}
+
+\AxiomC{}
+\RightLabel{\scriptsize(1)}
+\UnaryInfC{$\neg A$}
+\UnaryInfC{$\neg A \lor B$}
+
+\TrinaryInfC{$\neg A \lor B$}
+\end{prooftree}
 
 No Lean, é possível escrever essa prova no modo termo da seguinte forma:
 \begin{lstlisting}
