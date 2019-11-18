@@ -1124,6 +1124,23 @@ show false, from
 
 \end{lstlisting}
 
+Modo táticas:
+\begin{lstlisting}
+variable A: Prop
+
+example : ¬ (A ↔ ¬ A) :=
+begin
+intro h,
+have h₁: ¬ A, from 
+    assume ha: A,
+    have hb:¬ A, from iff.elim_left h ha,
+    show false, from hb ha,
+
+have h₂: A, from iff.elim_right h h₁,
+contradiction 
+end
+\end{lstlisting}
+
 \bigbreak
 \textbf{8. Prova de $ \neg A \lor \neg B$ a partir de $\neg (A \land B)$} % exercicio
 %Mencionar o escopo das variáveis
@@ -1192,6 +1209,26 @@ example (h: ¬ (A ∧ B)): ¬ A ∨ ¬ B :=
     show false, from h₁ this)
 \end{lstlisting}
 
+Também pode ser escrito no modo táticas como:
+\begin{lstlisting}
+variables A B: Prop
+
+example (h: ¬ (A ∧ B)): ¬ A ∨ ¬ B := 
+by_contradiction
+begin
+intro,
+have h₁: ¬ A, from
+    assume h₂:A,
+    have h₃: ¬ B, from
+        assume h₄: B, show false, from h (and.intro h₂ h₄),
+    have h₅: ¬A ∨ ¬ B, from or.inr h₃,
+    show false, from a h₅,
+
+have h₆: ¬ A ∨ ¬ B, from or.inl h₁,
+show false, from a h₆
+end
+\end{lstlisting}
+
 No entanto, ao passo que possa parecer mais conveniente escrever a prova assim, note que o entendimento imediato de alguns passos é dificultado, por isso é necessário cuidado ao utilizar esse recurso.
 \bigbreak
 \textbf{9. Prova do Princípio da Casa dos Pombos (PHP-3):}
@@ -1255,7 +1292,7 @@ end
 \bigbreak
 \textbf{10. Prova de $\neg (A \land B) \rightarrow (A \rightarrow \neg B)$:}
 
-No Lean, é possível escrever essa prova da seguinte forma:
+No Lean, é possível escrever essa prova no modo termo da seguinte forma:
 \begin{lstlisting}
 variables {A B: Prop}
 example : ¬ (A ∧ B) → (A → ¬ B) :=
@@ -1266,11 +1303,24 @@ have h4: A ∧ B, from and.intro h2 h3,
 false.elim (h1 h4)
 \end{lstlisting}
 
+E no modo táticas:
+\begin{lstlisting}
+variables A B: Prop
+example : ¬ (A ∧ B) → (A → ¬ B) :=
+begin
+intros,
+assume h: B,
+have h₁: A ∧ B, from and.intro a_1 h,
+contradiction
+end
+\end{lstlisting}
+
 \bigbreak
 \textbf{11. Prova de $\neg (A \lor B)$ a partir de $\neg A \and \neg B$:}
 
-No Lean, é possível escrever essa prova da seguinte forma:
+No Lean, é possível escrever essa prova no modo termo da seguinte forma:
 \begin{lstlisting}
+variables A B: Prop
 example (h : ¬ A ∧ ¬ B) : ¬ (A ∨ B) :=
 assume h1: A ∨ B,
 or.elim h1
@@ -1278,11 +1328,26 @@ or.elim h1
     (assume h2: B, false.elim((and.right h) h2))
 \end{lstlisting}
 
+E no modo táticas como:
+\begin{lstlisting}
+variables A B: Prop
+example (h : ¬ A ∧ ¬ B) : ¬ (A ∨ B) :=
+assume h₁: A ∨ B,
+begin
+cases h₁ with ha hb,
+have h₂: ¬ A, from h.left,
+contradiction,
+have h₃: ¬ B, from h.right,
+contradiction
+end
+\end{lstlisting}
+
 \bigbreak
 \textbf{12. Prova de $\neg A \lor B$ a partir de $A \rightarrow B$:}
 
-No Lean, é possível escrever essa prova da seguinte forma:
+No Lean, é possível escrever essa prova no modo termo da seguinte forma:
 \begin{lstlisting}
+variables A B: Prop
 example (h8:A → B):¬ A ∨ B:=
 or.elim(em A)
     (assume he: A,
@@ -1291,11 +1356,37 @@ or.elim(em A)
     show(¬ A ∨ B),from or.inl hi)
 
 \end{lstlisting}
+E modo táticas como:
+\begin{lstlisting}
+variables A B: Prop
+example (h8:A → B):¬ A ∨ B:=
+begin
+have h: A ∨ ¬ A, from em A,
+cases h with ha hb,
+exact or.inr (h8 ha),
+exact or.inl hb
+end
+\end{lstlisting}
 
 \section{Exercícios}
 \begin{enumerate}
 \bigbreak
 \item Construa a árvore de dedução natural e prove no Lean que $A \land (A \rightarrow B) \rightarrow B$.
+\bigbreak
+Gabarito da árvore de dedução natural:
+\begin{prooftree}
+\AxiomC{}
+\RightLabel{\scriptsize(1)}
+\UnaryInfC{$A \land (A \rightarrow B)$}
+\UnaryInfC{$A \rightarrow B$}
+\AxiomC{}
+\RightLabel{\scriptsize(1)}
+\UnaryInfC{$A \land (A \rightarrow B)$}
+\UnaryInfC{A}
+\BinaryInfC{B}
+\RightLabel{\scriptsize(1)}
+  \UnaryInfC{$A \land (A \rightarrow B) \rightarrow B$}
+\end{prooftree}
     
 Gabarito no Lean:
 \begin{lstlisting}
@@ -1310,6 +1401,26 @@ h2 h3
 
 \bigbreak
 \item Construa a árvore de dedução natural e prove no Lean $C \lor D$, a partir de $ A \lor B$, $ A \rightarrow C$ e $B \rightarrow D$.
+\bigbreak
+Gabarito da árvore de dedução natural:
+\begin{prooftree}
+\AxiomC{}
+\RightLabel{\scriptsize(1)}
+\UnaryInfC{$A \lor B$}
+\AxiomC{$A \rightarrow C$}
+\AxiomC{}
+\RightLabel{\scriptsize(1)}
+\UnaryInfC{A}
+\BinaryInfC{C}
+\UnaryInfC{$C \lor D$}
+\AxiomC{$B \rightarrow D$}
+\AxiomC{}
+\RightLabel{\scriptsize(1)}
+\UnaryInfC{B}
+\BinaryInfC{D}
+\UnaryInfC{$C \lor D$}
+\TrinaryInfC{$C \lor D$}
+\end{prooftree}
     
 Gabarito no Lean:
 \begin{lstlisting}
@@ -1321,6 +1432,24 @@ or.elim h1
 \end{lstlisting}
 \bigbreak
 \item Construa a árvore de dedução natural e prove no Lean $A$, a partir de $A \lor \neg A$ e $\neg A \rightarrow false$.
+\bigbreak
+Gabarito da árvore de dedução natural:
+\begin{prooftree}
+
+\AxiomC{}
+\RightLabel{\scriptsize(1)}
+\UnaryInfC{$A \lor \neg A$}
+\AxiomC{$\neg A \rightarrow \bot$}
+\AxiomC{}
+\RightLabel{\scriptsize(1)}
+\UnaryInfC{$\neg A$}
+\BinaryInfC{$\bot$}
+\UnaryInfC{A}
+\AxiomC{}
+\RightLabel{\scriptsize(1)}
+\UnaryInfC{A}
+\TrinaryInfC{A}
+\end{prooftree}
     
 Gabarito no Lean: 
 \begin{lstlisting}
@@ -1334,6 +1463,20 @@ or.elim h1
 \end{lstlisting}    
 \bigbreak
 \item Construa a árvore de dedução natural e prove no Lean $\neg A \lor \neg B$, a partir de $\neg (A \land B)$ e $A$.
+\bigbreak
+Gabarito da árvore de dedução natural:
+\begin{prooftree}
+\AxiomC{A}
+\AxiomC{}
+\RightLabel{\scriptsize(1)}
+\UnaryInfC{B}
+\BinaryInfC{$A \land B$}
+\AxiomC{$\neg(A \land B)$}
+\BinaryInfC{$\bot$}
+\RightLabel{\scriptsize(1)}
+\UnaryInfC{$\neg B$}
+\UnaryInfC{$\neg A \lor \neg B$}
+\end{prooftree}
 
 Gabarito no Lean:
 \begin{lstlisting}
@@ -1359,6 +1502,29 @@ by_contradiction
 \bigbreak
 \item Construa a árvore de dedução natural e prove no Lean $P$, a partir de $\neg P \rightarrow (Q \lor R)$, $\neg Q$ e $\neg R$. 
 
+\bigbreak
+Gabarito da árvore de dedução natural:
+\begin{prooftree}
+\AxiomC{$\neg P \rightarrow (Q \lor R)$}
+\AxiomC{}
+\RightLabel{\scriptsize(1)}
+\UnaryInfC{$\neg P$}
+\BinaryInfC{$Q \lor R$}
+\AxiomC{$\neg Q$}
+\AxiomC{}
+\RightLabel{\scriptsize(1)}
+\UnaryInfC{Q}
+\BinaryInfC{$\bot$}
+\AxiomC{$\neg R$}
+\AxiomC{}
+\RightLabel{\scriptsize(1)}
+\UnaryInfC{R}
+\BinaryInfC{$\bot$}
+\TrinaryInfC{$\bot$}
+\RightLabel{\scriptsize(1)}
+\UnaryInfC{P}
+\end{prooftree}
+
 Gabarito no Lean:
 \begin{lstlisting}
 open classical
@@ -1377,6 +1543,35 @@ show false, from
 \end{lstlisting}
 \bigbreak
 \item Construa a árvore de dedução natural e prove no Lean $A \rightarrow (A \land B) \lor (A \land \neg B)$. 
+\bigbreak
+Gabarito da árvore de dedução natural:
+\begin{prooftree}
+\AxiomC{}
+\RightLabel{\scriptsize(1)}
+\UnaryInfC{$B \lor \neg B$}
+
+\AxiomC{}
+\RightLabel{\scriptsize(2)}
+\UnaryInfC{A}
+\AxiomC{}
+\RightLabel{\scriptsize(1)}
+\UnaryInfC{B}
+\BinaryInfC{$A \land B$}
+\UnaryInfC{$(A \land B) \lor (A \land \neg B)$}
+
+\AxiomC{}
+\RightLabel{\scriptsize(2)}
+\UnaryInfC{A}
+\AxiomC{}
+\RightLabel{\scriptsize(1)}
+\UnaryInfC{$\neg B$}
+\BinaryInfC{$A \land \neg B$}
+\UnaryInfC{$(A \land B) \lor (A \land \neg B)$}
+
+\TrinaryInfC{$(A \land B) \lor (A \land \neg B)$}
+\RightLabel{\scriptsize(2)}
+\UnaryInfC{$A \rightarrow (A \land B) \lor (A \land \neg B)$}
+\end{prooftree}
 
 Gabarito no Lean: 
 \begin{lstlisting}
