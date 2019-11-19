@@ -1295,6 +1295,38 @@ cases h₂ with ha hb,
 end
 \end{lstlisting}
 
+Os códigos acima também mostram como utilizar parênteses para separar os termos, mesmo quando não são totalmente necessários, pode facilitar o desenvolvimento da prova. Isso acontece pois o Lean ``atribui'' parênteses para as provas (ou seja, ele lê as proposições) da direita para a esquerda. Como exemplo, no código abaixo, é possível ver que quando aplica-se a função $and.right$ em $A \land B \land C$ o Lean responde com $B \land C$.
+
+\begin{lstlisting}
+variables A B C: Prop
+
+example: A ∧ B ∧ C → B ∧ C :=
+assume h: A ∧ B ∧ C,
+and.right h
+\end{lstlisting}
+
+Contudo, não é tão simples obter $A \land B$ a partir dessa mesma hipótese. Apesar de ambos estarem lado ao lado, assim como $B \land C$ estavam, é necessário redigir uma prova mais extensa:
+
+\begin{lstlisting}
+variables A B C: Prop
+
+example: A ∧ B ∧ C → A ∧ B :=
+assume h: A ∧ B ∧ C,
+have h1: A, from and.left h,
+have h2: B, from and.left (and.right h),
+and.intro h1 h2
+\end{lstlisting}
+
+O problema acima seria resolvido caso tivesse sido explicitamente atribuído um parênteses ao $A \land B$, sendo possível obtê-lo a partir da função $and.left$, conforme mostra o código abaixo:
+
+\begin{lstlisting}
+variables A B C: Prop
+
+example: (A ∧ B) ∧ C → A ∧ B :=
+assume h: (A ∧ B) ∧ C,
+and.left h
+\end{lstlisting}
+
 \bigbreak
 \textbf{10. Prova de $\neg (A \land B) \rightarrow (A \rightarrow \neg B)$:}
 A árvore de dedução natural seria:
