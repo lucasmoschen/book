@@ -1,8 +1,8 @@
 \chapter{Funções}
 
 Desde o final do século XIX, diversas áreas da matemática
-estudam consistentemente \textit{\hyperlink{chapter.4}{conjuntos}},
-\textit{\hyperlink{chapter.5}{relações}}, já apresentadas
+estudam consistentemente \textit{\hyperlink{chapter.5}{conjuntos}},
+\textit{\hyperlink{chapter.6}{relações}}, já apresentadas
 nesse texto, e funções. Neste capítulo, debruçaremos nossa
 atenção nas propriedades dessa terceira área.
 
@@ -25,6 +25,7 @@ fazendo as devidas comparações com a linguagem de referência,
 o Lean.
 
 \section{O Conceito de Função}
+\label{concept}
 
 Considere dois conjuntos quaisquer $X$ e $Y$ e um mapeamento $f$
 do conjunto $X$ para o conjunto $Y$. Se $f$ atribui um e apenas
@@ -33,8 +34,14 @@ escrevemos $f: X \to Y$.  Chamamos $X$ de domínio de $f$, enquanto
 $Y$ é o contradomínio de $f$ e $\forall x, (x \in X  \Rightarrow f(x) \in Y)$.
 Nesse sentido, $\forall x_1 \in X, \forall x_2 \in X, x_1 = x_2 \Rightarrow f(x_1) = f(x_2)$.
 Uma função também pode ser parcial quando ela não é definida para alguns valores
-do domínio. Como toda função parcial é total ao restringir o domínio, trateremos
-nesse texto das funções totais.
+do domínio. Escrevemos $f: X \nrightarrow Y $ para representar uma função parcial definida em 
+$A \subseteq X $, mas não definida no complementar de $A$. 
+
+Um exemplo amplamente conhecido de funções parciais é $f: \mathbb{R} \nrightarrow \mathbb{R}$, 
+definida por $f(x) = \frac{1}{x}$, que é indefinida em $x = 0$. Assim, na realidade, expressamos $f$ como
+$f : \mathbb{R} \setminus \{0\} \to \mathbb{R}$. Alguns chamam $A$ de domínio de definição. 
+Como toda função parcial é total ao se restringir o domínio, trateremos nesse texto das funções totais 
+e a extensão das definições devido à parcialidade são deixadas ao leitor.  
 
 A maneira mais simples de se representar uma função é escrevê-la explicitamente
 para cada elemento do domínio. Por exemplo, podemos escrever as seguintes expressões:
@@ -64,7 +71,7 @@ Isto nos leva à definição no capítulo de \textit{\hyperlink{chapter.4}{FOL}}
 variável ligada (\textit{bound}), visto que se renomearmos $x$ com $y$, os valores
 continuam os mesmos.
 
-Lógicos frequentemente utilizam a notação $\lambda x e(x)$ para denotar a função
+Lógicos frequentemente utilizam a notação $\lambda x ~e(x)$ para denotar a função
 que mapeia $x$ para $e(x)$. Essa notação chama-se \textit{notação lambda} e pode
 ser usada da seguinte forma: $f = \lambda x(x + 1)$, que significa $f(x) = x + 1$.
 Essa notação é mais interessante para cientistas da computação e lógicos do que
@@ -93,7 +100,7 @@ Lembre-se que diferenciamos o tipo $X$ do tipo $set~X$ em Lean.
 
 \begin{definition}
     \label{def1}
-    Seja um conjunto $X$. A função identidade de $A$ é a função
+    Seja um conjunto $A$. A função identidade de $A$ é a função
     $i_A : A \rightarrow A$ definida para todos os valores $x \in A$ tal que $i_A(x) = x$.
 \end{definition}
 
@@ -702,10 +709,56 @@ de lógica de primeira ordem no qual o universo contém funções e relações c
 para envolver novos tipos de quantificadores e variáveis, que é o caso descrito nessa sessão. Isto é o que Lógica
 de Ordem mais Alta faz. 
 
-Alonzo Church (1903 - 1995) foi um matemático e lógico estadunidense, conhecido pelo cálculo lambda, formula a ideia
-de ordens mais altas na lógica. Isso é algumas vezes descrito como Teoria Simples dos Tipos.
+Alonzo Church (1903 - 1995) foi um matemático e lógico estadunidense, conhecido pelo cálculo lambda, formulou a ideia
+de ordens mais altas na lógica. Isso é algumas vezes descrito como Teoria Simples dos Tipos ou Teoria dos Tipos de 
+Chunch's. Sejam $X, Y, Z,...$ tipos básicos e $Prop$ um tipo especial das proposições. Temos, então:
+\begin{itemize}
+    \item Se $X$ e $Y$ são tipos, então $U \times V$ também será.Isto denota que o par ordenado $(x,y)$, com $x \in X$ 
+    e $y \in Y$ é tipado. 
+    \item Se $X$ e $Y$ são tipos, então $U \to V$ também será.
+\end{itemize}
 
+Para formar expressões, a teoria de Church aficiona os seguintes caminhos: 
+\begin{enumerate}
+    \item Se $x$ é do tipo $X$ e $y$ é do tipo $Y$, $(x,y)$ é do tipo $X \times Y$. 
+    \item Se $z$ é do tipo $X \times Y$, então $(p)_1$ é do tipo $X$ e $(p)_2$ é do tipo $Y$, que denotam o primeiro e 
+    segundo elemento do par $z$, respectivamente. 
+    \item Se $x$ é uma variável do tipo $X$ e $y$ é uma expressão do tipo $Y$, então $\lambda x y$ é do tipo $X \to Y$. 
+    Para lembrar o significado dessa expressão, voltar em \ref{concept}.
+    \item Se $f$ é do tipo $X \to Y$ e $x$ é do tipo $X$, $f(x)$ é do tipo $Y$. 
+\end{enumerate}
 
+Além desses meios, a teoria simples dos tipos possui conetivos booleanos, quantificadores e a igualdade, oriunda da lógica
+de primeira ordem, para construir proposições. 
+
+A fução $f(x,y)$ que toma elementos de $X$ e $Y$ para o tipo $Z$ é vista como um objeto do tipo $X \times Y \to Z$. Note que,
+nesse sentido, uma relação binária $R(x,y)$ definida em $X$ e $Y$ é vista como um objeto $X \times Y \to Prop$. O que torma essa 
+lógica ser de ordem mais alta é que podemos iterar o tipo função indefinidamente. Por exemplo, se $\mathbb{N}$ é o tipo dos números
+naturais, $\mathbb{N} \to \mathbb{N}$ denota o tipo das funções dos números naturais aos números naturais, e $(\mathbb{N} \to \mathbb{N}) \to \mathbb{N}$ 
+denota o tipo de funções $F(f)$ que tomam uma função como argumento e retornam um número natural. Vamos ver em Lean:
+
+\begin{lstlisting}
+open nat 
+
+#check ℕ                -- ℕ : Type
+#check ℕ → ℕ            -- ℕ → ℕ : Type
+#check (ℕ → ℕ) → ℕ      -- (ℕ → ℕ) → ℕ : Type 
+
+variable F: (ℕ → ℕ) → ℕ 
+variable f: ℕ → ℕ
+variable n: ℕ 
+
+#check f n              -- f n : ℕ 
+#check F f              -- F f : ℕ 
+#check F n              -- error
+\end{lstlisting}
+
+A variavél $F$ espera uma função, por isso retorna erro no último \lstinline{#check}. Se retirarmos o parênteses, Lean entenderá que 
+\lstinline{F : ℕ → (ℕ → ℕ)}. 
+
+As especificações de síntaxe e regras da lógica de ordem mais alta são descritas mais cuidadosamente em livros-texto mais avançados. 
+Para considerar os tipos de funções e relações, basta o conhecimento de lógica de segunda ordem. É importante ter em mente que já lidamos 
+desde os primeiros capítulos com os tipos e lógica de segunda ordem, em Lean, que é um sistema de lógica ainda mais elaborado e expressivo. 
 
 \subsection{Definindo a inversa Classicamente}
 
@@ -801,5 +854,85 @@ dessa prova. A versão em Táticas foi inserida como instrução de aplicação 
 como o modo em termos. 
 
 \section{Funções e Relações}
+
+Podemos ver que nem toda relação é uma função. Uma relação binária $R(x,y)$ em $A$ e $B$ 
+é um \textit{funcional} se para todo $x$ em $A$, existe um valor único $y$ em $B$ tal que 
+$R(x,y)$. Se $R$ é uma relação funcional, podemos definir $f_R: X \to B$ fazendo com que 
+$f_R(x)$ seja igual ao valor de $y$ único em $B$ em que a relação seja verdadeira. A 
+contrapartida é verdadeira, basta definir, para $f: X \to B$, $R_f(x,y)$, uma relação funcional. 
+Essa relação é conhecida como o \textit{grafo de f}. 
+
+Podemos extrair dessa ideia que existe uma dualidade entre uma relação funcional $R$ e uma 
+função $f$. Inclusive, muitas vezes, as definições são intercambiáveis. Em fundamentos tipo-teóricos, 
+como a que vemos em Lean, relações são frequentemente definidas como uma classe de funções, enquanto 
+para fundamentos teóricos em conjuntos definem função como uma relação funcional. 
+
+Podemos considerar funções $f(x,y)$ ou $g(x,y,z)$ que tomam múltiplos argumentos. Por exemplo, 
+$f(x,y) = x + y$. Em lean, podemos exemplificar da seguinte forma: 
+
+\begin{lstlisting}
+variables X Y : Type 
+variable f: X → X → X → Y 
+variables x₁ x₂ x₃  : X
+
+#check f x₁ x₂ x₃ -- tipo Y
+
+def g (x y : ℤ): ℤ := x + y
+
+example : g 1 1 = 2 := 
+calc 
+g 1 1 = 1 + 1 : by rw g 
+    ... = 2 :  rfl
+\end{lstlisting}
+
+O número de argumentos de uma função é chamado de \textit{aridade}, que em inglês é \textit{arity}. 
+No exemplo acima $f$ tem aridade $3$, enquanto $g$ tem aridade $2$.
+Podemos pensar uma função com múltiplos argumentos como uma função unária definida em um produto cartesiano. 
+Nesse sentido, quando estamos nos tratando de teoria dos tipos, é conveniente pensar que $f$ é uma função de $X$
+que retorna uma função $X \to X \to Y$. Desta maneira, $f(x_1, x_2, x_3)$ abrevia $((f(x_1))(x_2))(x_3)$.
+
+\begin{example}[Teorema de Cantor]
+    \label{cantor}
+    Seja $f$ uma função que mapeia elementos do conjunto $A$ para o seu conjunto das partes $P(A)$. Então $f: A \to P(A)$ 
+    não é sobrejetiva. 
+    Esse teorema é um teorema fundamental sobre conjuntos que foi apresentada nesse capítulo devido às definições importantes
+    de funções. A referência é no capítulo sobre \hyperlink{chapter.5}{Conjuntos}. A demonstração se dá por contradição e é realizada
+    no Lean com o auxílio do \lstinline{namespace classical}. 
+
+    \begin{lstlisting}
+    import data.set
+
+    variables X Y: Type 
+    
+    def surjective {X: Type} {Y: Type} (f : X → Y) : Prop := ∀ y, ∃ x, f x = y
+    
+    theorem Cantor : ∀ (A: set X), ¬ ∃ (f: A → set A),  surjective f :=
+    
+        begin
+            intro A,
+            intro h,
+            -- Utiliza a regra eliminação existe.
+            cases h with f h1,
+            -- Como f é sobrejetiva e esse é um subconjunto de A            
+            have h2: ∃ x, f x = {t : A | ¬ (t ∈ f t)},  
+                from h1 {t : A | ¬ (t ∈ f t)},
+            -- Eliminação do existe, novamente. 
+            cases h2 with x h3,
+            -- classical.em A := A ∪ ¬A é uma tautologia. 
+            apply or.elim (classical.em 
+                          (x ∈ {t : A | ¬ (t ∈ f t)})),
+                intro h4,
+            -- Usa a proriedade do conjunto
+                    have h5: ¬ (x ∈ f x), from h4,
+                    rw (eq.symm h3) at h4, 
+                    apply h5 h4,
+                intro h4,
+                    rw (eq.symm h3) at h4,
+                    have h5: x ∈ {t : A | ¬ (t ∈ f t)}, from h4,
+                    rw (eq.symm h3) at h5,
+                    apply h4 h5,                     
+        end   
+    \end{lstlisting}
+\end{example}
 
 \section{Exercícios}
