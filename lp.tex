@@ -1305,7 +1305,7 @@ assume h: A ∧ B ∧ C,
 and.right h
 \end{lstlisting}
 
-Contudo, não é tão simples obter $A \land B$ a partir dessa mesma hipótese. Apesar de ambos estarem lado ao lado, assim como $B \land C$ estavam, é necessário redigir uma prova mais extensa:
+Contudo, não é tão simples obter $A \land B$ a partir dessa mesma hipótese. Apesar de $A$ e $B$ estarem lado a lado, assim como $B$ e $C$ estavam, é necessário redigir uma prova mais extensa:
 
 \begin{lstlisting}
 variables A B C: Prop
@@ -1317,7 +1317,7 @@ have h2: B, from and.left (and.right h),
 and.intro h1 h2
 \end{lstlisting}
 
-O problema acima seria resolvido caso tivesse sido explicitamente atribuído um parênteses ao $A \land B$, sendo possível obtê-lo a partir da função $and.left$, conforme mostra o código abaixo:
+O problema acima seria resolvido caso tivesse sido explicitamente atribuído um parênteses ao $A \land B$. Dessa forma, seria possível obtê-lo a partir da função $and.left$, conforme mostra o código abaixo:
 
 \begin{lstlisting}
 variables A B C: Prop
