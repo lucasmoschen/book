@@ -1232,10 +1232,15 @@ end
 No entanto, ao passo que possa parecer mais conveniente escrever a prova assim, note que o entendimento imediato de alguns passos é dificultado, por isso é necessário cuidado ao utilizar esse recurso.
 \bigbreak
 \textbf{9. Prova do Princípio da Casa dos Pombos (PHP-3):}
-    O princípio da casa dos pombos afirma que se $n$ pombos devem ser postos em $m$ casas, e se $n > m$, então pelo menos uma casa irá conter mais de um pombo. Apesar desse princípio  generalizado ser muito amplo para ser provado por árvores dedutivas, conseguimos provar o caso de 3 pombos e 2 casas de pombo utilizando árvores dedutivas.
-    %tentaremos por a árvore?%
-
-No Lean, essa prova poderia ser construída no modo termo da seguinte forma: 
+    O princípio da casa dos pombos afirma que se $n$ pombos devem ser postos em $m$ casas, e se $n > m$, então pelo menos uma casa irá conter mais de um pombo. Apesar desse princípio  generalizado ser muito amplo para ser provado por árvores dedutivas, conseguimos provar o caso de três pombos e duas casas de pombo utilizando a dedução natural. A árvore de solução desse problema é muito grande para ser mostrada aqui, contudo vamos explicar como seria a estrutura dela e como solucionar esse problema no Lean. 
+    
+    Para pensar nessa árvore, vamos analisar como estruturar o problema em lógica proposicional. Se temos três pombos e duas casas, podemos descrever essa situação por $P_{ij}$, sendo $i$ o número representativo do pombo e $j$ o número representativo da casa. Cada pombo vai ficar somente em uma casa, logo temos: $(P_{11} \lor P_{12}) \land (P_{21} \lor P_{22}) \land (P_{31} \lor P_{32})$. Queremos provar que isso implica em ao menos dois pombos em uma mesma casa, o que pode ser representado por: $(P_{22} \land P_{32}) \lor (P_{11} \land P_{31}) \lor (P_{12} \land P_{22}) \lor (P_{11} \land P_{21}) \lor (P_{12} \land P_{32}) \lor (P_{21} \land P_{31})$. Assim, queremos provar que: $(P_{11} \lor P_{12}) \land (P_{21} \lor P_{22}) \land (P_{31} \lor P_{32}) \rightarrow (P_{22} \land P_{32}) \lor (P_{11} \land P_{31}) \lor (P_{12} \land P_{22}) \lor (P_{11} \land P_{21}) \lor (P_{12} \land P_{32}) \lor (P_{21} \land P_{31})$.
+    
+    De início, podemos notar que queremos chegar em um ``ou''. Logo, provando apenas um dos ``e'' podemos chegar em todo esse ``ou''. Como provar essas conjunções? É possível observar que todos os pares formando o $\land$ da conclusão estão em pares diferentes de $\lor$ na hipótese. Logo, é necessário abrir esses ``ou''. O que será feito é abrir cada uma das dinjunções da hipótese dentro das outras, de modo que teremos todos os termos necessários para formar as conjunções da conclusão. 
+    
+    
+    
+Para tornar a ideia acima mais concreta, é possível observar como essa prova poderia ser construída no modo termo do Lean: 
 \begin{lstlisting}
 variables P11 P12 P21 P22 P31 P32 : Prop
 
@@ -1264,11 +1269,12 @@ or.elim ha
                 (assume h2: P22, or.inr (or.inr (or.inl (and.intro h1 h2)))))
 \end{lstlisting}
 
-E no modo táticas como:
+No modo tática essa prova poderia ser desenvolvida da seguinte forma:
 
 \begin{lstlisting}
 variables P11 P12 P21 P22 P31 P32 : Prop
 example: ((P11 ∨ P12) ∧ (P21 ∨ P22)) ∧ (P31 ∨ P32) → (P22 ∧ P32) ∨ ((P11 ∧ P31) ∨ ((P12 ∧ P22) ∨ ((P11 ∧ P21) ∨ ((P12 ∧ P32) ∨ (P21 ∧ P31))))) :=
+
 begin
 intros,
 have h₁:P11 ∨ P12, from (a.left).left,
@@ -1277,14 +1283,14 @@ have h₃: P31 ∨ P32, from a.right,
 
 cases h₂ with ha hb,
     cases h₃ with hc hd,
-    exact or.inr(or.inr(or.inr(or.inr(or.inr (and.intro ha hc))))),
+    exact or.inr (or.inr (or.inr (or.inr (or.inr (and.intro ha hc))))),
         cases h₁ with he hf,
-        exact or.inr(or.inr(or.inr(or.inl(and.intro he ha)))),
-        exact or.inr(or.inr(or.inr(or.inr(or.inl (and.intro hf hd))))),
+        exact or.inr (or.inr (or.inr (or.inl (and.intro he ha)))),
+        exact or.inr (or.inr (or.inr (or.inr (or.inl (and.intro hf hd))))),
             cases h₃ with hg hh,
                 cases h₁ with hi hj,
-                exact or.inr(or.inl (and.intro hi hg)),
-                exact or.inr(or.inr(or.inl(and.intro hj hb))),
+                exact or.inr (or.inl (and.intro hi hg)),
+                exact or.inr (or.inr (or.inl (and.intro hj hb))),
                 exact or.inl (and.intro hb hh)
 end
 \end{lstlisting}
@@ -1814,7 +1820,7 @@ lemma rule_1and3 (h1: x11 ∧ x22 ∧ x33 ∧ x44):
 
 --- REGRA 2 ---
 
---- para o nó 1 ---
+--- para o no 1 ---
 lemma rule_2_node1 (h2: x11 ∧ ¬x21 ∧ ¬x31 ∧ ¬x41 ∧ x22 ∧ x33 ∧ x44):
   (((((¬ x11 ∨ ¬  x21)∧
       (¬ x11 ∨ ¬  x31))∧ 
@@ -1841,7 +1847,7 @@ lemma rule_2_node1 (h2: x11 ∧ ¬x21 ∧ ¬x31 ∧ ¬x41 ∧ x22 ∧ x33 ∧ x4
                     (or.inl h2.right.left))
           (or.inl h2.right.right.left)
 
---- para o nó 2 ---
+--- para o no 2 ---
 lemma rule_2_node2 (h2: x11 ∧ ¬x12 ∧ ¬x32 ∧ ¬x42 ∧ x22 ∧ x33 ∧ x44):
   (((((¬ x12 ∨ ¬  x22)∧
       (¬ x12 ∨ ¬  x32))∧ 
@@ -1868,7 +1874,7 @@ lemma rule_2_node2 (h2: x11 ∧ ¬x12 ∧ ¬x32 ∧ ¬x42 ∧ x22 ∧ x33 ∧ x4
                     (or.inr h2.right.right.right.left))
           (or.inl h2.right.right.left)
 
---- para o nó 3 ---
+--- para o no 3 ---
 lemma rule_2_node3 (h2: x11 ∧ ¬x13 ∧ ¬x43 ∧ ¬x23 ∧ x22 ∧ x33 ∧ x44):
   (((((¬ x13 ∨ ¬  x23)∧
       (¬ x13 ∨ ¬  x33))∧ 
@@ -1895,7 +1901,7 @@ lemma rule_2_node3 (h2: x11 ∧ ¬x13 ∧ ¬x43 ∧ ¬x23 ∧ x22 ∧ x33 ∧ x4
                     (or.inl h2.right.right.right.left))
           (or.inr h2.right.right.left)
 
---- para o nó 4 ---
+--- para o no 4 ---
 lemma rule_2_node4 (h2: x11 ∧ ¬x14 ∧ ¬x34 ∧ ¬x24 ∧ x22 ∧ x33 ∧ x44):
   (((((¬ x14 ∨ ¬  x24)∧
       (¬ x14 ∨ ¬  x34))∧ 
