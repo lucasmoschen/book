@@ -1,0 +1,42 @@
+    \subsection{Exercícios}
+
+    \begin{enumerate}
+        \item Formalize as afirmações abaixo em Lógica de Primeira Ordem, utilizando os seguintes predicados e relações:
+        
+        $primo(x)$, $par(x)$, $impar(x)$, $perfeito(x)$ e $amigos(x, y)$.
+        \begin{enumerate}
+            \item Todo número primo maior do que $2$ é ímpar.
+            \item A soma de dois números pares é par.
+            \item Existe um número perfeito menor do que $10$.
+            \item $220$ e $284$ são números amigos.
+        \end{enumerate}
+        \item Considere que os quantificadores variam sobre estudantes de determinada escola. Formalize as afirmações abaixo, utilizando os seguintes predicados e relações:
+        $amigos(x, y)$, $roqueiro(x)$, $estudioso(x)$, $estudamJuntos(x, y)$ e $irmaos(x, y)$.
+        
+        Experimente formalizar também em Lean.
+        \begin{enumerate}
+            \item Roqueiros são amigos de todos.
+            \item Existem dois irmãos.
+            \item Existe um roqueiro estudioso.
+            \item Se duas pessoas estudiosas não estudam juntas, então elas não são irmãs.
+        \end{enumerate}
+    \end{enumerate}
+
+    \textbf{Soluções:}
+
+    \begin{enumerate}
+        \item
+        \begin{enumerate}
+            \item $\forall x \ ((primo(x) \land x > 2) \rightarrow impar(x))$.
+            \item $\forall x \ \forall y \ ((par(x) \land par(y)) \rightarrow par(x + y))$.
+            \item $\exists x \ (perfeito(x) \land x < 10)$.
+            \item $amigos(220, 284)$.
+        \end{enumerate}
+        \item
+        \begin{enumerate}
+            \item $\forall x \ \forall y \ (roqueiro(x) \rightarrow amigos(x, y))$.
+            \item $\exists x \ \exists y \ irmaos(x, y)$.
+            \item $\exists x \ (roqueiro(x) \land estudioso(x))$.
+            \item $\forall x \ \forall y \ ((estudioso(x) \land estudioso(y) \land \lnot estudamJuntos(x, y)) \rightarrow \\ \lnot irmaos(x, y))$.
+        \end{enumerate}
+    \end{enumerate}

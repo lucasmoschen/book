@@ -403,3 +403,20 @@ example : (∃ x, A x) ∧ (∃ y, B y) :=
             have h6 : ∃ x, B x, from exists.intro y h4,
         show (∃ x, A x) ∧ (∃ y, B y), from and.intro h5 h6)
 \end{lstlisting}
+
+    \subsection{Relativização}
+
+    Os quantificadores $\forall$ e $\exists$ apresentados até agora variam sobre todos os elementos do domínio.
+    Por exemplo, se eu especificar um domínio como sendo as espécies do reino animal, posso dizer que todas são fascinantes da seguinte forma:
+    estabeleço um predicado $fascinante(x)$ que retorna $V$ se uma espécie $x$ é fascinante e escrevo: $\forall x \ fascinante(x)$.
+    
+    Alguém, porém, que goste muito de borboletas, poderia dizer que apenas as borboletas são incríveis. Então ela poderia escrever:
+    $\forall x \ (borboleta(x) \rightarrow incrivel(x))$. O que ela está dizendo, então, é: dentre todos os animais, se $x$ é uma borboleta, então $x$ é incrível.
+    Como o quantificador universal varia sobre todo o domínio, utilizar a implicação como no exemplo é um truque para restringir o domínio apenas às borboletas.
+    Isso é chamado \textbf{relativização}.
+
+    E se, agora, quiséssemos dizer que existe algum cachorro feliz? No caso do quantificador existencial, podemos \textbf{relativizá-lo} utilizando a conjunção:
+    $\exists x \ (cachorro(x) \land feliz(x))$. Estamos dizendo que existe algum animal que é um cachorro e é feliz.
+
+    Talvez soe contraintuitivo utilizar a conjunção em detrimento da implicação, como no exemplo anterior. Porém, observe o que acontece se utilizarmos a implicação:
+    $\exists x \ (cachorro(x) \rightarrow feliz(x))$. Isso equivale a dizer $\exists x \ (\lnot cachorro(x) \lor feliz(x))$. Ora, estamos dizendo que existe algo que não é cachorro ou é feliz, ou seja, não é bem o que queríamos dizer.
