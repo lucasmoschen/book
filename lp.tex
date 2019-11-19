@@ -1295,15 +1295,16 @@ cases h₂ with ha hb,
 end
 \end{lstlisting}
 
-Os códigos acima também mostram como utilizar parênteses para separar os termos, mesmo quando não são totalmente necessários, pode facilitar o desenvolvimento da prova. Isso acontece pois o Lean ``atribui'' parênteses para as provas (ou seja, ele lê as proposições) da direita para a esquerda. Como exemplo, no código abaixo, é possível ver que quando aplica-se a função $and.right$ em $A \land B \land C$ o Lean responde com $B \land C$.
+Os códigos acima também mostram como utilizar parênteses para separar os termos, mesmo quando não são totalmente necessários, pode facilitar o desenvolvimento da prova. Isso acontece pois o Lean ``atribui'' parênteses para as conjunções e implicações (ou seja, ele lê essas proposições) da direita para a esquerda. Como exemplo, no código abaixo, é possível ver que quando aplica-se a função $and.right$ em $A \land B \land C$ o Lean responde com $B \land C$.
 
 \begin{lstlisting}
 variables A B C: Prop
 
 example: A ∧ B ∧ C → B ∧ C :=
 assume h: A ∧ B ∧ C,
-and.right h
+show B ∧ C, from and.right h
 \end{lstlisting}
+
 
 Contudo, não é tão simples obter $A \land B$ a partir dessa mesma hipótese. Apesar de $A$ e $B$ estarem lado a lado, assim como $B$ e $C$ estavam, é necessário redigir uma prova mais extensa:
 
@@ -1314,7 +1315,7 @@ example: A ∧ B ∧ C → A ∧ B :=
 assume h: A ∧ B ∧ C,
 have h1: A, from and.left h,
 have h2: B, from and.left (and.right h),
-and.intro h1 h2
+show A ∧ B, from and.intro h1 h2
 \end{lstlisting}
 
 O problema acima seria resolvido caso tivesse sido explicitamente atribuído um parênteses ao $A \land B$. Dessa forma, seria possível obtê-lo a partir da função $and.left$, conforme mostra o código abaixo:
@@ -1324,8 +1325,9 @@ variables A B C: Prop
 
 example: (A ∧ B) ∧ C → A ∧ B :=
 assume h: (A ∧ B) ∧ C,
-and.left h
+show A ∧ B, from and.left h
 \end{lstlisting}
+
 
 \bigbreak
 \textbf{10. Prova de $\neg (A \land B) \rightarrow (A \rightarrow \neg B)$:}
@@ -1780,17 +1782,15 @@ or.elim h1
 have h20: CB, from 
 (h8 h17),
 
-have h24: (AP ∧ CB), from and.intro h17 h20,
-
 have h21: MA, from 
 or.elim h2
-(assume h22: MA, h22)
-(assume h22: MB ∨ MP,
-or.elim h22
-(assume h23: MB, false.elim ((and.right ((and.left (and.right h15)) h23)) (and.right h24)))
-(assume h23: MP, false.elim ((and.left ((and.right (and.right h15)) h23)) (and.left h24)))),
+    (assume h22: MA, h22)
+    (assume h22: MB ∨ MP,
+    or.elim h22
+        (assume h23: MB, false.elim ((and.right ((and.left (and.right h15)) h23)) h20))
+        (assume h23: MP, false.elim ((and.left ((and.right (and.right h15)) h23)) h17))),
 
-and.intro h24 h21
+and.intro (and.intro h17 h20) h21
 \end{lstlisting}
 \bigbreak
 \item Escolha um grafo qualquer pequeno, e usando a codificação em lógica proposicional, tente provar no Lean que um dado caminho é mesmo um caminho hamiltoniano no grafo.
@@ -1962,7 +1962,7 @@ lemma rule_2_node4 (h2: x11 ∧ ¬x14 ∧ ¬x34 ∧ ¬x24 ∧ x22 ∧ x33 ∧ x4
 
 --- REGRA 4 ---
 
---- para a posição 1 ---
+--- para a posicao 1 ---
 lemma rule_4_node1 (h2: ¬x12 ∧ ¬x13 ∧ ¬x14 ∧ x11 ∧ x22 ∧ x33 ∧ x44):
   (((((¬ x11 ∨ ¬  x12)∧
       (¬ x11 ∨ ¬  x13))∧ 
@@ -1989,7 +1989,7 @@ lemma rule_4_node1 (h2: ¬x12 ∧ ¬x13 ∧ ¬x14 ∧ x11 ∧ x22 ∧ x33 ∧ x4
                     (or.inl h2.left))
           (or.inl h2.right.left)
 
---- para a posição 2 ---
+--- para a posicao 2 ---
 lemma rule_4_node2 (h2: ¬x21 ∧ ¬x23 ∧ ¬x24 ∧ x11 ∧ x22 ∧ x33 ∧ x44):
   (((((¬ x21 ∨ ¬  x22)∧
       (¬ x21 ∨ ¬  x23))∧ 
@@ -2016,7 +2016,7 @@ lemma rule_4_node2 (h2: ¬x21 ∧ ¬x23 ∧ ¬x24 ∧ x11 ∧ x22 ∧ x33 ∧ x4
                     (or.inr h2.right.right.left))
           (or.inl h2.right.left)
 
---- para a posição 3 ---
+--- para a posicaoo 3 ---
 lemma rule_4_node3 (h2: ¬x31 ∧ ¬x32 ∧ ¬x34 ∧ x11 ∧ x22  ∧ x33 ∧ x44):
   (((((¬ x31 ∨ ¬  x32)∧
       (¬ x31 ∨ ¬  x33))∧ 
@@ -2043,7 +2043,7 @@ lemma rule_4_node3 (h2: ¬x31 ∧ ¬x32 ∧ ¬x34 ∧ x11 ∧ x22  ∧ x33 ∧ x
                     (or.inl h2.right.left))
           (or.inr h2.right.right.left)
 
---- para a posição 4 ---
+--- para a posicao 4 ---
 lemma rule_4_node4 (h2: ¬x41 ∧ ¬x42 ∧ ¬x43 ∧  x11 ∧ x22  ∧ x33 ∧ x44):
   (((((¬ x41 ∨ ¬  x42)∧
       (¬ x41 ∨ ¬  x43))∧ 
@@ -2072,7 +2072,7 @@ lemma rule_4_node4 (h2: ¬x41 ∧ ¬x42 ∧ ¬x43 ∧  x11 ∧ x22  ∧ x33 ∧ 
 
 --- REGRA 5 ---
 
---- para os nós 1 e 3 ---
+--- para os nos 1 e 3 ---
 lemma rule_5_edge13 (h2: ¬x23 ∧ ¬x21 ∧ ¬x43 ∧ ¬x41 ∧  x11 ∧ x22  ∧ x33 ∧ x44):
   (((((¬ x11 ∨ ¬  x23)∧
       (¬ x21 ∨ ¬  x33))∧ 
@@ -2099,7 +2099,7 @@ lemma rule_5_edge13 (h2: ¬x23 ∧ ¬x21 ∧ ¬x43 ∧ ¬x41 ∧  x11 ∧ x22  �
                     (or.inl h2.left))
           (or.inr h2.right.right.right.left)
 
---- para os nós 3 e 4 ---
+--- para os nos 3 e 4 ---
 lemma rule_5_edge24 (h2: ¬x12 ∧ ¬x24 ∧ ¬x34 ∧ ¬x32 ∧  x11 ∧ x22  ∧ x33 ∧ x44):
   (((((¬ x12 ∨ ¬  x24)∧
       (¬ x22 ∨ ¬  x34))∧ 
