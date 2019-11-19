@@ -34,8 +34,14 @@ escrevemos $f: X \to Y$.  Chamamos $X$ de domínio de $f$, enquanto
 $Y$ é o contradomínio de $f$ e $\forall x, (x \in X  \Rightarrow f(x) \in Y)$.
 Nesse sentido, $\forall x_1 \in X, \forall x_2 \in X, x_1 = x_2 \Rightarrow f(x_1) = f(x_2)$.
 Uma função também pode ser parcial quando ela não é definida para alguns valores
-do domínio. Como toda função parcial é total ao restringir o domínio, trateremos
-nesse texto das funções totais.
+do domínio. Escrevemos $f: X \nrightarrow Y $ para representar uma função parcial definida em 
+$A \subseteq X $. 
+
+Um exemplo amplamente conhecido de funções parciais é $f: \mathbb{R} \not \to \mathbb{R}$, 
+definida por $f(x) = \frac{1}{x}$, que é indefinida em $x = 0$. Assim, em realidade, 
+$f : \mathbb{R} \setminus \{0\} \to \mathbb{R}$. Alguns chamam $A$ de domínio de definição. 
+Como toda função parcial é total ao restringir o domínio, trateremos nesse texto das funções totais 
+e a extensão das definições posteriores são deixadas ao leitor.  
 
 A maneira mais simples de se representar uma função é escrevê-la explicitamente
 para cada elemento do domínio. Por exemplo, podemos escrever as seguintes expressões:
@@ -849,6 +855,84 @@ como o modo em termos.
 
 \section{Funções e Relações}
 
+Podemos ver que nem toda relação é uma função. Uma relação binária $R(x,y)$ em $A$ e $B$ 
+é um \textit{funcional} se para todo $x$ em $A$, existe um valor único $y$ em $B$ tal que 
+$R(x,y)$. Se $R$ é uma relação funcional, podemos definir $f_R: X \to B$ fazendo com que 
+$f_R(x)$ seja igual ao valor de $y$ único em $B$ em que a relação seja verdadeira. A 
+contrapartida é verdadeira, basta definir, para $f: X \to B$, $R_f(x,y)$, uma relação funcional. 
+Essa relação é conhecida como o \textit{grafo de f}. 
 
+Podemos extrair dessa ideia que existe uma dualidade entre uma relação funcional $R$ e uma 
+função $f$. Inclusive, muitas vezes, as definições são intercambiáveis. Em fundamentos tipo-teóricos, 
+como a que vemos em Lean, relações são frequentemente definidas como uma classe de funções, enquanto 
+para fundamentos teóricos em conjuntos definem função como uma relação funcional. 
+
+Podemos considerar funções $f(x,y)$ ou $g(x,y,z)$ que tomam múltiplos argumentos. Por exemplo, 
+$f(x,y) = x + y$. Em lean, podemos exemplificar da seguinte forma: 
+
+\begin{lstlisting}
+variables X Y : Type 
+variable f: X → X → X → Y 
+variables x₁ x₂ x₃  : X
+
+#check f x₁ x₂ x₃ -- tipo Y
+
+def g (x y : ℤ): ℤ := x + y
+
+example : g 1 1 = 2 := 
+calc 
+g 1 1 = 1 + 1 : by rw g 
+    ... = 2 :  rfl
+\end{lstlisting}
+
+O número de argumentos de uma função é chamado de \textit{aridade}, que em inglês é \textit{arity}. 
+No exemplo acima $f$ tem aridade $3$, enquanto $g$ tem aridade $2$.
+Podemos pensar uma função com múltiplos argumentos como uma função unária definida em um produto cartesiano. 
+Nesse sentido, quando estamos nos tratando de teoria dos tipos, é conveniente pensar que $f$ é uma função de $X$
+que retorna uma função $X \to X \to Y$. Desta maneira, $f(x_1, x_2, x_3)$ abrevia $((f(x_1))(x_2))(x_3)$.
+
+\begin{example}[Teorema de Cantor]
+    \label{cantor}
+    Seja $f$ uma função que mapeia elementos do conjunto $A$ para o seu conjunto das partes $P(A)$. Então $f: A \to P(A)$ 
+    não é sobrejetiva. 
+    Esse teorema é um teorema fundamental sobre conjuntos que foi apresentada nesse capítulo devido às definições importantes
+    de funções. A referência é no capítulo sobre \hyperlink{chapter.5}{Conjuntos}. A demonstração se dá por contradição e é realizada
+    no Lean com o auxílio do \lstinline{namespace classical}. 
+
+    \begin{lstlisting}
+    import data.set
+
+    variables X Y: Type 
+    
+    def surjective {X: Type} {Y: Type} (f : X → Y) : Prop := ∀ y, ∃ x, f x = y
+    
+    theorem Cantor : ∀ (A: set X), ¬ ∃ (f: A → set A),  surjective f :=
+    
+        begin
+            intro A,
+            intro h,
+            -- Utiliza a regra eliminação existe.
+            cases h with f h1,
+            -- Como f é sobrejetiva e esse é um subconjunto de A            
+            have h2: ∃ x, f x = {t : A | ¬ (t ∈ f t)},  
+                from h1 {t : A | ¬ (t ∈ f t)},
+            -- Eliminação do existe, novamente. 
+            cases h2 with x h3,
+            -- classical.em A := A ∪ ¬A é uma tautologia. 
+            apply or.elim (classical.em 
+                          (x ∈ {t : A | ¬ (t ∈ f t)})),
+                intro h4,
+            -- Usa a proriedade do conjunto
+                    have h5: ¬ (x ∈ f x), from h4,
+                    rw (eq.symm h3) at h4, 
+                    apply h5 h4,
+                intro h4,
+                    rw (eq.symm h3) at h4,
+                    have h5: x ∈ {t : A | ¬ (t ∈ f t)}, from h4,
+                    rw (eq.symm h3) at h5,
+                    apply h4 h5,                     
+        end   
+    \end{lstlisting}
+\end{example}
 
 \section{Exercícios}
