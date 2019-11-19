@@ -751,9 +751,7 @@ section
 --De Morgan
   open classical 
   example : -(A ∩ B) = -A ∪ -B :=
-    ext $
-    assume x,
-    iff.intro
+    ext (assume x, iff.intro
         (assume h₁ : x ∈ -(A ∩ B),
             have g₁ : x ∈ (A ∪ -A), from em (x ∈ A),
             have g₂ : x ∈ (B ∪ -B), from em (x ∈ B),
@@ -770,12 +768,10 @@ section
             assume h₂ : x ∈ (A ∩ B), show false,
             from or.elim h₁
                 (assume h₃ : x ∈ -A, h₃ h₂.left )
-                (assume h₃ : x ∈ -B, h₃ h₂.right))
+                (assume h₃ : x ∈ -B, h₃ h₂.right)))
 
   example : -(A ∪ B) = -A ∩ -B :=
-    ext $
-    assume x,
-    iff.intro
+    ext (assume x, iff.intro
         (assume h₁ : x ∈ -(A ∪ B),
             have g₁ : x ∈ -A, from
             assume h₂ : x ∈ A,
@@ -792,8 +788,7 @@ section
             assume h₂ : x ∈ A ∪ B,
             or.elim h₂
                 (assume h3 : x ∈ A, h₁.left h3)
-                (assume h3 : x ∈ B, h₁.right h3))
-end 
+                (assume h3 : x ∈ B, h₁.right h3))) 
 \end{lstlisting}
 
 \item Prove que $A \cup \overline A = \mathcal U$. (Fornecendo uma prova tradicional e uma em Lean.)
