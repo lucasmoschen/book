@@ -167,7 +167,7 @@ A maneira mais simples de entender a Teoria de Conjuntos, talvez seja o Diagrama
   %    \label{fig:figure_set_01_03}
   %\end{figure}
   
-  Quando vamos representar mais de um conjunto em um diagrama de Venn, devemos necessariamente ter todas as possíveis relações, mas o que isso significa? Por exemplo, quando temos $2$ conjuntos $A$ e $B$, significa que devemos ter $4$ regiões representando respectivamente: elementos que pertencem somente à $A$, elementos que pertencem somente à $B$, elementos que pertencem à $A$ e à $B$ simultaneamente e elementos que não pertencem a nenhum dos conjuntos. Precisamos disso, para que tudo que provarmos para dois conjuntos $A$ e $B$, possa ser generalizado para dois conjuntos quaisquer, isso será explicado melhor num exemplo posterior.
+  Quando vamos representar mais de um conjunto em um diagrama de Venn, devemos necessariamente ter todas as possíveis relações, mas o que isso significa? Por exemplo, quando temos $2$ conjuntos $A$ e $B$, significa que devemos ter $4$ regiões representando respectivamente: elementos que pertencem somente à $A$, elementos que pertencem somente à $B$, elementos que pertencem à $A$ e à $B$ simultaneamente e elementos que não pertencem a nenhum dos conjuntos. Precisamos disso, para que tudo que provarmos para dois conjuntos $A$ e $B$, possa ser generalizado para dois conjuntos quaisquer, independente do problema e da situação que estamos estudando.
   
   Utilizando esse artífiico, podemos representar todas as definições de intersecçāo, uniāo e diferença de $2$ conjuntos, introduzidas na seçāo anterior. Veja nas figuras abaixo:
   
@@ -201,7 +201,7 @@ A maneira mais simples de entender a Teoria de Conjuntos, talvez seja o Diagrama
   %    \label{fig:figure_set_01_07}
   %\end{figure}
   
-  É inegável que para muitos exemplos isso se torna inviável, principalmente quando o único objetivo é fazer uma ilustração matemática do problema, como por exemplo: tomamos o universo $\mathcal U$ como a fauna do nosso planeta, nele temos dois conjuntos $A$ de humanos e $B$ de mamíferos. É previamente conhecido que todos os humanos são mamíferos, falando de outra forma, que $A \subseteq B$. Logo, pra representar um problema que envolva esses elementos, podemos utilizar o \textbf{Diagrama de Euler}, similar ao Diagrama de Venn, com a diferença de que não é necessário mostrar todas as possíveis relações, mas apenas as relações específicas do problema retratado. E assim, fazer exatamente o que tinha sido proposto no parágrafo anterior e, colocar o círculo $A$ dentro do círculo $B$.
+  É inegável que para muitos exemplos isso se torna inviável, principalmente quando o único objetivo é fazer uma ilustração matemática do problema, como por exemplo: tomamos o universo $\mathcal U$ como a fauna do nosso planeta, nele temos dois conjuntos $A$ de humanos e $B$ de mamíferos. É previamente conhecido que todos os humanos são mamíferos, falando de outra forma, que $A \subseteq B$. Logo, pra representar um problema que envolva esses elementos, podemos utilizar o \textbf{Diagrama de Euler}, similar ao Diagrama de Venn, com a diferença de que não é necessário mostrar todas as possíveis relações, mas apenas as relações específicas do problema retratado. E assim, fazemos exatamente o que tinha sido proposto no parágrafo anterior e, colocar o círculo $A$ dentro do círculo $B$.
 
   %\begin{figure}[h!]
   %    \centering
@@ -215,7 +215,45 @@ A maneira mais simples de entender a Teoria de Conjuntos, talvez seja o Diagrama
 
   Agora, com $3$ conjuntos $A$, $B$ e $C$, o número de regiões diferentes é $2^3=8$, mas como iremos representá-las? A primeira ideia que vem a cabeça é adicionar um círculo representando o conjunto $C$ no diagrama da figura $\ref{fig:sets-02-00}$, intersectando as regiões já existentes, resultando na figura abaixo:
 
-  Fazendo uma rápida contagem, obtemos $8$ regiões diferentes, exatamente como deve ser (lembrete: A região fora dos conjuntos mas dentro do universo $\mathcal U$, também é considerada na contagem). E da mesma forma que representamos bla bla bla
+  Fazendo uma rápida contagem, obtemos $8$ regiões diferentes, exatamente como deve ser (lembrete: A região fora dos conjuntos mas dentro do universo $\mathcal U$, também é considerada na contagem). E da mesma forma que representamos intersecção, união e diferença de conjuntos anteriormente, também podemos representar com $3$ conjuntos, veja abaixo:
+
+  %\begin{figure}[h!]
+  %    \centering
+  %    \includegraphics{figure_set_01_09.png}
+  %    \caption{Intersecção $A \cap B \cap C$}
+  %    \label{fig:figure_set_01_09}
+  %\end{figure}
+
+  %\begin{figure}[h!]
+  %    \centering
+  %    \includegraphics{figure_set_01_10.png}
+  %    \caption{União $A \cup B \cup C$}
+  %    \label{fig:figure_set_01_10}
+  %\end{figure}
+
+  %\begin{figure}[h!]
+  %    \centering
+  %    \includegraphics{figure_set_01_11.png}
+  %    \caption{Diferença $A \setminus (B \cup C)$}
+  %    \label{fig:figure_set_01_11}
+  %\end{figure}
+
+  Sendo ganancioso e indo além, podemos querer representar $4$ conjuntos, adicionando o conjunto $D$. E igual o caso anterior, só temos que adicionar mais um círculo representando o conjunto $D$ e, dado que antes obtemos um triângulo de círculos, dessa vez iremos ter uma quadrado de cícurlos, correto?
+
+  \textbf{ERRADO!} Se você é um leitor observador, já deve ter notado que esse diagrama não possui as $2^4=16$ regiões diferentes necessárias, mas somente $14$. Não existem regiões que representam os elementos que pertencem ao mesmo tempo aos conjuntos $A$ e $D$, mas não pertencem ao conjunto $B$ e nem ao $C$, e o inverso disso, ou seja, os elementos que pertencem ao mesmo tempo aos conjuntos $B$ e $C$, mas não pertencem ao conjunto $A$ e nem ao $D$.
+
+  É válido ressaltar que é impóssível utilizar $4$ círculos pra representar $4$ conjuntos em um diagrama de Venn. Contudo, existem diagramas de Venn pra $4$ conjuntos, e antes de ler o próximo parágrafo, pegue uma folha e tente encontrar possíveis maneiras dessa representação. Dica: Não se abstenha de utilizar formas bem diferenciadas. 
+  
+  Se você conseguiu, parabéns. Saiba que existem diversas maneiras, como por exemplo: $4$ elipses ou $3$ círculos e uma forma semelhante à metade de uma rosquinha. Fique a vontade para pesquisar na internet essas e outras maneiras de representação. Ainda assim, é relevante mostrar pelo menos uma delas, e escolhemos a da figura abaixo, muito semelhante a dois corações.
+
+  %\begin{figure}[h!]
+  %    \centering
+  %    \includegraphics{figure_set_01_11.png}
+  %    \caption{Diagrama de Venn para 4 conjuntos}
+  %    \label{fig:figure_set_01_11}
+  %\end{figure}
+
+  Podemos continuar e encontrar representações para $5$ ou mais conjuntos, as quais vão ficando cada vez mais complicadas. Porém, como nosso principal objetivo é utilizar visualizações gráficas para facilitar o aprendizado em Teoria de Conjuntos, a partir do momento que isso vem a se tornar complicado, perde totalmente a utilidade. Por esse motivo, vamos parar em $4$ conjuntos, mas se a curiosidade for grande, procure aprender mais sobre esse assunto.
 
   \subsection{Aplicações}
   Ainda vai ter algo escrito
