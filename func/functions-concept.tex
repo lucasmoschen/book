@@ -1,6 +1,6 @@
 Considere dois conjuntos quaisquer $X$ e $Y$ e um mapeamento $f$
 do conjunto $X$ para o conjunto $Y$. Se $f$ atribui um e apenas
-um valor para cada elemento de $X$, dizemos que $f$ é uma função total, e
+um valor para cada elemento de $X$, dizemos que $f$ é uma função total e
 escrevemos $f: X \to Y$.  Chamamos $X$ de domínio de $f$, enquanto
 $Y$ é o contradomínio de $f$ e $\forall x, (x \in X  \Rightarrow f(x) \in Y)$.
 Nesse sentido, $\forall x_1 \in X, \forall x_2 \in X, x_1 = x_2 \Rightarrow f(x_1) = f(x_2)$.
@@ -38,7 +38,7 @@ definir algoritmicamente se um número real de entrada é um número racional ou
 Porém, esse não é o objetivo do capítulo.
 
 Note que a escolha das variáveis $x$ e $n$ são arbitrárias.
-Isto nos leva à definição no capítulo de \textit{\hyperlink{chapter.4}{FOL}} de
+Isto nos leva à definição no Capítulo de \textit{\hyperlink{chapter.4}{FOL}} de
 variável ligada (\textit{bound}), visto que se renomearmos $x$ com $y$, os valores
 continuam os mesmos.
 
@@ -54,3 +54,24 @@ variable f : X → Y
 \end{lstlisting}
 
 Lembre-se que diferenciamos o tipo $X$ do tipo $set~X$ em Lean.
+
+Outra forma comum de representar funções de forma didática é utilizando gráficos, como 
+podemos observar na Figura \ref{fig:functions-01-00}. Essa representação tem uma limitação 
+muito clara que é quando $X$ é um conjunto infinito. Um conjunto é finito quando existe um 
+número natural $n$ tal que exista uma função $b$ bijetiva entre esse conjunto e o conjunto 
+dos números naturais menores ou iguais a $n$. 
+
+A definição de função bijetiva pode ser encontrada 
+na Definiçao \ref{def7}, enquanto maiores informações sobre os números naturais podem ser encontradas 
+no Capítulo de \textit{\hyperlink{chapter.8}{Indução dos Números Naturais}}. Conjuntos encontram-se no 
+\textit{\hyperlink{chapter.5}{Capítulo 5}}.
+
+A partir de agora, vamos introduzir uma série de definições sobre a terminologia que de 
+funções, que acabamos de apresentar, e vamos extrair proposições importantes a partir. 
+
+\begin{figure}
+    \centering      
+    \includegraphics[width = 5cm]{figures/functions/fig-functions-01-00.png}
+    \caption{Mapeamento entre o Domínio X e o Domínio Y, ambos não numéricos.}
+    \label{fig:functions-01-00}
+\end{figure}
