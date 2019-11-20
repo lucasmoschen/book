@@ -30,19 +30,19 @@ Em teoria dos tipos, tudo tem um tipo definido. Essa é uma exigência razoável
 
 \vspace{5mm}
 \begin{lstlisting}
-    -- abaixo declaramos algumas variaveis e usamos o
-    -- comando #check para checar o tipo do elemento
-    variable b : bool
-    variable n : ℕ
-    variable f : ℕ → ℕ
-    variable g : ℕ × ℕ → ℕ
+-- abaixo declaramos algumas variaveis e usamos o
+-- comando #check para checar o tipo do elemento
+variable b : bool
+variable n : ℕ
+variable f : ℕ → ℕ
+variable g : ℕ × ℕ → ℕ
 
-    #check b            -- b : bool
-    #check 1            -- 1 : ℕ
-    #check n + 1        -- n + 1 : ℕ
+#check b            -- b : bool
+#check 1            -- 1 : ℕ
+#check n + 1        -- n + 1 : ℕ
 
-    #check f n          -- f n : ℕ
-    #check g (1,n)      -- g (1, n) : ℕ
+#check f n          -- f n : ℕ
+#check g (1,n)      -- g (1, n) : ℕ
 \end{lstlisting}
 \vspace{5mm}
 
@@ -56,13 +56,13 @@ Um leitor curioso pode questionar \textit{se tudo tem um tipo, qual tipo dos tip
 
 \vspace{5mm}
 \begin{lstlisting}
-    #check ℕ            -- ℕ : Type
-    #check bool         -- bool : Type
+#check ℕ            -- ℕ : Type
+#check bool         -- bool : Type
 
-    -- considere Type = Type 0
-    #check Type 0       -- Type : Type 1
-    #check Type 1       -- Type : Type 2
-    #check Type 2       -- Type : Type 3
+-- considere Type = Type 0
+#check Type 0       -- Type : Type 1
+#check Type 1       -- Type : Type 2
+#check Type 2       -- Type : Type 3
 \end{lstlisting}
 \vspace{5mm}
 
@@ -84,13 +84,13 @@ Vejamoas um exemplo:
 
 \vspace{5mm}
 \begin{lstlisting}
-    variables A B : Prop    -- A e B sao proposicoes
+variables A B : Prop    -- A e B sao proposicoes
 
-    variable h1 : A         -- h1 uma prova para A
-    variable h2 : A → B     -- h2 uma prova para A → B
+variable h1 : A         -- h1 uma prova para A
+variable h2 : A → B     -- h2 uma prova para A → B
 
-    example : B := h2 h1    -- h2 h1 prova para B
-    #check h2 h1            -- h2 h1 : B
+example : B := h2 h1    -- h2 h1 prova para B
+#check h2 h1            -- h2 h1 : B
 \end{lstlisting}
 \vspace{5mm}
 
@@ -100,13 +100,64 @@ No entanto, note que no contexto dado, fomos capazes de construir um termo \text
 Observe ainda, na linha $4$, em que criamos um elemento do tipo $A → B$, que anteriormente citamos como a noção de uma função que leva tipo $A$ em um tipo $B$.
 Aqui, essa noção será extendida para a de \textit{implicação lógica}, tambem discutida no capítulo sobre lógica proposicional.
 
-\section{Provas usando LEAN}
-\begin{itemize}
-    \item Exemplos (avancados) de provas utilizado LEAN.
-    \item Podemos falar sobre o que é o tal "example" do item anterior.
-    \item Talvez tambem falar sobre "theorem", e "lemma".
-    \item Acho que "sections e namespaçes", não.
-\end{itemize}
+\section{Provas usando Lean}
+Abrimos uma discussão sobre algumas noções úteis no processo de prova utilizando Lean; não esperamos que o leitor a essa altura entenda amplamente as provas dadas, e sim, que tenha uma noção de como funciona uma prova.
+
+Quando desejamos iniciar a prova explicita para um assertiva, podemos abrir contextos de prova usando as palavras-reservadas \textit{example}, \textit{lemma} ou \textit{theorem}. Cada uma dessas abre um contexto de prova para uma assertiva desejada:
+
+\vspace{5mm}
+\begin{lstlisting}
+-- uma prova para A e B
+example (A B : Prop) (h1 : A) (h2 : A → B): A ∧ B :=
+  and.intro h1 (h2 h1)
+-- prova para o lemma A e B
+lemma lema_A_B (A B : Prop) (h1 : A) (h2 : A → B): A ∧ B :=
+  and.intro h1 (h2 h1)
+-- prova para o teorema A e B
+theorem teorema_A_B (A B : Prop) (h1 : A) (h2 : A → B): A ∧ B :=
+  and.intro h1 (h2 h1)
+\end{lstlisting}
+\vspace{5mm}
+
+\noindent Para cada contexto, foram dados os argumentos a serem considerados no processo de prova. Na linha 2, por exemplo, exlicitamos que $A$ e $B$ são as proposições, $h1$ e $h2$ são as provas que deveriamos considerar no contexto.
+
+Note que a prova é identica; a diferença é o produto após a prova feita. O \textit{theorem} assim como \textit{lemma} permitem fazer a prova de uma assertiva, e esse resultado poderá ser reutilizado, eventualmente; isso exige um titulo para o teorema ou lema provado.
+Já \textit{example} funciona como um contexto fechado, ou rascunho: podemos realizar a prova, mas não nos referir a ela posteriromente.
+\vspace{5mm}
+\begin{lstlisting}
+variables A B : Prop    -- A e B sao proposicoes
+variable h1 : A         -- h1 uma prova para A
+variable h2 : A → B     -- h2 uma prova para A → B
+
+-- prova para o teorema A e B
+theorem teorema_A_B : A ∧ B := and.intro h1 (h2 h1)
+-- reutilizando o teorema_A_B
+example : A ∧ B := (teorema_A_B A B h1 h2)
+\end{lstlisting}
+\vspace{5mm}
+
+\noindent Dessa vez, não explicitamos os argumentos que deveriam ser recebidos no \textit{theorem}, ou no \textit{example}. Lean identificou no arquivo quais hipoteses foram utilizadas, e os considerou como argumentos.
+
+Ao fazermos uso do teorema, linha 8, tivemos de passar explicitamente (aplicar) as proposições, e as provas que temos que o teorema identificou como hipóteses para a prova.
+
+Lean é inteligente o bastante para livrar o usuario desse trabalho. Se declaramos as proposições como argumentos implicitos, o programa será capaz de identificar a partir das hipoteses, quais as proposições:
+
+\vspace{5mm}
+\begin{lstlisting}
+-- prova para o teorema U e V, generico
+theorem teo_U_e_V {U V : Prop} (h1 : U) (h2 : U → V) : U ∧ V :=
+  and.intro h1 (h2 h1)
+
+variables A B : Prop    -- A e B sao proposicoes
+variable h1 : A         -- h1 uma prova para A
+variable h2 : A → B     -- h2 uma prova para A → B
+
+-- utilizando o terema_A_B
+example : A ∧ B := teo_U_e_V h1 h2
+\end{lstlisting}
+\vspace{5mm}
+
+\noindent Esse tipo de método tambem permite a generalização do resultado obtido. De fato, o teorema vale para quaisquer proposições $U$ e $V$ que se deseje provar. Quando pusemos chaves, $\{U V : Prop\}$ na declaração do teorema na linha 2, o próprio programa considerou como argumentos que poderiam ser compreendidos no contexto em que fosse utilizado.
 
 \subsection{Modo Termo}
 Apresentação e exemplos
@@ -117,4 +168,5 @@ Apresentação e exemplos
 \subsection{Modo Cálculo}
 Apresentação e exemplos
 
-% será que faz sentido falarmos em aspectos praticos sobreo Lean, como onde ele está disponivel online, ou como conhecer os teormas basicos dispoiveis...
+\section{Aspectos Práticos}
+Faz sentido falarmos em aspectos práticos sobre o Lean; onde ele está disponivel online, ou como conhecer os teoremas básicos disponíveis, sugestões para instalação, e uso.
