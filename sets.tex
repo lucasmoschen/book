@@ -531,15 +531,6 @@ Embora na teoria axiomática dos conjuntos se considere conjuntos de objetos dis
 
   %Acho que a partir desse ponto, não é necessário ter nesse capítulo. Talvez seja melhor deixar só pro capítulo de propriedades. Por isso, já copiei e colei no outro capítulo. Se ainda sim quiser falar sobre como lidar com sorry, pegue algum dos exemplos já citados acima. E se quiser colocar mais coisas teóricas ou explicativas, está totalmente livre. Mas deixe as propriedades/identidades pro capítulo delas.
 
-\section{Cálculo em Conjuntos}
-Ainda vai ter algo escrito aqui
-
-  \subsection{Cálculo Matemático}
-  Ainda vai ter algo escrito aqui
-
-  \subsection{Calc em Lean}
-  Ainda vai ter algo escrito aqui
-
 \section{Propriedades}
 A seguir teremos algumas propriedades e a prova do porque estão corretas.
     
@@ -743,6 +734,90 @@ calc
   Ainda vai ter algo escrito aqui
 
   \subsection{Extras}
+  Ainda vai ter algo escrito aqui
+
+\section{Cálculo em Conjuntos}
+Primeiramente, não confunda isso com o Cálculo da matemática que envolve derivada, integral, somatório, etc. Estamos falando do cálculo essencial desde a matemática básica, geralmente usado em provas como sendo uma sequência de operações para provar que duas expressões são equivalentes.
+
+  \subsection{Cálculo Matemático}
+  Um dos exemplos mais conhecidos, que provavelmente você já deve ter visto, é o seguinte:
+
+  \textbf{Prove que} $\dfrac{n(n+1)}{2}+(n+1) = \dfrac{(n+1)(n+2)}{2}$, $\forall$ número natural $n$.
+
+  Provavelmente a primeira ideia que uma pessoa com pouco conhecimento de álgebra tem, é desenvolver ambos os lados ao mesmo tempo, chegando em expressões iguais, como mostrado a seguir:
+
+  \begin{equation*}
+    \dfrac{n(n+1)}{2}+(n+1) = \dfrac{(n+1)(n+2)}{2}
+  \end{equation*}
+
+  O que fornece a impressão de que começamos com uma identidade complexa, e então, depois de muito sofrimento e muitas contas, finalmente conseguimos provar que $x=x$. Chega a ser engraçado, não é mesmo?
+  Então o melhor a se fazer é justamente começar de uma igualdade do tipo $x=x$ e chegar na igualdade desejada.
+
+  \begin{equation*}
+    \dfrac{n(n+1)}{2}+(n+1) = \dfrac{(n+1)(n+2)}{2}
+  \end{equation*}
+
+  Se tornando mais estranho ainda! Pois agora parece que foi escolhida uma igualdade aleatória, e graças a sorte, conseguimos provar a identidade a partir dela. E não é isso que desejamos.
+
+  Voltando a primeira prova, vemos que a ideia que tentamos transmitir é que cada equação é equivalente a seguinte, ou seja, a primeira equação é verdadeira se, e somente se, a segunda também for verdadeira. Logo, podemos utilizar o símbolo $\iff$ entre cada uma delas.
+
+  \begin{equation*}
+    \dfrac{n(n+1)}{2}+(n+1) = \dfrac{(n+1)(n+2)}{2}
+  \end{equation*}
+
+  Ou ainda, utilizar frases como ``basta provar'' entre uma igualdade e outra.
+
+  \begin{equation*}
+    \dfrac{n(n+1)}{2}+(n+1) = \dfrac{(n+1)(n+2)}{2}
+  \end{equation*}
+
+  Ambas as provas são mais formais, apesar da última possuir uma narrativa repetitiva que nos obriga a encontrar sinônimos para a frase ``basta provar''. Contudo, podemos ser melhores.
+  
+  Para facilitar, denominamos a expressão do lado esquerdo por $LE$ e a expressão do lado direito por $LD$. Assim, o que a nossa demonstração está fazendo é transformar $LE$ numa expressão $E$ e, $LD$ na mesma expressão $E$.
+  Portanto, podemos reescrevê-la somente como um único cálculo direcionado para a frente, transformando $LE$ em $E$ e então, fazendo uma transformação inversa de $E$ para $LD$.
+
+  \begin{equation*}
+    \dfrac{n(n+1)}{2}+(n+1) = \dfrac{(n+1)(n+2)}{2}
+  \end{equation*}
+
+  Por fim, obtemos uma prova clara, compacta e legível. Esse é o modelo mais utilizado pelos matemáticos em geral, e também é o qual utilizaremos nessa seção.
+
+  $\qquad$
+
+  Partindo agora para o que realmente interessa, podemos provar que dois conjuntos são iguais argumentando sobre seus elementos, conforme visto nas seções anteriores, ou podemos ser mais eficientes e utilizar o cálculo juntamente com as propriedades vistas na seção $5.6$. Veja alguns exemplos:
+
+  \textbf{Exemplo 1:} Demonstre que $(A \setminus B)^c = A^c \cup B$
+
+  \textbf{Prova:} Utilizando cálculo:
+  \begin{equation*}
+    \begin{aligned}
+      (A \setminus B)^c &= (A \cap B^c)^c)\\
+      &= A^c \cup (B^c)^c\\
+      & = A^c \cup B
+    \end{aligned}
+  \end{equation*}
+
+  $\qquad$
+
+  Relembrando um dos exemplos da seção $5.3$:
+
+  \textbf{Exemplo 2:} Demonstre que $(A \setminus B) \cup (B \setminus A) = (A \cup B) \setminus (A \cap B)$
+
+  \textbf{Prova:} Utilizando cálculo:
+  \begin{equation*}
+    \begin{aligned}
+      (A \setminus B) \cup (B \setminus A) &= (A \cap B^c) \cup (B \cap A^c)\\
+      &= ((A \cap B^c) \cup B) \cap ((A \cap B^c) \cup A^c)\\
+      &= ((A \cup B) \cap (B^c \cup B)) \cap ((A \cup A^c) \cap (B^c \cup A^c))\\
+      &= ((A \cup B) \cap \mathcal U) \cap (\mathcal U \cap (B^c \cup A^c))\\
+      &= (A \cup B) \cap (B^c \cup A^c)\\
+      &= (A \cup B) \cap (A^c \cup B^c)\\
+      &= (A \cup B) \cap (A \cap B)^c\\
+      &= (A \cup B) \setminus (A \cap B)
+    \end{aligned}
+  \end{equation*}
+
+  \subsection{Calc em Lean}
   Ainda vai ter algo escrito aqui
 
 \section{Famílias Indexadas}
