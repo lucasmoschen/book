@@ -82,7 +82,7 @@ Nosso intuito, durante essa aventura pelo mundo dos conjuntos será entender mel
   \subsection{Axiomas}
   Agora iremos apresentar alguns axiomas que servirão como base para todo o desenvolvimento dos conteúdos aqui propostos. Quando utilizarmos a palavra elemento, estaremos utilizando-a com a ideia de que um conjunto que pertença a outro é um elemento do segundo, para evitar repetir o uso excessivo da palavra conjunto.
   
-  \textbf{Axioma da Completude:} Dois conjuntos são iguais, se e somente se, todo elemento que pertence ao primeiro conjunto pertence ao segundo e, todo elemento que pertence ao segundo também pertence ao primeiro, ou seja:
+  \textbf{Axioma da Extensionalidade:} Dois conjuntos são iguais, se e somente se, todo elemento que pertence ao primeiro conjunto pertence ao segundo e todo elemento que pertence ao segundo também pertence ao primeiro, ou seja:
   
   \[\forall A \hspace{1.5mm} \forall B \hspace{1.5mm} (A = B) \iff (\forall x \hspace{1.5mm} (x \in A \iff x \in B))\] 
   
@@ -880,7 +880,7 @@ section
         (assume h₁ : x ∈ A,
         show x ∈ A ∪ B, from or.inl h₁))
 
---Associatividade
+--Associatividade em ∩ e ∪ 
   example : (A ∩ B) ∩ C = A ∩ (B ∩ C) :=
   eq_of_subset_of_subset
     (assume x,
@@ -894,6 +894,69 @@ section
         have h₂ : x ∈ A ∩ B, from and.intro h.left h₁.left,
         show x ∈ (A ∩ B) ∩ C, from and.intro h₂ h₁.right) 
 
+  example : (A ∪ B) ∪ C = A ∪ (B ∪ C) :=
+    eq_of_subset_of_subset
+    (assume x,
+        assume h : x ∈ (A ∪ B) ∪ C,
+        or.elim h
+            (assume h₁ : x ∈ A ∪ B,
+            or.elim h₁
+                (assume h₂ : x ∈ A,
+                show x ∈ A ∪ (B ∪ C), from or.inl h₂)
+                (assume h₂ : x ∈ B,
+                have h₃ : x ∈ B ∪ C, from or.inl h₂,
+                show x ∈ A ∪ (B ∪ C), from or.inr h₃))
+            (assume h₁ : x ∈ C,
+            have h₂ : x ∈ B ∪ C, from or.inr h₁,
+            show x ∈ A ∪ (B ∪ C), from or.inr h₂))
+    (assume x,
+        assume h : x ∈ A ∪ (B ∪ C),
+        or.elim h
+            (assume h₁ : x ∈ A,
+            have h₂ : x ∈ A ∪ B, from or.inl h₁,
+            show x ∈ (A ∪ B) ∪ C, from or.inl h₂)
+            (assume h₁ : x ∈ B ∪ C,
+            or.elim h₁
+                (assume h₂ : x ∈ B,
+                have h₃ : x ∈ A ∪ B, from or.inr h₂,
+                show x ∈ (A ∪ B) ∪ C, from or.inl h₃)
+                (assume h₂ : x ∈ C,
+                show x ∈ (A ∪ B) ∪ C, from or.inr h₂)))
+
+--Distribuitividade (Dica: veja o exemplo utilizado na seção "Propriedades")
+  example : A ∩ (B ∪ C) = (A ∩ B) ∪ (A ∩ C) :=
+  eq_of_subset_of_subset
+    (assume x,
+    assume h : x ∈ A ∩ (B ∪ C),
+    have h.r : x ∈ B ∪ C, from h.right,
+    or.elim h.r
+        (assume h₁ : x ∈ B,
+        have h₂ : x ∈ A ∩ B, from and.intro h.left h₁,
+        show x ∈ (A ∩ B) ∪ (A ∩ C), from or.inl h₂)
+        (assume h₁ : x ∈ C,
+        have h₂ : x ∈ A ∩ C, from and.intro h.left h₁,
+        show x ∈ (A ∩ B) ∪ (A ∩ C), from or.inr h₂))
+    (assume x,
+    assume h : x ∈ (A ∩ B) ∪ (A ∩ C),
+    or.elim h
+        (assume h₁ : x ∈ A ∩ B,
+        have h₂ : x ∈ B ∪ C, from or.inl h₁.right,
+        show x ∈ A ∩ (B ∪ C), from and.intro h₁.left h₂)
+        (assume h₁ : x ∈ A ∩ C,
+        have h₂ : x ∈ B ∪ C, from or.inr h₁.right,
+        show x ∈ A ∩ (B ∪ C), from and.intro h₁.left h₂))
+
+--Lei da Absorção (Dica: veja o exemplo utilizado na seção "Propriedades")
+  example : A ∩ (A ∪ B) = A :=
+  eq_of_subset_of_subset
+    (assume x,
+    assume h : x ∈ A ∩ (A ∪ B),
+    show x ∈ A, from h.left)
+    (assume x,
+    assume h : x ∈ A,
+    have h₁ : x ∈ A ∪ B, from or.inl h,
+    show x ∈ A ∩ (A ∪ B), from and.intro h h₁)
+    
 --De Morgan
   open classical 
   example : -(A ∩ B) = -A ∪ -B :=
@@ -934,8 +997,8 @@ section
             assume h₂ : x ∈ A ∪ B,
             or.elim h₂
                 (assume h3 : x ∈ A, h₁.left h3)
-                (assume h3 : x ∈ B, h₁.right h3))) 
-\end{lstlisting}
+                (assume h3 : x ∈ B, h₁.right h3)))
+end \end{lstlisting}
 
 \item Prove que $A \cup \overline A = \mathcal U$. (Fornecendo uma prova tradicional e uma em Lean.)
 
