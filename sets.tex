@@ -740,21 +740,33 @@ calc
 Primeiramente, não confunda isso com o Cálculo da matemática que envolve derivada, integral, somatório, etc. Estamos falando do cálculo essencial desde a matemática básica, geralmente usado em provas como sendo uma sequência de operações para provar que duas expressões são equivalentes.
 
   \subsection{Cálculo Matemático}
-  Um dos exemplos mais conhecidos, que provavelmente você já deve ter visto, é o seguinte:
+  Vamos utilizar o seguinte exemplo, e mesmo que não conheça-o, você já deve ter feito algo semelhante.
 
-  \textbf{Prove que} $\dfrac{n(n+1)}{2}+(n+1) = \dfrac{(n+1)(n+2)}{2}$, $\forall$ número natural $n$.
+  \textbf{Prove que} $\dfrac{(a+b)^2+(a-b)^2}{2}-2b^2 = (a-b)(a+b)$, $\forall\ a,b$ números naturais. 
 
   Provavelmente a primeira ideia que uma pessoa com pouco conhecimento de álgebra tem, é desenvolver ambos os lados ao mesmo tempo, chegando em expressões iguais, como mostrado a seguir:
 
   \begin{equation*}
-    \dfrac{n(n+1)}{2}+(n+1) = \dfrac{(n+1)(n+2)}{2}
+    \begin{aligned}
+      \dfrac{(a+b)^2+(a-b)^2}{2}-2b^2 &=? (a-b)(a+b)\\
+      \dfrac{a^2+2ab+b^2+a^2-2ab+b^2}{2}-2b^2 &=? a^2+ab-ab-b^2\\
+      \dfrac{2a^2+2b^2}{2}-2b^2 &=? a^2-b^2\\
+      a^2+b^2-2b^2 &=? a^2-b^2\\
+      a^2-b^2 &= a^2-b^2
+    \end{aligned}
   \end{equation*}
 
   O que fornece a impressão de que começamos com uma identidade complexa, e então, depois de muito sofrimento e muitas contas, finalmente conseguimos provar que $x=x$. Chega a ser engraçado, não é mesmo?
   Então o melhor a se fazer é justamente começar de uma igualdade do tipo $x=x$ e chegar na igualdade desejada.
 
   \begin{equation*}
-    \dfrac{n(n+1)}{2}+(n+1) = \dfrac{(n+1)(n+2)}{2}
+    \begin{aligned}
+      a^2-b^2 &= a^2-b^2\\
+      a^2+b^2-2b^2 &= a^2-b^2\\
+      \dfrac{2a^2+2b^2}{2}-2b^2 &= a^2-b^2\\
+      \dfrac{a^2+2ab+b^2+a^2-2ab+b^2}{2}-2b^2 &= a^2+ab-ab-b^2\\
+      \dfrac{(a+b)^2+(a-b)^2}{2}-2b^2 &= (a-b)(a+b)
+    \end{aligned}
   \end{equation*}
 
   Se tornando mais estranho ainda! Pois agora parece que foi escolhida uma igualdade aleatória, e graças a sorte, conseguimos provar a identidade a partir dela. E não é isso que desejamos.
@@ -762,14 +774,36 @@ Primeiramente, não confunda isso com o Cálculo da matemática que envolve deri
   Voltando a primeira prova, vemos que a ideia que tentamos transmitir é que cada equação é equivalente a seguinte, ou seja, a primeira equação é verdadeira se, e somente se, a segunda também for verdadeira. Logo, podemos utilizar o símbolo $\iff$ entre cada uma delas.
 
   \begin{equation*}
-    \dfrac{n(n+1)}{2}+(n+1) = \dfrac{(n+1)(n+2)}{2}
+    \begin{aligned}
+      &\dfrac{(a+b)^2+(a-b)^2}{2}-2b^2 = (a-b)(a+b)\\
+      \iff &\dfrac{a^2+2ab+b^2+a^2-2ab+b^2}{2}-2b^2 = a^2+ab-ab-b^2\\
+      \iff &\dfrac{2a^2+2b^2}{2}-2b^2 = a^2-b^2\\
+      \iff &a^2+b^2-2b^2 = a^2-b^2\\
+      \iff &a^2-b^2 = a^2-b^2
+    \end{aligned}
   \end{equation*}
 
   Ou ainda, utilizar frases como ``basta provar'' entre uma igualdade e outra.
 
-  \begin{equation*}
-    \dfrac{n(n+1)}{2}+(n+1) = \dfrac{(n+1)(n+2)}{2}
-  \end{equation*}
+  Queremos provar
+
+  \[\dfrac{(a+b)^2+(a-b)^2}{2}-2b^2 = (a-b)(a+b)\]
+
+  Para fazer isso, basta provar
+
+  \[\dfrac{a^2+2ab+b^2+a^2-2ab+b^2}{2}-2b^2 = a^2+ab-ab-b^2\]
+
+  Para isso, basta provar
+
+  \[\dfrac{2a^2+2b^2}{2}-2b^2 = a^2-b^2\]
+
+  E para isso, basta provar
+
+  \[a^2+b^2-2b^2 = a^2-b^2\]
+  
+  O que é claramente verdadeiro.
+  
+  $\qquad$
 
   Ambas as provas são mais formais, apesar da última possuir uma narrativa repetitiva que nos obriga a encontrar sinônimos para a frase ``basta provar''. Contudo, podemos ser melhores.
   
@@ -777,7 +811,14 @@ Primeiramente, não confunda isso com o Cálculo da matemática que envolve deri
   Portanto, podemos reescrevê-la somente como um único cálculo direcionado para a frente, transformando $LE$ em $E$ e então, fazendo uma transformação inversa de $E$ para $LD$.
 
   \begin{equation*}
-    \dfrac{n(n+1)}{2}+(n+1) = \dfrac{(n+1)(n+2)}{2}
+    \begin{aligned}
+      \dfrac{(a+b)^2+(a-b)^2}{2}-2b^2 &= \dfrac{a^2+2ab+b^2+a^2-2ab+b^2}{2}-2b^2\\
+      &= \dfrac{2a^2+2b^2}{2}-2b^2\\
+      &= a^2+b^2-2b^2\\
+      &= a^2-b^2\\
+      &= a^2+ab-ab-b^2\\
+      &= (a-b)(a+b)
+    \end{aligned}
   \end{equation*}
 
   Por fim, obtemos uma prova clara, compacta e legível. Esse é o modelo mais utilizado pelos matemáticos em geral, e também é o qual utilizaremos nessa seção.
