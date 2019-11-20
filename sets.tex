@@ -964,7 +964,7 @@ section
                 (assume h₂ : x ∈ C,
                 show x ∈ (A ∪ B) ∪ C, from or.inr h₂)))
 
---Distribuitividade (Dica: veja o exemplo utilizado na seção "Propriedades")
+--Distribuitividade (Dica: veja o exemplo utilizado em "Propriedades")
   example : A ∩ (B ∪ C) = (A ∩ B) ∪ (A ∩ C) :=
   eq_of_subset_of_subset
     (assume x,
@@ -987,7 +987,7 @@ section
         have h₂ : x ∈ B ∪ C, from or.inr h₁.right,
         show x ∈ A ∩ (B ∪ C), from and.intro h₁.left h₂))
 
---Lei da Absorção (Dica: veja o exemplo utilizado na seção "Propriedades")
+--Lei da Absorção (Dica: veja o exemplo utilizado em "Propriedades")
   example : A ∩ (A ∪ B) = A :=
   eq_of_subset_of_subset
     (assume x,
