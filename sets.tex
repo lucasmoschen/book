@@ -868,116 +868,157 @@ Seja um conjunto $A$, o conjunto das partes de $A$, representado por $\wp(A)$, �
 
 Os elementos de um conjunto das partes são, na verdade, outros conjuntos, e mais precisamente, são todos os subconjuntos que podem ser formados a partir dos elementos do conjunto de referência.
 
-Por exemplo:  Seja $A = \{2,6,9\}$ o conjunto referência.
+\textbf{Exemplo 1:}  Seja $A = \{a,b,c\}$ o conjunto referência.
 O conjunto das partes de $A$ é $\wp(A)
-= \{\emptyset,\{2\},\{6\},\{9\},\{2,6\},\{2,9\},\{6,9\},\{2,6,9\}\}$:
+= \{\emptyset,\{a\},\{b\},\{c\},\{a,b\},\{a,c\},\{b,c\},\{a,b,c\}\}$: 
 
 \subsection{Cardinalidade}
 Se um conjunto $A$ possui $n$ elementos, então o número de subconjuntos de $A$ é igual $2^A$.
 
-De fato, no exemplo anterior, o conjunto das partes $\wp(A)$ possui 8 elementos e $A$ possui 3 elementos, como $2^3 = 8$, temos uma prova para a cardinalidade de conjuntos das parte.
-Agora precisamos provar no caso de $A$ ter $k$ elementos.
+De fato, no \textbf{Exemplo 1}, o conjunto das partes $\wp(A)$ possui 8 elementos e $A$ possui 3 elementos, como $2^3 = 8$, temos uma prova para a cardinalidade de conjuntos das parte.
 
-%Termino amanhã
+Agora, iremos provar no caso de $A$ ter $k$ elementos: ($k \in  \mathbb{N}$) 
 
-\subsection{Em Lean}
-Ainda vai ter algo escrito aqui
+A demonstração para esse caso é bastante simples, vamos utilizar o \textbf{Princípio Fundamental da Contagem} para contar quantos subconjuntos o conjunto $A$ possui.
+
+Vamos criar um subconjunto qualquer $B$. Para cada um dos $k$ elementos de A, existem somente duas possibilidades:
+
+\begin{itemize}
+
+\item Ou o elemento está no subconjunto $B$;
+    
+\item Ou o elemento não está no subconjunto $B$.
+  
+\end{itemize}
+
+Assim, pelo \textbf{PFC}, nós podemos montar o conjunto $B$ de
+\begin{center}
+    $\underbrace{\begin{matrix} 2\cdot2\cdot2\cdot(\cdots)\cdot2\end{matrix}}_{k} = 2^k$ maneiras.
+\end{center}
+E, portanto, há todos os $2^k$ subconjuntos de $A$ em $\wp(A)$.
+
+\subsection{Conjuntos das Partes em Lean}
+Em lean, trataremos ``Conjuntos das Partes" como {\fontencoding{U}\fontfamily{cmtt}\selectfont powerset}, e pode ser definido da seguinte forma:
+\begin{lstlisting}
+variable {U : Type}
+
+def powerset (A : set U) : set (set U) := {B : set U | B ⊆ A}
+
+example (A B : set U) (h : B ∈ powerset A) : B ⊆ A := h \end{lstlisting}
+
+Como está exposto na linha 5 do template, $B \in \wp(A)$ é, por definição, o mesmo que $B \subseteq A$.
+
+De fato, a função {\fontencoding{U}\fontfamily{cmtt}\selectfont powerset} é definida desta forma em Lean, e fica disponível com os comandos: {\fontencoding{U}\fontfamily{cmtt}\selectfont import data.set} e {\fontencoding{U}\fontfamily{cmtt}\selectfont open set}. Abaixo temos o \textbf{Exemplo 2} de como utilizar esta função:
+\begin{lstlisting}
+import data.set
+open set
+
+variable  {U : Type}
+variables (A B : set U)
+--Exemplo 2
+example : A ∈ powerset (A ∪ B) :=
+assume x,
+assume h : x ∈ A,
+show x ∈ A ∪ B, from or.inl h
+
+#check powerset A \end{lstlisting}
+
 
 \section{Exercícios}
 \begin{enumerate}
-
+    
 \item Realize as provas das seguintes propriedades: (Fornecendo uma prova tradicional e uma em Lean.)
 
 \begin{enumerate}
 
-\item Comutatividade em ∩ e ∪
+\item Comutatividade em ∩ e ∪ 
 \begin{lstlisting}
 import data.set
 open set
 
 variable U : Type
 variables A B : set U
-
-example : A ∩ B = B ∩ A :=
+ 
+example : A ∩ B = B ∩ A := 
 eq_of_subset_of_subset
-    (assume x,
-        assume h : x ∈ A ∩ B,
-        have h₁ : x ∈ A, from h.left,
-        have h₂ : x ∈ B, from h.right,
-        show x ∈ B ∩ A, from and.intro h₂ h₁)
-    (assume x,
-        assume h : x ∈ B ∩ A,
-        have h₁ : x ∈ B, from h.left,
-        have h₂ : x ∈ A, from h.right,
-        show x ∈ A ∩ B, from and.intro h₂ h₁)
+(assume x,
+    assume h : x ∈ A ∩ B,
+    have h₁ : x ∈ A, from h.left,
+    have h₂ : x ∈ B, from h.right,
+    show x ∈ B ∩ A, from and.intro h₂ h₁)
+(assume x,
+    assume h : x ∈ B ∩ A,
+    have h₁ : x ∈ B, from h.left,
+    have h₂ : x ∈ A, from h.right,
+    show x ∈ A ∩ B, from and.intro h₂ h₁)
 
 example : A ∪ B = B ∪ A:=
 eq_of_subset_of_subset
-    (assume x,
-        assume h : x ∈ A ∪ B,
-        or.elim h
-        (assume h₁ : x ∈ A,
-        show x ∈ B ∪ A, from or.inr h₁)
-        (assume h₁ : x ∈ B,
-        show x ∈ B ∪ A, from or.inl h₁))
-    (assume x,
-        assume h : x ∈ B ∪ A,
-        or.elim h
-        (assume h₁ : x ∈ B,
-        show x ∈ A ∪ B, from or.inr h₁)
-        (assume h₁ : x ∈ A,
-        show x ∈ A ∪ B, from or.inl h₁)) \end{lstlisting}
+(assume x,
+    assume h : x ∈ A ∪ B,
+    or.elim h
+    (assume h₁ : x ∈ A,
+    show x ∈ B ∪ A, from or.inr h₁)
+    (assume h₁ : x ∈ B,
+    show x ∈ B ∪ A, from or.inl h₁))
+(assume x,
+    assume h : x ∈ B ∪ A,
+    or.elim h
+    (assume h₁ : x ∈ B,
+    show x ∈ A ∪ B, from or.inr h₁)
+    (assume h₁ : x ∈ A,
+    show x ∈ A ∪ B, from or.inl h₁)) \end{lstlisting}
 
 $\qquad$
-\item Associatividade em ∩ e ∪
+\item Associatividade em ∩ e ∪ 
 \begin{lstlisting}
 import data.set
 open set
 
 variable U : Type
 variables A B C : set U
-
+ 
 example : (A ∩ B) ∩ C = A ∩ (B ∩ C) :=
 eq_of_subset_of_subset
-    (assume x,
-        assume h : x ∈ (A ∩ B) ∩ C,
-        have h₁ : x ∈ A ∩ B, from h.left,
-        have h₂ : x ∈ B ∩ C, from and.intro h₁.right h.right,
-        show x ∈ A ∩ (B ∩ C), from and.intro h₁.left h₂)
-    (assume x,
-        assume h : x ∈ A ∩ (B ∩ C),
-        have h₁ : x ∈ B ∩ C, from h.right,
-        have h₂ : x ∈ A ∩ B, from and.intro h.left h₁.left,
-        show x ∈ (A ∩ B) ∩ C, from and.intro h₂ h₁.right)
+(assume x,
+    assume h : x ∈ (A ∩ B) ∩ C,
+    have h₁ : x ∈ A ∩ B, from h.left,
+    have h₂ : x ∈ B ∩ C, from and.intro h₁.right h.right,
+    show x ∈ A ∩ (B ∩ C), from and.intro h₁.left h₂) 
+(assume x,
+    assume h : x ∈ A ∩ (B ∩ C),
+    have h₁ : x ∈ B ∩ C, from h.right,
+    have h₂ : x ∈ A ∩ B, from and.intro h.left h₁.left,
+    show x ∈ (A ∩ B) ∩ C, from and.intro h₂ h₁.right) 
 
 example : (A ∪ B) ∪ C = A ∪ (B ∪ C) :=
 eq_of_subset_of_subset
-    (assume x,
-        assume h : x ∈ (A ∪ B) ∪ C,
-        or.elim h
-            (assume h₁ : x ∈ A ∪ B,
-            or.elim h₁
-                (assume h₂ : x ∈ A,
-                show x ∈ A ∪ (B ∪ C), from or.inl h₂)
-                (assume h₂ : x ∈ B,
-                have h₃ : x ∈ B ∪ C, from or.inl h₂,
-                show x ∈ A ∪ (B ∪ C), from or.inr h₃))
-            (assume h₁ : x ∈ C,
-            have h₂ : x ∈ B ∪ C, from or.inr h₁,
-            show x ∈ A ∪ (B ∪ C), from or.inr h₂))
-    (assume x,
-        assume h : x ∈ A ∪ (B ∪ C),
-        or.elim h
-            (assume h₁ : x ∈ A,
-            have h₂ : x ∈ A ∪ B, from or.inl h₁,
-            show x ∈ (A ∪ B) ∪ C, from or.inl h₂)
-            (assume h₁ : x ∈ B ∪ C,
-            or.elim h₁
-                (assume h₂ : x ∈ B,
-                have h₃ : x ∈ A ∪ B, from or.inr h₂,
-                show x ∈ (A ∪ B) ∪ C, from or.inl h₃)
-                (assume h₂ : x ∈ C,
-                show x ∈ (A ∪ B) ∪ C, from or.inr h₂))) \end{lstlisting}
+(assume x,
+    assume h : x ∈ (A ∪ B) ∪ C,
+    or.elim h
+        (assume h₁ : x ∈ A ∪ B,
+        or.elim h₁
+            (assume h₂ : x ∈ A,
+            show x ∈ A ∪ (B ∪ C), from or.inl h₂)
+            (assume h₂ : x ∈ B,
+            have h₃ : x ∈ B ∪ C, from or.inl h₂,
+            show x ∈ A ∪ (B ∪ C), from or.inr h₃))
+        (assume h₁ : x ∈ C,
+        have h₂ : x ∈ B ∪ C, from or.inr h₁,
+        show x ∈ A ∪ (B ∪ C), from or.inr h₂))
+(assume x,
+    assume h : x ∈ A ∪ (B ∪ C),
+    or.elim h
+        (assume h₁ : x ∈ A,
+        have h₂ : x ∈ A ∪ B, from or.inl h₁,
+        show x ∈ (A ∪ B) ∪ C, from or.inl h₂)
+        (assume h₁ : x ∈ B ∪ C,
+        or.elim h₁
+            (assume h₂ : x ∈ B,
+            have h₃ : x ∈ A ∪ B, from or.inr h₂,
+            show x ∈ (A ∪ B) ∪ C, from or.inl h₃)
+            (assume h₂ : x ∈ C,
+            show x ∈ (A ∪ B) ∪ C, from or.inr h₂))) \end{lstlisting}
 
 $\qquad$
 \item Distribuitividade (Dica: veja o exemplo utilizado na seção ``Propriedades")
@@ -990,7 +1031,7 @@ variables A B C : set U
 
 example : A ∩ (B ∪ C) = (A ∩ B) ∪ (A ∩ C) :=
 eq_of_subset_of_subset
-    (assume x,
+(assume x,
     assume h : x ∈ A ∩ (B ∪ C),
     have h.r : x ∈ B ∪ C, from h.right,
     or.elim h.r
@@ -1000,7 +1041,7 @@ eq_of_subset_of_subset
         (assume h₁ : x ∈ C,
         have h₂ : x ∈ A ∩ C, from and.intro h.left h₁,
         show x ∈ (A ∩ B) ∪ (A ∩ C), from or.inr h₂))
-    (assume x,
+(assume x,
     assume h : x ∈ (A ∩ B) ∪ (A ∩ C),
     or.elim h
         (assume h₁ : x ∈ A ∩ B,
@@ -1008,7 +1049,8 @@ eq_of_subset_of_subset
         show x ∈ A ∩ (B ∪ C), from and.intro h₁.left h₂)
         (assume h₁ : x ∈ A ∩ C,
         have h₂ : x ∈ B ∪ C, from or.inr h₁.right,
-        show x ∈ A ∩ (B ∪ C), from and.intro h₁.left h₂)) \end{lstlisting}
+        have h₃ : x ∈ A, from h₁.left,
+        show x ∈ A ∩ (B ∪ C), from and.intro h₃ h₂)) \end{lstlisting}
 
 $\qquad$
 \item Lei da Absorção (Dica: veja o exemplo utilizado em ``Propriedades")
@@ -1021,10 +1063,10 @@ variables A B : set U
 
 example : A ∩ (A ∪ B) = A :=
 eq_of_subset_of_subset
-    (assume x,
+(assume x,
     assume h : x ∈ A ∩ (A ∪ B),
     show x ∈ A, from h.left)
-    (assume x,
+(assume x,
     assume h : x ∈ A,
     have h₁ : x ∈ A ∪ B, from or.inl h,
     show x ∈ A ∩ (A ∪ B), from and.intro h h₁) \end{lstlisting}
@@ -1034,59 +1076,55 @@ $\qquad$
 \begin{lstlisting}
 import data.set
 open set
-open classical
+open classical 
 
 variable U : Type
 variables A B : set U
 
 example : -(A ∩ B) = -A ∪ -B :=
-    ext (assume x, iff.intro
-        (assume h₁ : x ∈ -(A ∩ B),
-            have g₁ : x ∈ (A ∪ -A), from em (x ∈ A),
-            have g₂ : x ∈ (B ∪ -B), from em (x ∈ B),
-            or.elim g₁
-                (assume h₂ : x ∈ A, or.elim g₂
-                    (assume h₃ : x ∈ B, show x ∈ -A ∪ -B,
-                        from false.elim (h₁ ⟨h₂,h₃⟩))
-                    (assume h₃ : x ∈ -B, show x ∈ -A ∪ -B,
-                        from or.inr h₃))
-                (assume h₂ : x ∈ -A, show x ∈ -A ∪ -B,
-                    from or.inl h₂))
-
-        (assume h₁ : x ∈ -A ∪ -B,
-            assume h₂ : x ∈ (A ∩ B), show false,
-            from or.elim h₁
-                (assume h₃ : x ∈ -A, h₃ h₂.left )
-                (assume h₃ : x ∈ -B, h₃ h₂.right)))
+ext (assume x, iff.intro
+(assume h₁ : x ∈ -(A ∩ B),
+    have g₁ : x ∈ (A ∪ -A), from em (x ∈ A),
+    have g₂ : x ∈ (B ∪ -B), from em (x ∈ B),
+    or.elim g₁
+        (assume h₂ : x ∈ A, or.elim g₂
+            (assume h₃ : x ∈ B, show x ∈ -A ∪ -B,
+                from false.elim (h₁ ⟨h₂,h₃⟩))
+            (assume h₃ : x ∈ -B, show x ∈ -A ∪ -B,
+                from or.inr h₃))
+        (assume h₂ : x ∈ -A, show x ∈ -A ∪ -B,
+            from or.inl h₂))
+(assume h₁ : x ∈ -A ∪ -B,
+    assume h₂ : x ∈ (A ∩ B), show false,
+    from or.elim h₁
+        (assume h₃ : x ∈ -A, h₃ h₂.left )
+        (assume h₃ : x ∈ -B, h₃ h₂.right)))
 
 example : -(A ∪ B) = -A ∩ -B :=
-    ext (assume x, iff.intro
-        (assume h₁ : x ∈ -(A ∪ B),
-            have g₁ : x ∈ -A, from
-            assume h₂ : x ∈ A,
-                have h₃ : x ∈ A ∪ B,
-                from or.inl h₂, (h₁ h₃),
-            have g₂ : x ∈ -B, from
-            assume h₂ : x ∈ B,
-                have h₃ : x ∈ A ∪ B,
-                from or.inr h₂, (h₁ h₃),
-            show x ∈ -A ∩ -B, from ⟨g₁, g₂⟩)
-
-        (assume h₁ : x ∈ -A ∩ -B,
-            show x ∈ -(A ∪ B), from
-            assume h₂ : x ∈ A ∪ B,
-            or.elim h₂
-                (assume h3 : x ∈ A, h₁.left h3)
-                (assume h3 : x ∈ B, h₁.right h3))) \end{lstlisting}
+ext (assume x, iff.intro
+(assume h₁ : x ∈ -(A ∪ B),
+    have g₁ : x ∈ -A, from
+        assume h₂ : x ∈ A,
+        have h₃ : x ∈ A ∪ B, from or.inl h₂, (h₁ h₃),
+    have g₂ : x ∈ -B, from
+        assume h₂ : x ∈ B,
+        have h₃ : x ∈ A ∪ B, from or.inr h₂, (h₁ h₃),
+    show x ∈ -A ∩ -B, from ⟨g₁, g₂⟩)
+(assume h₁ : x ∈ -A ∩ -B,
+    show x ∈ -(A ∪ B), from
+        assume h₂ : x ∈ A ∪ B,
+        or.elim h₂
+            (assume h3 : x ∈ A, h₁.left h3)
+            (assume h3 : x ∈ B, h₁.right h3))) \end{lstlisting}
 
 \end{enumerate}
 
 $\qquad$
 \item Prove que $A \cup \overline A = \mathcal U$. (Fornecendo uma prova tradicional e uma em Lean.)
 
-\textbf{Resposta}
+\textbf{Resposta} 
 
 $\qquad$
 \item Questões com calc
-
+    
 \end{enumerate}
