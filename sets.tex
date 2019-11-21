@@ -991,33 +991,33 @@ variables A B : set U
  
 example : A ∩ B = B ∩ A := 
 eq_of_subset_of_subset
-    (assume x,
-        assume h : x ∈ A ∩ B,
-        have h₁ : x ∈ A, from h.left,
-        have h₂ : x ∈ B, from h.right,
-        show x ∈ B ∩ A, from and.intro h₂ h₁)
-    (assume x,
-        assume h : x ∈ B ∩ A,
-        have h₁ : x ∈ B, from h.left,
-        have h₂ : x ∈ A, from h.right,
-        show x ∈ A ∩ B, from and.intro h₂ h₁)
+(assume x,
+    assume h : x ∈ A ∩ B,
+    have h₁ : x ∈ A, from h.left,
+    have h₂ : x ∈ B, from h.right,
+    show x ∈ B ∩ A, from and.intro h₂ h₁)
+(assume x,
+    assume h : x ∈ B ∩ A,
+    have h₁ : x ∈ B, from h.left,
+    have h₂ : x ∈ A, from h.right,
+    show x ∈ A ∩ B, from and.intro h₂ h₁)
 
 example : A ∪ B = B ∪ A:=
 eq_of_subset_of_subset
-    (assume x,
-        assume h : x ∈ A ∪ B,
-        or.elim h
-        (assume h₁ : x ∈ A,
-        show x ∈ B ∪ A, from or.inr h₁)
-        (assume h₁ : x ∈ B,
-        show x ∈ B ∪ A, from or.inl h₁))
-    (assume x,
-        assume h : x ∈ B ∪ A,
-        or.elim h
-        (assume h₁ : x ∈ B,
-        show x ∈ A ∪ B, from or.inr h₁)
-        (assume h₁ : x ∈ A,
-        show x ∈ A ∪ B, from or.inl h₁)) \end{lstlisting}
+(assume x,
+    assume h : x ∈ A ∪ B,
+    or.elim h
+    (assume h₁ : x ∈ A,
+    show x ∈ B ∪ A, from or.inr h₁)
+    (assume h₁ : x ∈ B,
+    show x ∈ B ∪ A, from or.inl h₁))
+(assume x,
+    assume h : x ∈ B ∪ A,
+    or.elim h
+    (assume h₁ : x ∈ B,
+    show x ∈ A ∪ B, from or.inr h₁)
+    (assume h₁ : x ∈ A,
+    show x ∈ A ∪ B, from or.inl h₁)) \end{lstlisting}
 
 $\qquad$
 \item Associatividade em ∩ e ∪ 
@@ -1030,45 +1030,45 @@ variables A B C : set U
  
 example : (A ∩ B) ∩ C = A ∩ (B ∩ C) :=
 eq_of_subset_of_subset
-    (assume x,
-        assume h : x ∈ (A ∩ B) ∩ C,
-        have h₁ : x ∈ A ∩ B, from h.left,
-        have h₂ : x ∈ B ∩ C, from and.intro h₁.right h.right,
-        show x ∈ A ∩ (B ∩ C), from and.intro h₁.left h₂) 
-    (assume x,
-        assume h : x ∈ A ∩ (B ∩ C),
-        have h₁ : x ∈ B ∩ C, from h.right,
-        have h₂ : x ∈ A ∩ B, from and.intro h.left h₁.left,
-        show x ∈ (A ∩ B) ∩ C, from and.intro h₂ h₁.right) 
+(assume x,
+    assume h : x ∈ (A ∩ B) ∩ C,
+    have h₁ : x ∈ A ∩ B, from h.left,
+    have h₂ : x ∈ B ∩ C, from and.intro h₁.right h.right,
+    show x ∈ A ∩ (B ∩ C), from and.intro h₁.left h₂) 
+(assume x,
+    assume h : x ∈ A ∩ (B ∩ C),
+    have h₁ : x ∈ B ∩ C, from h.right,
+    have h₂ : x ∈ A ∩ B, from and.intro h.left h₁.left,
+    show x ∈ (A ∩ B) ∩ C, from and.intro h₂ h₁.right) 
 
 example : (A ∪ B) ∪ C = A ∪ (B ∪ C) :=
 eq_of_subset_of_subset
-    (assume x,
-        assume h : x ∈ (A ∪ B) ∪ C,
-        or.elim h
-            (assume h₁ : x ∈ A ∪ B,
-            or.elim h₁
-                (assume h₂ : x ∈ A,
-                show x ∈ A ∪ (B ∪ C), from or.inl h₂)
-                (assume h₂ : x ∈ B,
-                have h₃ : x ∈ B ∪ C, from or.inl h₂,
-                show x ∈ A ∪ (B ∪ C), from or.inr h₃))
-            (assume h₁ : x ∈ C,
-            have h₂ : x ∈ B ∪ C, from or.inr h₁,
-            show x ∈ A ∪ (B ∪ C), from or.inr h₂))
-    (assume x,
-        assume h : x ∈ A ∪ (B ∪ C),
-        or.elim h
-            (assume h₁ : x ∈ A,
-            have h₂ : x ∈ A ∪ B, from or.inl h₁,
-            show x ∈ (A ∪ B) ∪ C, from or.inl h₂)
-            (assume h₁ : x ∈ B ∪ C,
-            or.elim h₁
-                (assume h₂ : x ∈ B,
-                have h₃ : x ∈ A ∪ B, from or.inr h₂,
-                show x ∈ (A ∪ B) ∪ C, from or.inl h₃)
-                (assume h₂ : x ∈ C,
-                show x ∈ (A ∪ B) ∪ C, from or.inr h₂))) \end{lstlisting}
+(assume x,
+    assume h : x ∈ (A ∪ B) ∪ C,
+    or.elim h
+        (assume h₁ : x ∈ A ∪ B,
+        or.elim h₁
+            (assume h₂ : x ∈ A,
+            show x ∈ A ∪ (B ∪ C), from or.inl h₂)
+            (assume h₂ : x ∈ B,
+            have h₃ : x ∈ B ∪ C, from or.inl h₂,
+            show x ∈ A ∪ (B ∪ C), from or.inr h₃))
+        (assume h₁ : x ∈ C,
+        have h₂ : x ∈ B ∪ C, from or.inr h₁,
+        show x ∈ A ∪ (B ∪ C), from or.inr h₂))
+(assume x,
+    assume h : x ∈ A ∪ (B ∪ C),
+    or.elim h
+        (assume h₁ : x ∈ A,
+        have h₂ : x ∈ A ∪ B, from or.inl h₁,
+        show x ∈ (A ∪ B) ∪ C, from or.inl h₂)
+        (assume h₁ : x ∈ B ∪ C,
+        or.elim h₁
+            (assume h₂ : x ∈ B,
+            have h₃ : x ∈ A ∪ B, from or.inr h₂,
+            show x ∈ (A ∪ B) ∪ C, from or.inl h₃)
+            (assume h₂ : x ∈ C,
+            show x ∈ (A ∪ B) ∪ C, from or.inr h₂))) \end{lstlisting}
 
 $\qquad$
 \item Distribuitividade (Dica: veja o exemplo utilizado na seção ``Propriedades")
@@ -1081,7 +1081,7 @@ variables A B C : set U
 
 example : A ∩ (B ∪ C) = (A ∩ B) ∪ (A ∩ C) :=
 eq_of_subset_of_subset
-    (assume x,
+(assume x,
     assume h : x ∈ A ∩ (B ∪ C),
     have h.r : x ∈ B ∪ C, from h.right,
     or.elim h.r
@@ -1091,7 +1091,7 @@ eq_of_subset_of_subset
         (assume h₁ : x ∈ C,
         have h₂ : x ∈ A ∩ C, from and.intro h.left h₁,
         show x ∈ (A ∩ B) ∪ (A ∩ C), from or.inr h₂))
-    (assume x,
+(assume x,
     assume h : x ∈ (A ∩ B) ∪ (A ∩ C),
     or.elim h
         (assume h₁ : x ∈ A ∩ B,
@@ -1099,7 +1099,8 @@ eq_of_subset_of_subset
         show x ∈ A ∩ (B ∪ C), from and.intro h₁.left h₂)
         (assume h₁ : x ∈ A ∩ C,
         have h₂ : x ∈ B ∪ C, from or.inr h₁.right,
-        show x ∈ A ∩ (B ∪ C), from and.intro h₁.left h₂)) \end{lstlisting}
+        have h₃ : x ∈ A, from h₁.left,
+        show x ∈ A ∩ (B ∪ C), from and.intro h₃ h₂)) \end{lstlisting}
 
 $\qquad$
 \item Lei da Absorção (Dica: veja o exemplo utilizado em ``Propriedades")
@@ -1112,10 +1113,10 @@ variables A B : set U
 
 example : A ∩ (A ∪ B) = A :=
 eq_of_subset_of_subset
-    (assume x,
+(assume x,
     assume h : x ∈ A ∩ (A ∪ B),
     show x ∈ A, from h.left)
-    (assume x,
+(assume x,
     assume h : x ∈ A,
     have h₁ : x ∈ A ∪ B, from or.inl h,
     show x ∈ A ∩ (A ∪ B), from and.intro h h₁) \end{lstlisting}
@@ -1131,44 +1132,40 @@ variable U : Type
 variables A B : set U
 
 example : -(A ∩ B) = -A ∪ -B :=
-    ext (assume x, iff.intro
-        (assume h₁ : x ∈ -(A ∩ B),
-            have g₁ : x ∈ (A ∪ -A), from em (x ∈ A),
-            have g₂ : x ∈ (B ∪ -B), from em (x ∈ B),
-            or.elim g₁
-                (assume h₂ : x ∈ A, or.elim g₂
-                    (assume h₃ : x ∈ B, show x ∈ -A ∪ -B,
-                        from false.elim (h₁ ⟨h₂,h₃⟩))
-                    (assume h₃ : x ∈ -B, show x ∈ -A ∪ -B,
-                        from or.inr h₃))
-                (assume h₂ : x ∈ -A, show x ∈ -A ∪ -B,
-                    from or.inl h₂))
-
-        (assume h₁ : x ∈ -A ∪ -B,
-            assume h₂ : x ∈ (A ∩ B), show false,
-            from or.elim h₁
-                (assume h₃ : x ∈ -A, h₃ h₂.left )
-                (assume h₃ : x ∈ -B, h₃ h₂.right)))
+ext (assume x, iff.intro
+(assume h₁ : x ∈ -(A ∩ B),
+    have g₁ : x ∈ (A ∪ -A), from em (x ∈ A),
+    have g₂ : x ∈ (B ∪ -B), from em (x ∈ B),
+    or.elim g₁
+        (assume h₂ : x ∈ A, or.elim g₂
+            (assume h₃ : x ∈ B, show x ∈ -A ∪ -B,
+                from false.elim (h₁ ⟨h₂,h₃⟩))
+            (assume h₃ : x ∈ -B, show x ∈ -A ∪ -B,
+                from or.inr h₃))
+        (assume h₂ : x ∈ -A, show x ∈ -A ∪ -B,
+            from or.inl h₂))
+(assume h₁ : x ∈ -A ∪ -B,
+    assume h₂ : x ∈ (A ∩ B), show false,
+    from or.elim h₁
+        (assume h₃ : x ∈ -A, h₃ h₂.left )
+        (assume h₃ : x ∈ -B, h₃ h₂.right)))
 
 example : -(A ∪ B) = -A ∩ -B :=
-    ext (assume x, iff.intro
-        (assume h₁ : x ∈ -(A ∪ B),
-            have g₁ : x ∈ -A, from
-            assume h₂ : x ∈ A,
-                have h₃ : x ∈ A ∪ B,
-                from or.inl h₂, (h₁ h₃),
-            have g₂ : x ∈ -B, from
-            assume h₂ : x ∈ B,
-                have h₃ : x ∈ A ∪ B,
-                from or.inr h₂, (h₁ h₃),
-            show x ∈ -A ∩ -B, from ⟨g₁, g₂⟩)
-
-        (assume h₁ : x ∈ -A ∩ -B,
-            show x ∈ -(A ∪ B), from
-            assume h₂ : x ∈ A ∪ B,
-            or.elim h₂
-                (assume h3 : x ∈ A, h₁.left h3)
-                (assume h3 : x ∈ B, h₁.right h3))) \end{lstlisting}
+ext (assume x, iff.intro
+(assume h₁ : x ∈ -(A ∪ B),
+    have g₁ : x ∈ -A, from
+        assume h₂ : x ∈ A,
+        have h₃ : x ∈ A ∪ B, from or.inl h₂, (h₁ h₃),
+    have g₂ : x ∈ -B, from
+        assume h₂ : x ∈ B,
+        have h₃ : x ∈ A ∪ B, from or.inr h₂, (h₁ h₃),
+    show x ∈ -A ∩ -B, from ⟨g₁, g₂⟩)
+(assume h₁ : x ∈ -A ∩ -B,
+    show x ∈ -(A ∪ B), from
+        assume h₂ : x ∈ A ∪ B,
+        or.elim h₂
+            (assume h3 : x ∈ A, h₁.left h3)
+            (assume h3 : x ∈ B, h₁.right h3))) \end{lstlisting}
 
 \end{enumerate}
 
