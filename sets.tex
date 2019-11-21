@@ -586,38 +586,43 @@ A seguir teremos algumas propriedades e a prova do porque estão corretas.
   \item $A \cap (B \cup C) = (A \cap B) \cup (A \cap C)$
   \item $A \cup (B \cap C) = (A \cup B) \cap (A \cup C)$
 
-  \textbf{Prova:}
+\textbf{Prova em Lean:}
+\begin{lstlisting}
+import data.set
+open set
 
-  \begin{lstlisting}
-    example : A ∪ (B ∩ C) = (A ∪ B) ∩ (A ∪ C) :=
-    eq_of_subset_of_subset
-      (assume x,
-        assume h : x ∈ A ∪ (B ∩ C),
-        or.elim h
-          (assume h₁ : x ∈ A,
-            have h₂ : x ∈ A ∪ B, from or.inl h₁,
-            have h₃ : x ∈ A ∪ C, from or.inl h₁,
-            show x ∈ (A ∪ B) ∩ (A ∪ C), from and.intro h₂ h₃)
-          (assume h₁ : x ∈ B ∩ C,
-            have h₂ : x ∈ B, from and.left h₁,
-            have h₃ : x ∈ C, from and.right h₁,
-            have h₄ : x ∈ A ∪ B, from or.inr h₂,
-            have h₅ : x ∈ A ∪ C, from or.inr h₃,
-            show x ∈ (A ∪ B) ∩ (A ∪ C), from and.intro h₄ h₅))
-      (assume x,
-        assume h : x ∈ (A ∪ B) ∩ (A ∪ C),
-        have h₁ : x ∈ A ∪ B, from and.left h,
-        have h₂ : x ∈ A ∪ C, from and.right h,
-        or.elim h₁
-          (assume h₃ : x ∈ A,
-            show x ∈ A ∪ (B ∩ C), from or.inl h₃)
-          (assume h₃ : x ∈ B,
-          or.elim h₂
+variable U : Type
+variables A B C : set U
+
+example : A ∪ (B ∩ C) = (A ∪ B) ∩ (A ∪ C) :=
+eq_of_subset_of_subset
+    (assume x,
+    assume h : x ∈ A ∪ (B ∩ C),
+    or.elim h
+        (assume h₁ : x ∈ A,
+        have h₂ : x ∈ A ∪ B, from or.inl h₁,
+        have h₃ : x ∈ A ∪ C, from or.inl h₁,
+        show x ∈ (A ∪ B) ∩ (A ∪ C), from and.intro h₂ h₃)
+        (assume h₁ : x ∈ B ∩ C,
+        have h₂ : x ∈ B, from and.left h₁,
+        have h₃ : x ∈ C, from and.right h₁,
+        have h₄ : x ∈ A ∪ B, from or.inr h₂,
+        have h₅ : x ∈ A ∪ C, from or.inr h₃,
+        show x ∈ (A ∪ B) ∩ (A ∪ C), from and.intro h₄ h₅))
+    (assume x,
+    assume h : x ∈ (A ∪ B) ∩ (A ∪ C),
+    have h₁ : x ∈ A ∪ B, from and.left h,
+    have h₂ : x ∈ A ∪ C, from and.right h,
+    or.elim h₁
+        (assume h₃ : x ∈ A,
+        show x ∈ A ∪ (B ∩ C), from or.inl h₃)
+        (assume h₃ : x ∈ B,
+        or.elim h₂
             (assume h₄ : x ∈ A,
             show x ∈ A ∪ (B ∩ C), from or.inl h₄)
             (assume h₄ : x ∈ C,
             have h₅ : x ∈ B ∩ C, from and.intro h₃ h₄,
-            show x ∈ A ∪ (B ∩ C), from or.inr h₅))) \end{lstlisting}
+            show x ∈ A ∪ (B ∩ C), from or.inr h₅)))\end{lstlisting}
 
   \end{itemize}
 
