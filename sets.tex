@@ -588,6 +588,62 @@ $(ii)$ Provaremos que $ \forall x  (x \in \emptyset) \rightarrow \forall x (x \i
 
 Portanto, de $(i)$ e $(ii)$, concluímos que $ \forall x (x \in A \cap \overline A) \iff \forall x  (x \in \emptyset) $, ou seja, $A \cap \overline A$.
 
+\begin{itemize}  
+    \item $\overline {\overline {A}} = A$
+\end{itemize} 
+
+\textbf{Prova:}
+
+\begin{itemize}  
+    \item $A \cup A = A$
+\end{itemize} 
+
+\textbf{Prova:}
+
+\begin{itemize}  
+    \item $A \cap A = A$
+\end{itemize} 
+
+\textbf{Prova:}
+
+\begin{itemize}  
+    \item $A \cup \emptyset = A$
+\end{itemize} 
+
+\textbf{Prova:}
+
+\begin{itemize}  
+    \item $A \cap \emptyset = \emptyset$
+\end{itemize} 
+
+\textbf{Prova:}
+
+\begin{itemize}  
+    \item $A \cup \mathbb{U} = \mathbb{U}$
+\end{itemize} 
+
+\textbf{Prova:}
+
+\begin{itemize}  
+    \item $A \cap \mathbb{U} = A$
+\end{itemize} 
+
+\textbf{Prova:}
+
+%Depois coloco esse lá emcima
+\begin{itemize}  
+    \item $\overline {A \cap B } = \overline A \cup\overline B$
+\end{itemize} 
+
+\textbf{Prova:}
+
+%Depois coloco em exercício
+\begin{itemize}  
+    \item $\overline {A \cup B } = \overline A \cap\overline B$
+\end{itemize} 
+
+\textbf{Prova:}
+
 %Renan
 Como o Lean tem que desenvolver definições, ele pode acabar se confundindo às vezes. Por exemplo, na prova a seguir, se você subtituir a última linha por{\fontencoding{U}\fontfamily{cmtt}
 \selectfont sorry}, o Lean terá problemas tentando entender que você quer que ele desenvolva o símbolo de subconjunto:
@@ -740,21 +796,33 @@ calc
 Primeiramente, não confunda isso com o Cálculo da matemática que envolve derivada, integral, somatório, etc. Estamos falando do cálculo essencial desde a matemática básica, geralmente usado em provas como sendo uma sequência de operações para provar que duas expressões são equivalentes.
 
   \subsection{Cálculo Matemático}
-  Um dos exemplos mais conhecidos, que provavelmente você já deve ter visto, é o seguinte:
+  Vamos utilizar o seguinte exemplo, e mesmo que não conheça-o, você já deve ter feito algo semelhante.
 
-  \textbf{Prove que} $\dfrac{n(n+1)}{2}+(n+1) = \dfrac{(n+1)(n+2)}{2}$, $\forall$ número natural $n$.
+  \textbf{Prove que} $\dfrac{(a+b)^2+(a-b)^2}{2}-2b^2 = (a-b)(a+b)$, $\forall\ a,b$ números naturais. 
 
   Provavelmente a primeira ideia que uma pessoa com pouco conhecimento de álgebra tem, é desenvolver ambos os lados ao mesmo tempo, chegando em expressões iguais, como mostrado a seguir:
 
   \begin{equation*}
-    \dfrac{n(n+1)}{2}+(n+1) = \dfrac{(n+1)(n+2)}{2}
+    \begin{aligned}
+      \dfrac{(a+b)^2+(a-b)^2}{2}-2b^2 &=? (a-b)(a+b)\\
+      \dfrac{a^2+2ab+b^2+a^2-2ab+b^2}{2}-2b^2 &=? a^2+ab-ab-b^2\\
+      \dfrac{2a^2+2b^2}{2}-2b^2 &=? a^2-b^2\\
+      a^2+b^2-2b^2 &=? a^2-b^2\\
+      a^2-b^2 &= a^2-b^2
+    \end{aligned}
   \end{equation*}
 
   O que fornece a impressão de que começamos com uma identidade complexa, e então, depois de muito sofrimento e muitas contas, finalmente conseguimos provar que $x=x$. Chega a ser engraçado, não é mesmo?
   Então o melhor a se fazer é justamente começar de uma igualdade do tipo $x=x$ e chegar na igualdade desejada.
 
   \begin{equation*}
-    \dfrac{n(n+1)}{2}+(n+1) = \dfrac{(n+1)(n+2)}{2}
+    \begin{aligned}
+      a^2-b^2 &= a^2-b^2\\
+      a^2+b^2-2b^2 &= a^2-b^2\\
+      \dfrac{2a^2+2b^2}{2}-2b^2 &= a^2-b^2\\
+      \dfrac{a^2+2ab+b^2+a^2-2ab+b^2}{2}-2b^2 &= a^2+ab-ab-b^2\\
+      \dfrac{(a+b)^2+(a-b)^2}{2}-2b^2 &= (a-b)(a+b)
+    \end{aligned}
   \end{equation*}
 
   Se tornando mais estranho ainda! Pois agora parece que foi escolhida uma igualdade aleatória, e graças a sorte, conseguimos provar a identidade a partir dela. E não é isso que desejamos.
@@ -762,14 +830,36 @@ Primeiramente, não confunda isso com o Cálculo da matemática que envolve deri
   Voltando a primeira prova, vemos que a ideia que tentamos transmitir é que cada equação é equivalente a seguinte, ou seja, a primeira equação é verdadeira se, e somente se, a segunda também for verdadeira. Logo, podemos utilizar o símbolo $\iff$ entre cada uma delas.
 
   \begin{equation*}
-    \dfrac{n(n+1)}{2}+(n+1) = \dfrac{(n+1)(n+2)}{2}
+    \begin{aligned}
+      &\dfrac{(a+b)^2+(a-b)^2}{2}-2b^2 = (a-b)(a+b)\\
+      \iff &\dfrac{a^2+2ab+b^2+a^2-2ab+b^2}{2}-2b^2 = a^2+ab-ab-b^2\\
+      \iff &\dfrac{2a^2+2b^2}{2}-2b^2 = a^2-b^2\\
+      \iff &a^2+b^2-2b^2 = a^2-b^2\\
+      \iff &a^2-b^2 = a^2-b^2
+    \end{aligned}
   \end{equation*}
 
   Ou ainda, utilizar frases como ``basta provar'' entre uma igualdade e outra.
 
-  \begin{equation*}
-    \dfrac{n(n+1)}{2}+(n+1) = \dfrac{(n+1)(n+2)}{2}
-  \end{equation*}
+  Queremos provar
+
+  \[\dfrac{(a+b)^2+(a-b)^2}{2}-2b^2 = (a-b)(a+b)\]
+
+  Para fazer isso, basta provar
+
+  \[\dfrac{a^2+2ab+b^2+a^2-2ab+b^2}{2}-2b^2 = a^2+ab-ab-b^2\]
+
+  Para isso, basta provar
+
+  \[\dfrac{2a^2+2b^2}{2}-2b^2 = a^2-b^2\]
+
+  E para isso, basta provar
+
+  \[a^2+b^2-2b^2 = a^2-b^2\]
+  
+  O que é claramente verdadeiro.
+  
+  $\qquad$
 
   Ambas as provas são mais formais, apesar da última possuir uma narrativa repetitiva que nos obriga a encontrar sinônimos para a frase ``basta provar''. Contudo, podemos ser melhores.
   
@@ -777,7 +867,14 @@ Primeiramente, não confunda isso com o Cálculo da matemática que envolve deri
   Portanto, podemos reescrevê-la somente como um único cálculo direcionado para a frente, transformando $LE$ em $E$ e então, fazendo uma transformação inversa de $E$ para $LD$.
 
   \begin{equation*}
-    \dfrac{n(n+1)}{2}+(n+1) = \dfrac{(n+1)(n+2)}{2}
+    \begin{aligned}
+      \dfrac{(a+b)^2+(a-b)^2}{2}-2b^2 &= \dfrac{a^2+2ab+b^2+a^2-2ab+b^2}{2}-2b^2\\
+      &= \dfrac{2a^2+2b^2}{2}-2b^2\\
+      &= a^2+b^2-2b^2\\
+      &= a^2-b^2\\
+      &= a^2+ab-ab-b^2\\
+      &= (a-b)(a+b)
+    \end{aligned}
   \end{equation*}
 
   Por fim, obtemos uma prova clara, compacta e legível. Esse é o modelo mais utilizado pelos matemáticos em geral, e também é o qual utilizaremos nessa seção.
@@ -818,7 +915,99 @@ Primeiramente, não confunda isso com o Cálculo da matemática que envolve deri
   \end{equation*}
 
   \subsection{Calc em Lean}
-  Ainda vai ter algo escrito aqui
+  Existe uma forma de fazer cálculos matemáticos em lean: utilizando o identificador calc, seguido por um cadeia de igualdades e justificativas, separadas por ``$:$'', conforme abaixo:
+
+  \begin{lstlisting}
+    calc
+      e1 = e2 : justification1
+     ... = e3 : justification2
+     ... = e4 : justification3 \end{lstlisting}
+
+  A cadeia pode se extender quanto quisermos, até chegar na expressão desejada. E cada justificativa é composta por afirmações ou lemas/teoremas. Um exemplo super simples do uso do {\fontencoding{U}\fontfamily{cmtt}\selectfont calc} em conjuntos é o seguinte:
+
+  \begin{lstlisting}
+    import data.set
+    open set
+    variable U : Type
+    variables A B C : set U
+
+    example (h : A = B) : B = A :=
+    calc
+      B = A : eq.symm h \end{lstlisting}
+
+  \textbf{Obs:} Iremos omitir as $4$ primeiras linhas daqui pra frente, no entanto, lembre-se que elas existem.
+
+  Nesse caso, utilizamos {\fontencoding{U}\fontfamily{cmtt}\selectfont eq.symm h}, que já nos deu a igualdade {\fontencoding{U}\fontfamily{cmtt}\selectfont B = A} direto. Mas tem outro jeito. Podemos querer somente baseado em {\fontencoding{U}\fontfamily{cmtt}\selectfont h}, reescrever {\fontencoding{U}\fontfamily{cmtt}\selectfont B}, e para isso utilizamos a tática {\fontencoding{U}\fontfamily{cmtt}\selectfont rewrite}.
+
+  \begin{lstlisting}
+    example (h : A = B) : B = A :=
+    calc
+      B = A : by rewrite h \end{lstlisting}
+
+  Sempre utilizaremos essa tática quando quisermos a partir de uma igualdade, reescrever alguma parte da expressão, e pra agilizar o processo, ela pode ser abreviada para somente {\fontencoding{U}\fontfamily{cmtt}\selectfont rw}.
+  Podemos também escrever isso como lema/teorema e ainda colocar o universo e os conjuntos na definição dele (nesse caso, excluimos as linhas $3$ e $4$ que definem variáveis, omitidas anteriormente), veja:
+
+  \begin{lstlisting}
+    lemma a_eq_b {U : Type} {A B : set U} (h : A = B) : B = A :=
+    calc
+      B = A : by rw h \end{lstlisting}
+
+  É evidente que o nosso objetivo não é utilizar {\fontencoding{U}\fontfamily{cmtt}\selectfont calc} somente para coisas tão simples. Queremos usar diversas propriedades sobre conjuntos que já estão a nossa disposição, para provar cada vez mais novas propriedades, como o exemplo a seguir:
+
+  \textbf{Exemplo 1:}
+  \begin{lstlisting}
+    example : -(A \ B) = -A ∪ B :=
+    calc
+      -(A \ B) = -(A ∩ -B)  : by rw diff_eq
+           ... = -A ∪ -(-B) : by rw compl_inter
+           ... = -A ∪ B     : by rw compl_compl \end{lstlisting}
+
+
+  Todavia, não é factível esperar que todo mundo adivinhe o nome dos lemas que representa cada propriedade para então poder utilizá-las em provas de cálculo. Por esse fato, apresentamos a seguir os nomes dos lemas para todas as propriedades da seção anterior e entre parênteses, a sua versão se os conjuntos estiverem na ordem inversa.
+
+  \begin{itemize}
+    \item $A \cap A = A$ : {\fontencoding{U}\fontfamily{cmtt}\selectfont inter\_self}
+    \item $A \cup A = A$ : {\fontencoding{U}\fontfamily{cmtt}\selectfont union\_self}
+    \item $A \cap \mathcal U = A$ : {\fontencoding{U}\fontfamily{cmtt}\selectfont inter\_univ} ({\fontencoding{U}\fontfamily{cmtt}\selectfont univ\_inter})
+    \item $A \cup \mathcal U = \mathcal U$ : não existe
+    \item $A \cap \emptyset = \emptyset$ : {\fontencoding{U}\fontfamily{cmtt}\selectfont inter\_empty} ({\fontencoding{U}\fontfamily{cmtt}\selectfont empty\_inter})
+    \item $A \cup \emptyset = A$ : {\fontencoding{U}\fontfamily{cmtt}\selectfont union\_empty} ({\fontencoding{U}\fontfamily{cmtt}\selectfont empty\_union})
+    \item $\mathcal U ^c = \emptyset$ : {\fontencoding{U}\fontfamily{cmtt}\selectfont compl\_univ}
+    \item $\emptyset ^c = \mathcal U$ : {\fontencoding{U}\fontfamily{cmtt}\selectfont compl\_empty}
+    \item $A \cap A^c = \emptyset$ : {\fontencoding{U}\fontfamily{cmtt}\selectfont inter\_compl\_self} ({\fontencoding{U}\fontfamily{cmtt}\selectfont compl\_inter\_self})
+    \item $A \cup A^c = \mathcal U$ : {\fontencoding{U}\fontfamily{cmtt}\selectfont union\_compl\_self} ({\fontencoding{U}\fontfamily{cmtt}\selectfont compl\_union\_self})
+    \item $(A^c)^c = A$ : {\fontencoding{U}\fontfamily{cmtt}\selectfont compl\_compl}
+    \item $A \cap B = B \cap A$ : {\fontencoding{U}\fontfamily{cmtt}\selectfont inter\_comm}
+    \item $A \cup B = B \cup A$ : {\fontencoding{U}\fontfamily{cmtt}\selectfont union\_comm}
+    \item $(A \cap B) \cap C = A \cap (B \cap C)$ : {\fontencoding{U}\fontfamily{cmtt}\selectfont inter\_assoc}
+    \item $(A \cup B) \cup C = A \cup (B \cup C)$ : {\fontencoding{U}\fontfamily{cmtt}\selectfont union\_assoc}
+    \item $A \cap (B \cup C) = (A \cap B) \cup (A \cap C)$ : {\fontencoding{U}\fontfamily{cmtt}\selectfont inter\_distrib\_left} ({\fontencoding{U}\fontfamily{cmtt}\selectfont inter\_distrib\_right})
+    \item $A \cup (B \cap C) = (A \cup B) \cap (A \cup C)$ : {\fontencoding{U}\fontfamily{cmtt}\selectfont union\_distrib\_left} ({\fontencoding{U}\fontfamily{cmtt}\selectfont union\_distrib\_right})
+    \item $(A \cap B)^c = A^c \cup B^c$ : {\fontencoding{U}\fontfamily{cmtt}\selectfont compl\_inter}
+    \item $(A \cup B)^c = A^c \cap B^c$ : {\fontencoding{U}\fontfamily{cmtt}\selectfont compl\_union}
+    \item $A \setminus B = A \cap B^c$ : {\fontencoding{U}\fontfamily{cmtt}\selectfont diff\_eq}
+  \end{itemize}
+
+  Com toda essa bagagem já somos capazes de resolver provas bem mais complexas e que envolvem diversos passos, como a seguir:
+
+  \textbf{Exemplo 2:}
+  \begin{lstlisting}
+    example : (A \ B) ∪ (B \ A) = (A ∪ B) \ (A ∩ B) :=
+    calc
+      (A \ B) ∪ (B \ A) = (A ∩ -B) ∪ (B \ A) : by rw diff_eq
+      ... = (A ∩ -B) ∪ (B ∩ -A) : by rw diff_eq
+      ... = ((A ∩ -B) ∪ B) ∩ ((A ∩ -B) ∪ -A) : by rw union_distrib_left
+      ... = ((A ∪ B) ∩ (-B ∪ B)) ∩ ((A ∩ -B) ∪ -A) : by rw union_distrib_right
+      ... = ((A ∪ B) ∩ univ) ∩ ((A ∩ -B) ∪ -A) : by rw compl_union_self
+      ... = (A ∪ B) ∩ ((A ∩ -B) ∪ -A) : by rw inter_univ
+      ... = (A ∪ B) ∩ ((A ∪ -A) ∩ (-B ∪ -A)) : by rw union_distrib_right
+      ... = (A ∪ B) ∩ (univ ∩ (-B ∪ -A)) : by rw union_compl_self
+      ... = (A ∪ B) ∩ (-B ∪ -A) : by rw univ_inter
+      ... = (A ∪ B) ∩ -(B ∩ A) : by rw compl_inter
+      ... = (A ∪ B) ∩ -(A ∩ B) : by rw inter_comm B A
+      ... = (A ∪ B) \ (A ∩ B) : by rw diff_eq \end{lstlisting}
+
+  O leitor bem atento já notou uma pequena diferença na linha $13$ do código, não escreve...
 
 \section{Famílias Indexadas}
 
@@ -828,30 +1017,45 @@ Primeiramente, não confunda isso com o Cálculo da matemática que envolve deri
   \subsection{Em Lean}
   Ainda vai ter algo escrito aqui
 
-\section{Power Set}
+\section{Conjunto das Partes}
 
-  \subsection{Definição}
-  Ainda vai ter algo escrito aqui
+\subsection{Definição}
+Seja um conjunto $A$, o conjunto das partes de $A$, representado por $\wp(A)$, é o conjunto formado por todos os subconjuntos de $A$.
 
-  \subsection{Em Lean}
-  Ainda vai ter algo escrito aqui
+Os elementos de um conjunto das partes são, na verdade, outros conjuntos, e mais precisamente, são todos os subconjuntos que podem ser formados a partir dos elementos do conjunto de referência.
+
+Por exemplo:  Seja $A = \{2,6,9\}$ o conjunto referência.
+O conjunto das partes de $A$ é $\wp(A)
+= \{\emptyset,\{2\},\{6\},\{9\},\{2,6\},\{2,9\},\{6,9\},\{2,6,9\}\}$: 
+
+\subsection{Cardinalidade}
+Se um conjunto $A$ possui $n$ elementos, então o número de subconjuntos de $A$ é igual $2^A$.
+
+De fato, no exemplo anterior, o conjunto das partes $\wp(A)$ possui 8 elementos e $A$ possui 3 elementos, como $2^3 = 8$, temos uma prova para a cardinalidade de conjuntos das parte.
+Agora precisamos provar no caso de $A$ ter $k$ elementos. 
+
+%Termino amanhã
+
+\subsection{Em Lean}
+Ainda vai ter algo escrito aqui
 
 \section{Exercícios}
 \begin{enumerate}
     
-\item Questões de Identidades de conjuntos
-    
+\item Realize as provas das seguintes propriedades: (Fornecendo uma prova tradicional e uma em Lean.)
+
+\begin{enumerate}
+
+\item Comutatividade em ∩ e ∪ 
 \begin{lstlisting}
 import data.set
 open set
 
-section
-  variable U : Type
-  variables A B C : set U
-
---Comutatividade em ∩ e ∪ 
-  example : A ∩ B = B ∩ A := 
-  eq_of_subset_of_subset
+variable U : Type
+variables A B : set U
+ 
+example : A ∩ B = B ∩ A := 
+eq_of_subset_of_subset
     (assume x,
         assume h : x ∈ A ∩ B,
         have h₁ : x ∈ A, from h.left,
@@ -863,8 +1067,8 @@ section
         have h₂ : x ∈ A, from h.right,
         show x ∈ A ∩ B, from and.intro h₂ h₁)
 
-  example : A ∪ B = B ∪ A:=
-  eq_of_subset_of_subset
+example : A ∪ B = B ∪ A:=
+eq_of_subset_of_subset
     (assume x,
         assume h : x ∈ A ∪ B,
         or.elim h
@@ -878,11 +1082,19 @@ section
         (assume h₁ : x ∈ B,
         show x ∈ A ∪ B, from or.inr h₁)
         (assume h₁ : x ∈ A,
-        show x ∈ A ∪ B, from or.inl h₁))
+        show x ∈ A ∪ B, from or.inl h₁)) \end{lstlisting}
 
---Associatividade em ∩ e ∪ 
-  example : (A ∩ B) ∩ C = A ∩ (B ∩ C) :=
-  eq_of_subset_of_subset
+$\qquad$
+\item Associatividade em ∩ e ∪ 
+\begin{lstlisting}
+import data.set
+open set
+
+variable U : Type
+variables A B C : set U
+ 
+example : (A ∩ B) ∩ C = A ∩ (B ∩ C) :=
+eq_of_subset_of_subset
     (assume x,
         assume h : x ∈ (A ∩ B) ∩ C,
         have h₁ : x ∈ A ∩ B, from h.left,
@@ -894,8 +1106,8 @@ section
         have h₂ : x ∈ A ∩ B, from and.intro h.left h₁.left,
         show x ∈ (A ∩ B) ∩ C, from and.intro h₂ h₁.right) 
 
-  example : (A ∪ B) ∪ C = A ∪ (B ∪ C) :=
-    eq_of_subset_of_subset
+example : (A ∪ B) ∪ C = A ∪ (B ∪ C) :=
+eq_of_subset_of_subset
     (assume x,
         assume h : x ∈ (A ∪ B) ∪ C,
         or.elim h
@@ -921,11 +1133,19 @@ section
                 have h₃ : x ∈ A ∪ B, from or.inr h₂,
                 show x ∈ (A ∪ B) ∪ C, from or.inl h₃)
                 (assume h₂ : x ∈ C,
-                show x ∈ (A ∪ B) ∪ C, from or.inr h₂)))
+                show x ∈ (A ∪ B) ∪ C, from or.inr h₂))) \end{lstlisting}
 
---Distribuitividade (Dica: veja o exemplo utilizado na seção "Propriedades")
-  example : A ∩ (B ∪ C) = (A ∩ B) ∪ (A ∩ C) :=
-  eq_of_subset_of_subset
+$\qquad$
+\item Distribuitividade (Dica: veja o exemplo utilizado na seção ``Propriedades")
+\begin{lstlisting}
+import data.set
+open set
+
+variable U : Type
+variables A B C : set U
+
+example : A ∩ (B ∪ C) = (A ∩ B) ∪ (A ∩ C) :=
+eq_of_subset_of_subset
     (assume x,
     assume h : x ∈ A ∩ (B ∪ C),
     have h.r : x ∈ B ∪ C, from h.right,
@@ -944,22 +1164,38 @@ section
         show x ∈ A ∩ (B ∪ C), from and.intro h₁.left h₂)
         (assume h₁ : x ∈ A ∩ C,
         have h₂ : x ∈ B ∪ C, from or.inr h₁.right,
-        show x ∈ A ∩ (B ∪ C), from and.intro h₁.left h₂))
+        show x ∈ A ∩ (B ∪ C), from and.intro h₁.left h₂)) \end{lstlisting}
 
---Lei da Absorção (Dica: veja o exemplo utilizado na seção "Propriedades")
-  example : A ∩ (A ∪ B) = A :=
-  eq_of_subset_of_subset
+$\qquad$
+\item Lei da Absorção (Dica: veja o exemplo utilizado em ``Propriedades")
+\begin{lstlisting}
+import data.set
+open set
+
+variable U : Type
+variables A B : set U
+
+example : A ∩ (A ∪ B) = A :=
+eq_of_subset_of_subset
     (assume x,
     assume h : x ∈ A ∩ (A ∪ B),
     show x ∈ A, from h.left)
     (assume x,
     assume h : x ∈ A,
     have h₁ : x ∈ A ∪ B, from or.inl h,
-    show x ∈ A ∩ (A ∪ B), from and.intro h h₁)
-    
---De Morgan
-  open classical 
-  example : -(A ∩ B) = -A ∪ -B :=
+    show x ∈ A ∩ (A ∪ B), from and.intro h h₁) \end{lstlisting}
+
+$\qquad$
+\item Lei de De Morgan
+\begin{lstlisting}
+import data.set
+open set
+open classical 
+
+variable U : Type
+variables A B : set U
+
+example : -(A ∩ B) = -A ∪ -B :=
     ext (assume x, iff.intro
         (assume h₁ : x ∈ -(A ∩ B),
             have g₁ : x ∈ (A ∪ -A), from em (x ∈ A),
@@ -979,7 +1215,7 @@ section
                 (assume h₃ : x ∈ -A, h₃ h₂.left )
                 (assume h₃ : x ∈ -B, h₃ h₂.right)))
 
-  example : -(A ∪ B) = -A ∩ -B :=
+example : -(A ∪ B) = -A ∩ -B :=
     ext (assume x, iff.intro
         (assume h₁ : x ∈ -(A ∪ B),
             have g₁ : x ∈ -A, from
@@ -997,17 +1233,16 @@ section
             assume h₂ : x ∈ A ∪ B,
             or.elim h₂
                 (assume h3 : x ∈ A, h₁.left h3)
-                (assume h3 : x ∈ B, h₁.right h3)))
-end \end{lstlisting}
+                (assume h3 : x ∈ B, h₁.right h3))) \end{lstlisting}
 
+\end{enumerate}
+
+$\qquad$
 \item Prove que $A \cup \overline A = \mathcal U$. (Fornecendo uma prova tradicional e uma em Lean.)
 
 \textbf{Resposta} 
 
-
-
-
+$\qquad$
 \item Questões com calc
-    
     
 \end{enumerate}
