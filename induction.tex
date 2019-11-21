@@ -43,7 +43,11 @@ def temSol : periodo → bool
 #reduce temSol dia
 \end{lstlisting}
 
-O símbolo \_ (underline) indica que para qualquer entrada diferente de dia e tarde, retorne \lstinline{ff} (falso). Também podemos provar teoremas sobre o nosso tipo como, por exemplo, a função proxPer aplicada três vezes à qualquer periodo sempre é o próprio período. Traduzindo para FOL temos que \lstinline{∀ x : periodo, proxPer (proxPer (proxPer x) ) = x}. Abaixo temos a prova usando táticas:
+O símbolo \_ (underline) indica que para qualquer entrada diferente de dia e tarde, retorne \lstinline{ff} (falso). Também podemos provar teoremas sobre o nosso tipo como, por exemplo, a função proxPer aplicada três vezes à qualquer periodo sempre é o próprio período. Traduzindo para FOL temos que \lstinline{∀ x : periodo, proxPer (proxPer (proxPer x) ) = x}. 
+
+Para todo tipo definido indutivamente temos um princípio indutivo associado. Esse princípio é a regra de introdução para as proposições \textit{para todo}. Usamos regras indutivas para construir provas do tipo \textit{forall t : T, P t} onde $P$ é um predicado.
+
+Abaixo temos a prova usando táticas:
 
 \begin{lstlisting}
 example : ∀ x : periodo, proxPer (proxPer (proxPer x) ) = x :=
@@ -54,12 +58,20 @@ begin
 end
 \end{lstlisting}
 
-A tática \lstinline{induction} separa o nosso objetivo dado o construtor do tipo da variável passada, que no nosso caso é \lstinline{x}. Como ela é de um tipo enumerado, nosso objetivo é dividido em três objetivos diferentes: uma prova para cada valor possível.
+A tática \lstinline{induction} separa o nosso objetivo dado o construtor do tipo da variável passada, que no nosso caso é \lstinline{x}. Como ela é de um tipo enumerado, o princípio indutivo é simplesmente provar para cada possível valor, logo nosso objetivo é dividido em três objetivos diferentes: uma prova para cada valor possível.
 
 O operador \lstinline{rfl} funciona da seguinte maneira: ele tenta simplificar ambos os lados da igualdade seguindo definições e propriedades. Caso ele consiga chegar na igualdade desejada apenas simplificando, ele considera como trivial o objetivo.
 
 \section{Os Naturais}
-Comentar um pouco sobre a razão dos naturais serem definidos como a constante zero e a função sucessor...
+\label{sec:naturais}
+
+Lidaremos com os naturais por simplicidade e também devido à maioria dos conjuntos poderem ser construídos a partir dos naturais com apenas algumas modificações. Muitos autores discutem acerca da inclusão do número $0$. Neste livro, consideraremos o $0$ como um número natural. O conjunto dos números naturais é o conjunto:
+
+\[ \mathbb{N} = \{0,1,2,3,...\}\]
+
+Ele é construído pela constante $0$ e a função $s(n)=n+1$ chamada função sucessora. Com isso, qualquer número natural pode ser construído aplicando a função sucessora um número finito de vezes à constante $0$. De um ponto de vista mais amplo, parece que estamos usando uma definição na própria definição, pois aplicar uma função um número finito de vezes é usar os números naturais. 
+
+O princípio da indução, que será explicado na seção~\ref{sec:inducao}, descreverá essa propriedade dos naturais de uma maneira não circular. Mas por enquanto, nos atentaremos a como o Lean lida com o nosso tipo \textit{natural}.
 
 No Lean, os naturais são definidos internamente como um tipo indutivo:
 
@@ -96,11 +108,12 @@ def fibonacci : ℕ → ℕ
 | (n + 2)  := fibonacci (n + 1) + fibonacci n
 \end{lstlisting}
 
-No trecho de código acima, definimos três funções de maneira recursiva: $5*n$, $n!$ e $fib(n)$. As funções necessitam saber o que fazer com todas entradas possíveis, que no nosso caso seriam a constante $0$ e um outro natural qualquer, isto é, o sucessor de alguém. Quando colocado \lstinline{(succ n)}, o Lean interpreta como se a entrada fosse \lstinline{(succ n)}, isto é, $n$ torna-se o valor tal que \lstinline{(succ n)} é igual à entrada. Com isso, podemos atribuir o valor desejado recursivamente à nossa função. Para $n+2$ o raciocínio é idêntico: $n$ torna-se o valor tal que $n+2$ é igual à entrada.
+No trecho de código acima, definimos três funções de maneira recursiva: $5*n$, $n!$ e $fib(n)$ (a dedução de uma fórmula explícita para essas funções será melhor explicada na seção~\ref{sec:recursao}). As funções necessitam saber o que fazer com todas entradas possíveis, que no nosso caso seriam a constante $0$ e um outro natural qualquer, isto é, o sucessor de alguém. Quando colocado \lstinline{(succ n)}, o Lean interpreta como se a entrada fosse \lstinline{(succ n)}, isto é, $n$ torna-se o valor tal que \lstinline{(succ n)} é igual à entrada. Com isso, podemos atribuir o valor desejado recursivamente à nossa função. Para $n+2$ o raciocínio é idêntico: $n$ torna-se o valor tal que $n+2$ é igual à entrada.
 
 No Lean, $n + 1$ é reconhecido da mesma maneira que \lstinline{(succ n)}. Todas definições acima funcionariam da mesma maneira caso este fosse substituído. 
 
 \section{O Príncipio de Indução}
+\label{sec:inducao}
 
 P(0) e P(n) -> P(n+1) e alguns exemplos . . .
 
@@ -109,8 +122,83 @@ P(0) e P(n) -> P(n+1) e alguns exemplos . . .
 Indução começando em um natural k e indução completa . . .
 
 \section{Recursão}
+\label{sec:recursao}
 
-Algumas definições recursivas como Fibonacci, somatório, produtório, e depois alguns exemplos . . .
+Na seção~\ref{sec:naturais} definimos três exemplos de funções recursivas, a multiplicação por $5$, o fatorial e a Fibonacci.
+Por exemplo, na função \lstinline{five_mult} definimos:
+\begin{center}
+    \[ f(0) = 0 \] 
+    \[ f(n+1) = 5 + f(n) \]
+\end{center}
+Sabemos que esta função também pode escrita como $f(n) = 5\cdot n$, no entanto, as duas condições estabelecidas
+no modo recursivo definem o comportamento de $f$ para todo o conjunto $\mathbb{N}$.
+\newline \textbf{Definição: Princípio de definição por recursão} Seja $A$ um conjunto, e $\alpha \in A$,
+e $g : \mathbb{N} \times A \to A$. Então existe uma unica função $f$ que satisfaça:
+\begin{center}
+    \[ f(0) = \alpha \]
+    \[ f(n+1) = g(n, f(n))\]
+\end{center} 
+\textbf{Exemplo} Indo no caminho contrário, temos $f : \mathbb{N} \to \mathbb{N}$, $f(n) = 2^n$, vamos
+tentar expressar a função de forma recursiva. Nosso conjunto é o conjunto dos naturais, e temos $f(0) = 1$,
+além disso, como podemos expressar $2^{n+1} = 2\cdot 2^{n}$, temos que $f(n+1) = g(n, f(n)) = 2\cdot f(n)$.
+\newline O princípio da definição por recursão possui forte relação com o princípio da indução, a partir do
+primeiro conseguimos obter o segundo e a partir do segundo também conseguimos obter o primeiro. Neste capítulo
+iremos utilizar o princípio da indução para provar igualdades de funções recursivas. 
+\newline \textbf{Proposição} Tanto a notação do somatório de uma função de $\mathbb{N}$, quanto a notação
+do produtório podem ser descritas através de definições recursivas. Ou seja, seja $f : \mathbb{N} \to 
+\mathbb{N}$, $s(n) = \sum_{i=0}^{n} f(i)$, é:
+\begin{center}
+    \[ s(0) = 0\]
+    \[s(n+1)=s(n)+f(n)\]
+\end{center}
+e $p(n) = \prod_{i=0}^n f(i)$, é:
+\begin{center}
+    \[ p(0) = 1\]
+    \[ p(n+1)=p(n)\cdot f(n)\]
+\end{center}
+Da mesma forma que o princípio da indução completo, o princípio da definição por recursão também pode ser
+extendido.
+\newline \textbf{Proposição} Seja $A$ um conjunto, e $\alpha_0, \alpha_1, \dots, \alpha_m \in A$,
+e $g : \mathbb{N}^m \times A \to A$. Então existe uma única função $f$ que satisfaça:
+\begin{center}
+    \[ f(0) = \alpha_0 \]
+    \[ f(1) = \alpha_1 \]
+    \[ \dots \]
+    \[ f(m) = \alpha_m \]
+    \[ f(n+1) = g(n, f(n), f(n-1), \dots, f(n-m))\]
+\end{center} 
+\textbf{Exemplo} A ideia de extensão é que podemos definir de forma não recursiva o comportamento da
+função até um número $m$ e a partir disso a recursão em $n$ pode depender dos $m$ valores anteriores da 
+função. Como já apresentado na seção 8.2, os números de Fibonacci podem ser definidos através de 
+recursão. Temos que $\alpha_0 = 0$ e $\alpha_1 = 1$, e $f(n+1) = g(n, f(n-1), f(n-2)) = f(n-1) + f(n-2)$. 
+Neste exemplo, nosso $m$ é 2.
+\newline \textbf{Exemplo} Para ilustrar a relação entre o princípio de indução e o princípio da definição por recursão
+vamos provar a fórmula explícita da sequência de Fibonacci utilizando de indução. Vamos provar que
+\begin{center}   
+\[ F(n) = \frac{1}{\sqrt{5}}\bigg \{ \Big (\frac{1+\sqrt{5}}{2} \Big )^n + \Big (\frac{1-\sqrt{5}}{2}\Big )^n\bigg \}\]
+\end{center}
+\textbf{i)} Para o caso $n=0$ temos que $F(0) = 0$ (definição recursiva) e
+\begin{center}
+    \[ \frac{1}{\sqrt{5}}\bigg \{ \Big(\frac{1+\sqrt{5}}{2}\Big)^0 - \Big(\frac{1-\sqrt{5}}{2}\Big)^0 \bigg \} = \frac{1}{\sqrt{5}}(1 - 1) = 0 \]
+\end{center}
+Para o caso $n=1$ temos que $F(1) = 1$ (definição recursiva) e
+\begin{center}
+    \[ \frac{1}{\sqrt{5}} \bigg \{ \Big(\frac{1+\sqrt{5}}{2} \Big) - \Big(\frac{1 -\sqrt{5}}{2} \Big)\bigg \} =\frac{1}{\sqrt{5}} \bigg \{ \Big(\frac{1+\sqrt{5} - 1 + \sqrt{5}}{2} \Big)\bigg \} = 1\]
+\end{center}
+\textbf{ii)} Pela hipótese de indução, supomos que a propriedade vale para $F(p-2)$ e para $F(p-1)$,
+para $F(p)$ teremos:
+\begin{center}
+    \[ F(p) = F(p-1) + F(p-2) = \]
+    \[ = \frac{1}{\sqrt{5}}\bigg \{ \Big (\frac{1+\sqrt{5}}{2} \Big )^{p-1} + \Big (\frac{1-\sqrt{5}}{2}\Big )^{p-1}\bigg \} + \frac{1}{\sqrt{5}}\bigg \{ \Big (\frac{1+\sqrt{5}}{2} \Big )^{p-2} + \Big (\frac{1-\sqrt{5}}{2}\Big )^{p-2}\bigg \}\]
+    \[ = \frac{1}{\sqrt{5}}\bigg \{ \Big (\frac{1+\sqrt{5}}{2} \Big )^{p-2} \Big( 1 + \frac{1+\sqrt{5}}{2}\Big) + \Big (\frac{1-\sqrt{5}}{2}\Big )^{p-2} \Big( 1 +\frac{1 - \sqrt{5}}{2}\Big)\bigg \}\]
+    \[ = \frac{1}{\sqrt{5}}\bigg \{ \Big (\frac{1+\sqrt{5}}{2} \Big )^{p-2} \Big( \frac{3+\sqrt{5}}{2}\Big) + \Big (\frac{1-\sqrt{5}}{2}\Big )^{p-2} \Big( \frac{3 - \sqrt{5}}{2}\Big)\bigg \}\]
+    \[ = \frac{1}{\sqrt{5}}\bigg \{ \Big (\frac{1+\sqrt{5}}{2} \Big )^{p-2} \Big( \frac{1+2\cdot \sqrt{5} + 5}{4}\Big) + \Big (\frac{1-\sqrt{5}}{2}\Big )^{p-2} \Big( \frac{1 - 2\cdot \sqrt{5} +5}{4}\Big)\bigg \}\]
+    \[ = \frac{1}{\sqrt{5}}\bigg \{ \Big (\frac{1+\sqrt{5}}{2} \Big )^{p-2} \Big( \frac{1+\sqrt{5}}{2}\Big)^2 + \Big (\frac{1-\sqrt{5}}{2}\Big )^{p-2} \Big( \frac{1 - \sqrt{5}}{2}\Big)^2 \bigg \}\]
+    \[ = \frac{1}{\sqrt{5}}\bigg \{ \Big (\frac{1+\sqrt{5}}{2} \Big )^p + \Big (\frac{1-\sqrt{5}}{2}\Big )^p\bigg \} \]
+\end{center}
+Como queriamos demonstrar. Observe que o principal truque para a demonstração ocorreu na linha 5, 
+em que multiplicamos a fração por $2$ no numerador e denominador e separamos $\frac{6}{4}$ em $\frac{1+5}{4}$
+e em seguida concluímos que é o formato de um quadrado perfeito.
 
 \section{Operadores Aritméticos}
 

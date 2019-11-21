@@ -1,14 +1,88 @@
 \section{Semântica}
     
-   A seção anterior abordou a sintaxe da lógica de primeira ordem, ou seja, apresentou os símbolos e estruturas das fórmulas deste sistema. A semântica, por outro lado, define a verdade das fórmulas pela \textbf{interpretação} e \textbf{valoração}.
+    A seção anterior abordou a sintaxe da lógica de primeira ordem, ou seja, apresentou os símbolos e estruturas das fórmulas deste sistema. A semântica, por outro lado, define o valor-verdade das fórmulas pela \textbf{interpretação} e \textbf{valoração}.
+   
+   Analisemos alguns exemplos deste sistema lógico.
+   Sejam:
+   \begin{itemize}
+       \item $\mathbb{N}$ um domínio escolhido;
+       \item $0, 1, 2, 3$ símbolos constantes;
+       \item \textit{adicao} e \textit{sucessor} os símbolos de função que operam neste domínio;
+       \item  \textit{par}, \textit{impar}, \textit{menorDoQue},\textit{menorIgualDoQue} os simbolos de predicado .
+   \end{itemize}
+    A expressão 
+   \begin{center}
+       $\forall x \ ( \ menorDoQue(0, x) \ )$
+   \end{center}
+   
+   é falsa, uma vez que para $x$ assumindo o valor de $0$, a relação \textit{menorDoQue} não é válida. Já a expressão
+   
+   \begin{center}
+       $\forall x \ ( \ menorIgualDoQue( 0, x) \ )$
+   \end{center}
+    
+    é verdadeira no domínio $\mathbb{N}$, porém se o domínio de interesse fosse $\mathbb{Z}$ a expressão se tornaria falsa.
+    
+    Logo, o valor verdade de uma sentença depende de como os quantificadores, o domínio, funções, predicados e relações são interpretados. 
+    Porém, há algumas fórmulas que assumem sempre valor verdadeiro independente de qual for a interpretação, análogo à tautologia da lógica proposicional:
+    
+    \begin{center}
+        $\forall x \ ( \  par(x) \rightarrow par(x) \ )$
+    \end{center}
+    
+    Sentenças assim são chamadas \textbf{válidas}.
+    
+    Analogamente à valoração em lógica proposicional, há o \textbf{modelo} em lógica de primeira ordem. Enquanto a valoração permitia que atribuíssemos valores-verdade ( V ou F ) à todas as fórmulas da lógica proposicional, a escolha de um modelo permite a atribuição de valores-verdade a todas as sentenças da lógica de primeira ordem.
     
     \subsection{Interpretações}
     
-    \subsection{Verdade e modelos}
+    Usamos anteriormente alguns símbolos para representar predicados e constantes. Alguns deles:
     
+    \begin{center}
+        $0$, $1$, $ par$, $maiorDoQue$
+    \end{center}
+    
+    
+    Estes símbolos são autodescritivos considerando o domínio $\mathbb{N}$, e se torna natural sua valoração. Agora, sejam os seguintes predicados no mesmo domínio:
+    
+    \begin{center}
+        $ligeiro$, $contente$, $facil$
+    \end{center}
+    
+    Quando o predicado $ligeiro$ é verdadeiro? \\
+    Não conseguimos responder, uma vez que não foram dadas informações suficientes.
+    Se $ligeiro$ são os números ímpares, então $2, 4, 6, ...$ são  $ligeiro$ e   $1, 3, 5, ...$ não são. Seja $contente$ os múltiplos de $3$. Então $6$ é $ligeiro$ e $contente$. Se $ligeiro$ fossem os números da sequência de Fibonacci, então $6$ seria $contente$, mas não seria $ligeiro$.
+    Cada explicação dada ( ímpar, múltiplos de $3$, números da sequência de Fibonacci) são \textbf{interpretações}. E vemos que é necessário a interpretação para a valoração. 
+    
+    
+    Assim como os predicados, podemos interpretar as funções, relações e constantes:
+    
+    \begin{itemize}
+        \item A interpretação de um predicado unário $P$ é um conjunto de elementos do domínio os quais $P$ é verdadeiro. 
+        \item Para uma relação $R$ com aridade $n$, a interpretação é o conjunto de todas as tuplas com $n$ elementos para as quais $R$ é verdadeiro.
+        \item E por fim, a interpretaçãode de uma função $f$ com aridade $n$, é uma função que relaciona $n$ elementos do domínio a outro elemento também do domínio.\\
+     \end{itemize}
+     
+     É importante ressaltar a diferença entre símbolo sintático e semântica do predicado, função, relação e constante. Veja que não faz sentido escrevermos a relação $sucessorDe(4,3)$, pois $sucessorDe$ é um símbolo sintático sem significado por si só. \\
+     Outra distinção importante é entre os objetos dos domínio e os símbolos constantes. Se considerarmos o domínio U de todas as cores, conhecemos os objetos deste domínio, mas podemos escrever o símbolo constante $verde$ e podemos interpretá-lo com verde ou como rosa, objetos do domínio.
+     De maneira análoga, podemos definir os símbolos $0$, $1$, $2$ e interpretálos como os objetos do domínio $0$, $1$ e $2$.
+     
+    \subsection{Verdade e modelos}
+       
     \subsection{Exemplos}
     
     \subsection{Validação e consequência lógica}
     
     \subsection{Correção e completude}
     
+    \begin{table}[htb]
+      \centering
+      \begin{tabular}{|l|l|l|l|}
+      \hline
+      G          & G          & B     &b           \\ \hline
+      b          & b          & G     &G           \\ \hline
+      g          & B          & b     &b            \\ \hline
+      G          & g          & G     &B            \\ \hline
+      
+      \end{tabular}
+      \end{table}

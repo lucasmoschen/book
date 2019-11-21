@@ -1,0 +1,168 @@
+\subsection{Igualdade}
+
+Na lógica de primeira ordem também é utilizado o símbolo \lstinline{=} para expressar o fato de que duas
+expressões se referem ao mesmo objeto, como em "s = t", em que definimos que ambos s e t estão se referindo
+ao mesmo objeto do universo. A igualdade é utilizada em expressões como "1 + 1 = 2" ou "seu professor é o
+meu pai", note que neste segundo exemplo não utilizamos o símbolo de forma explícita, no entanto, com as 
+funções da linguagem afirmamos que "seu professor" e "meu pai" são expressões que se referem ao mesmo objeto.
+\newline A definição de igualdade e identidade ao longo da história foram frequentemente debatidas entre
+filósofos. Um exemplo é o paradoxo do Navio de Teseu, inspirado na história do herói grego Teseu que era
+navegava de Atena para Creta para ser sacrificado em um tributo. No paradoxo, temos A = navio 
+que Teseu começou a viagem; e B = navio que Teseu terminou a viagem; ao longo da viagem o navio foi aos poucos
+necessitando de reparos, troca de peças, até o momento que ao final da viagem, todas as peças do navio já
+haviam sido trocadas, com isso podemos afirmar que A = B? Em uma extensão do paradoxo, existe um outro barco,
+o Carniceiro, que pega as peças que Teseu joga ao mar e substitui em seu barco, ao final da viagem o Carniceiro
+possui todas as peças que o barco de Teseu tinha ao sair para navegar. Qual dos dois barcos é o de Teseu? Este paradoxo
+foi discutido por filósofos como Heráclito, Sócrates, Hobbes, John Locke e Leibniz. No entanto, em lógica ao usarmos
+o símbolo de igualdade é pressuposto a nossa interpretação do mundo, e escrever que "s = t" afirma que
+s e t representam exatamente o mesmo objeto.
+\newline \textbf{Definição: Igualdade} Duas expressões são iguais se referem-se a exatamente o mesmo objeto do universo
+e é utilizado o símbolo $=$, chamado de igualdade, para representar essa relação. Possui as
+seguintes propriedades:
+\begin{itemize}
+    \item Reflexão: $t = t$, para qualquer termo $t$.
+    \item Simetria: se $s=t$, então $t=s$.
+    \item Transitividade: se $s=t$ e $t=v$, então $s=v$.
+\end{itemize}
+\begin{center}
+    \begin{bprooftree}
+        \AxiomC{}
+        \RightLabel{\scriptsize refl}
+        \UnaryInfC{$t=t$}
+    \end{bprooftree}
+    \begin{bprooftree}
+        \AxiomC{$s=t$}
+        \RightLabel{\scriptsize sim}
+        \UnaryInfC{$t=s$}
+    \end{bprooftree}
+    \begin{bprooftree}
+        \AxiomC{$s=t$}
+        \AxiomC{$t=v$}
+        \RightLabel{\scriptsize trans}
+        \BinaryInfC{$s=v$}
+    \end{bprooftree}
+\end{center}
+\textbf{Exemplo:} No universo $\mathbb{N}$ com constantes $\{ 1, 2,3,5,7\}$ e funções de adição e 
+multiplicação, temos duas hipóteses, $2+5 = 3 \cdot 2 +1$ e $7 = 3\cdot 2 +1$. 
+Pela propriedade da simetria, $3\cdot 2 +1= 7$, e por fim com a proprieade da transividade podemos 
+afirmar que $2+5 = 7$. Representando esta mesma demonstração em uma dedução natural, temos:
+\begin{center}
+    \begin{bprooftree}
+        \AxiomC{$2+5 = 3\cdot 2 +1$}
+        \AxiomC{$7 = 3 \cdot 2 + 1$}
+        \RightLabel{\scriptsize sim}
+        \UnaryInfC{$3 \cdot 2 +1 = 7$}
+        \RightLabel{\scriptsize trans}
+        \BinaryInfC{$2+7 = 7$}
+    \end{bprooftree}
+\end{center}
+Na dedução, utilizamos apenas a regra de simetria e em sequência a regra de transitividade. Como 
+expressariamos esta simples dedução em Lean? A primeira necessidade é definir nosso universo.
+\begin{lstlisting}
+variable N : Type
+variable add : N → N → N
+variable mul: N → N → N
+variables um dois tres cinco sete: N
+\end{lstlisting}]
+Definimos a nossa linguagem lógica, com as funções de adição e multiplicação e algumas contantes, números. As 
+primeiras propriedades da igualdade em Lean são utilizadas da forma \lstinline{eq.refl} para a propriedade
+reflexiva, \lstinline{eq.symm} para a propriedade da simetria e \lstinline{eq.trans} para a propriedade 
+da transividade. Neste exemplo iremos apenas utilizar as duas últimas. A dedução termina assim:
+\begin{lstlisting}
+example (h1 : add dois cinco = add (mul tres dois) um) 
+        (h2 : sete =  add (mul tres dois) um):  
+(add dois cinco = sete) :=
+have h3 : (add (mul tres dois) um = sete), from eq.symm h2,
+show add dois cinco = sete, from eq.trans h1 h3
+\end{lstlisting}
+Na linha 4 utilizamos a primeira regra, a \lstinline{eq.symm} com a nossa hipótese \lstinline{h2}, e terminamos
+a prova com a regra \lstinline{eq.trans} utilizando das hipóteses \lstinline{h1} e \lstinline{h3}. Note que 
+apesar de ser uma prova com apenas dois passos, foi uma prova extremamente verbosa, isto ocorreu pela 
+maneira que definimos a nossa linguagem, para torná-la mais curta podemos utilizar de símbolox infixados
+da adição e da multiplicação e poderiamos utilizar os algorimos no lugar do nome dos números, no entanto,
+essa segunda sugestão é mais complicada de se realizar. A nova dedudção fica:
+\begin{lstlisting}
+namespace hidden
+constant N : Type
+constant add : N → N → N
+constant mul: N → N → N
+constants um dois tres cinco sete: N
+    
+infix + := add
+infix * := mul
+    
+example (h1 :  dois + cinco = (tres * dois) + um) 
+        (h2 : sete =  (tres * dois) + um): 
+        (dois + cinco = sete) :=
+    have h3 : (tres * dois) + um = sete, from eq.symm h2,
+    show dois + cinco = sete, from eq.trans h1 h3
+end hidden 
+\end{lstlisting}
+A primeira necessidade foi criar um \lstinline{namespace hidden}, pois para definir um \lstinline{infix},
+precisamos que a nossa função seja uma \lstinline{costant} e apenas podemos declarar \lstinline{constant}
+dentro de um \lstinline{namespace}. Dessa forma, alteramos todas as nossas variáveis para constantes e 
+utilizamos na linha 7 e 8 a definição do \lstinline{infix}, a sintaxe é o símbolo que será usado, \lstinline{:=}
+e em seguida a função que será infixada.
+Essas primeiras propriedades da adição não são suficientes, por exemplo, em uma linguagem com o predicado
+par, a função da adição e os números 1 e 2, com as hipóteses $1+1 =2$ e $par(2)$, como provaríamos que 
+$par(1+1)$ também vale? É para isso que também são definidas propriedades da subsituição em predicados e funções.
+\newline \textbf{Definição:} Seja $s$ e $t$ constantes, $P$ um predicado unário e $r$ uma função unária.
+Para a relação de igualdade entre dois objetos também vale as propriedades:
+\begin{itemize}
+    \item Subsituição em função: se $s=t$, então $r(s) = r(t)$. 
+    \item Subsituição em predicado: se $s=t$ e $P(s)$, então $P(t)$.
+\end{itemize}
+\begin{center}
+    \begin{bprooftree}
+        \AxiomC{$s=t$}
+        \RightLabel{\scriptsize sub}
+        \UnaryInfC{$r(s) = r(t)$}
+    \end{bprooftree}
+    \begin{bprooftree}
+        \AxiomC{$s=t$}
+        \AxiomC{$P(s)$}
+        \RightLabel{\scriptsize sub}
+        \BinaryInfC{$P(t)$}
+    \end{bprooftree}
+\end{center}
+\textbf{Exemplo:} Agora com um universo que abrange os números reais, temos o predicado unário $irracional$,
+a função unária $raiz$, a função binária $mul$ e as contantes $dois, tres, dezoito$. Com as hipóteses 
+$raiz (dezoito) = tres*(raiz(dois))$ e $\forall x, irracional(x \cdot (raiz (dois)))$ queremos provar $irracional(raiz (dezoito))$. O primeiro
+passo é a exclusão do universal na segunda hipótese, utilizando a constante $tres$ obtemos $irracional (tres \cdot raiz dois)$,
+para aplicar a substituição do predicado, precisamos invertar nossa igualdade utilizando a simetria, e por 
+fim utilizamos a regra de substituição. A dedução natural fica:
+\begin{center}
+    \begin{bprooftree}
+        \AxiomC{$raiz(dezoito) = tres \cdot raiz(dois)$}
+        \RightLabel{\scriptsize sim}
+        \UnaryInfC{$tres \cdot raiz(dois) = raiz(dezoito) $}
+        \AxiomC{$\forall x, irracional(x\cdot raiz(dois))$}
+        \UnaryInfC{$irracional(tres \cdot raiz(dois))$}
+        \RightLabel{\scriptsize subs}
+        \BinaryInfC{$irracional(raiz(dezoito))$}
+    \end{bprooftree}
+\end{center}
+A mesma demosntração utilizando o Lean:
+\begin{lstlisting}
+namespace hidden
+
+constant N : Type
+constant mul : N → N → N
+constant raiz : N → N
+constant irracional : N → Prop
+constants dois tres dezoito : N
+
+infix * := mul
+
+example (h1 : raiz dezoito = tres * raiz dois)
+        (h2 : ∀ x : N, irracional(x * raiz dois)) :
+        irracional (raiz dezoito):=
+have h3 : irracional(tres * raiz dois), from h2 tres,
+have h4 : tres * raiz dois = raiz dezoito, from eq.symm h1,
+show irracional (raiz dezoito), from eq.subst h4 h3
+
+end hidden
+\end{lstlisting}
+Para a regra de substituição da igualdade utilizamos \lstinline{eq.subst}, como utilizamos na linha 16.
+Note que além dessa regra, apenas utilizamos a exclusão do universal utilizando a constante \lstinline{tres}
+na linha 14 e a regra de simetria da igualdade na linha 15.
