@@ -199,6 +199,8 @@ example : A ∧ B := teo_U_e_V h1 h2
 
 \noindent Esse tipo de método tambem permite a generalização do resultado obtido. De fato, o teorema vale para quaisquer proposições $U$ e $V$ que se deseje provar. Quando pusemos chaves, \textit{\{U V : Prop\}} na declaração do teorema na linha 2, o próprio programa considerou como argumentos que poderiam ser compreendidos no contexto em que fosse utilizado.
 
+\vspace{5mm}
+
 Naturalmente, diferentes tipos de proposição podem demandar por uma construção distinta, e esse é um fato inerente ao que se deseja discutir. Nesse sentido, Lean disponibiliza diferentes modos de construção para prova. Esses modos serão abordados em uma gama de exemplos nos próximos capítulos; abordamos aqui, apenas existencia, aspectos e vantagens em cada uso:
 
 \subsection{Modo Termo}
@@ -267,8 +269,114 @@ Além disso, usamos uma série de palavras-reservadas, como \textit{intro}, \tex
 
 Note que cada uma dessas tarefas exige que o provador resolva problemas de forma autonoma, retirando essa obrigação do usuário. Pequenas automações como essas agilizam grandemente a resolução, enquanto retiram a autonomia e compreensão do usuário sobre a demonstração.
 
-\subsection{Modo Cálculo}
-Finalmente,
+\section{Cálculos em Lean}
+Não confunda com derivadas, integrais ou somatórios; o cálculo essencial desde a matemática básica, como uma sequência de operações para provar que certa relação entre duas expressões. Considere o seguinte exemplo, em que desejamos mostrar a validade de uma iguldade:
 
-\section{Aspectos Práticos}
-Faz sentido falarmos em aspectos práticos sobre o Lean; onde ele está disponivel online, ou como conhecer os teoremas básicos disponíveis, sugestões para instalação, e uso.
+\begin{equation*}
+    \begin{aligned}
+      \dfrac{(a+b)^2+(a-b)^2}{2}-2b^2 &=^? (a-b)(a+b)\\
+      \dfrac{a^2+2ab+b^2+a^2-2ab+b^2}{2}-2b^2 &=^? a^2+ab-ab-b^2\\
+      \dfrac{2a^2+2b^2}{2}-2b^2 &=^? a^2-b^2\\
+      a^2+b^2-2b^2 &=^? a^2-b^2\\
+      a^2-b^2 &= a^2-b^2
+    \end{aligned}
+\end{equation*}
+
+\noindent A impressão é a de que começamos com uma identidade complexa, e conseguimos provar que $x=x$. O melhor a se fazer é justamente partir de uma igualdade válida $x=x$ e construir a igualdade desejada.
+
+%  \begin{equation*}
+%    \begin{aligned}
+%      a^2-b^2 &= a^2-b^2\\
+%      a^2+b^2-2b^2 &= a^2-b^2\\
+%     \dfrac{a^2+2ab+b^2+a^2-2ab+b^2}{2}-2b^2 &= a^2+ab-ab-b^2\\
+%      \dfrac{(a+b)^2+(a-b)^2}{2}-2b^2 &= (a-b)(a+b)
+%    \end{aligned}
+%  \end{equation*}
+
+%\noindent Isso é um tanto estranho: saimos de uma igualdade arbitraria, e conseguimos provar a identidade desejada.
+
+A ideia que tentamos transmitir é a de que cada equação é equivalente a seguinte. A primeira equação é verdadeira se, e só se, a próxima for verdadeira. Logo, podemos utilizar o símbolo $\iff$ entre cada uma delas.
+
+  \begin{equation*}
+    \begin{aligned}
+      \dfrac{(a+b)^2+(a-b)^2}{2}-2b^2 &= (a-b)(a+b) & \iff \\
+      \dfrac{a^2+2ab+b^2+a^2-2ab+b^2}{2}-2b^2 &= a^2+ab-ab-b^2 & \iff \\
+      \dfrac{2a^2+2b^2}{2}-2b^2 &= a^2-b^2 & \iff \\
+      a^2+b^2-2b^2 &= a^2-b^2 & \iff \\
+      a^2-b^2 &= a^2-b^2 &
+    \end{aligned}
+  \end{equation*}
+
+Ou ainda, frases como \textit{basta provar} entre uma igualdade e outra, destacando a passagem de uma prova como equivalente a próxima prova.
+
+  \begin{equation*}
+    \begin{aligned}
+      \dfrac{(a+b)^2+(a-b)^2}{2}-2b^2 &= (a-b)(a+b) & \text{para isso, basta provar} \\
+      \dfrac{a^2+2ab+b^2+a^2-2ab+b^2}{2}-2b^2 &= a^2+ab-ab-b^2 & \textit{o que é equivalente a} \\
+      \dfrac{2a^2+2b^2}{2}-2b^2 &= a^2-b^2 & \textit{de onde basta mostrar} \\
+      a^2+b^2-2b^2 &= a^2-b^2 & \textit{para isso, mostro que} \\
+      a^2-b^2 &= a^2-b^2 & \textit{o que é verdadeiro. } \square
+    \end{aligned}
+  \end{equation*}
+
+\noindent Ambas as provas são válidas, apesar da última possuir uma narrativa repetitiva que nos obriga a encontrar sinônimos para \textit{basta provar}. Ainda assim, construções desse tipo são extremamente comuns.
+
+%Vamos denominar $LE$ e a expressão do lado direito por $LD$. Assim, o que a nossa demonstração está fazendo é transformar $LE$ numa expressão $E$ e, $LD$ na mesma expressão $E$.
+%Portanto, podemos reescrevê-la somente como um único cálculo direcionado para a frente, transformando $LE$ em $E$ e então, fazendo uma transformação inversa de $E$ para $LD$.
+
+%  \begin{equation*}
+%    \begin{aligned}
+%      \dfrac{(a+b)^2+(a-b)^2}{2}-2b^2 &= %\dfrac{a^2+2ab+b^2+a^2-2ab+b^2}{2}-2b^2\\
+%      &= \dfrac{2a^2+2b^2}{2}-2b^2\\
+%      &= a^2+b^2-2b^2\\
+%      &= a^2-b^2\\
+%      &= a^2+ab-ab-b^2\\
+%      &= (a-b)(a+b)
+%    \end{aligned}
+%  \end{equation*}
+
+%Obtivemos uma prova clara, compacta e legível. Esse é o modelo mais utilizado pelos matemáticos em geral, e também é o qual utilizaremos nessa seção.
+
+\subsection{O modo Calc}
+Lean disponibiliza um ambiente para cálculos desse tipo, através do identificador \textit{calc}, seguido por um cadeia de passagens, separadas por ``$:$'', conforme abaixo:
+
+\vspace{5mm}
+\begin{lstlisting}
+-- exemplo de extrutura --
+show expressaoX < expressaoY, from
+calc
+  expressaoX = expressao1 : justificativa1
+         ... = expressao2 : justificativa2
+         ... < expressaoY : justificativa3
+\end{lstlisting}
+\vspace{5mm}
+
+\noindent A cadeia pode se extender quanto quisermos, até chegar na expressão desejada. E cada justificativa é composta por afirmações ou lemas/teoremas. Um exemplo do uso do {\fontencoding{U}\fontfamily{cmtt}\selectfont calc} em conjuntos é o seguinte:
+
+\vspace{5mm}
+\begin{lstlisting}
+variables a b : bool
+
+example (h : a = b) : b = a :=
+  calc
+    b = a : eq.symm h
+\end{lstlisting}
+\vspace{5mm}
+
+\noindent Esse ambiente representa uma grande utilidade quando desejamos provas procedurais desse tipo.
+
+\section{Lean na prática}
+Apresentamos alguns fatos sobre uso do Lean relevantes, que não puderam ser apresentados ao longo do capítulo.
+
+\begin{itemize}
+    \item Lean está disponível no \textit{GitHub}, onde está publicada a sua página\footnote{Lean Theorem Prover: leanprover.github.io}, contendo tutoriais completos para \textit{download}, documentação, tutoriais sobre \textit{Theorem Proving}, além do histórico de colaboradores.
+
+    % https://leanprover.github.io/talks/vu2019.pdf
+    \item Atualmente, a quarta geração da plataforma está sendo desenvolvida, já em fase final; breve estará sendo disponibilizado Lean 4, que pretende servir como uma linguagem de propósito geral.
+
+    \item Existe uma comunidade extremamente ativa mantendo o desenvolvimento de um repositório de teoremas matemáticos fundamentais em Lean, na \textit{mathlib\footnote{mathlib: github.com/leanprover-community/mathlib}}. Os próprios usuários desenvolvem provas para os teoremas disponibilizados.
+
+    \item Existe um fórum\footnote{Forum: leanprover.zulipchat.com/login/} ativo sobre Lean, onde dúvidas ou discussões são frequentes. Há ainda uma página\footnote{novos-mebros: leanprover.zulipchat.com/login/#narrow/stream/113489-new-members} para novos membros.
+\end{itemize}
+
+\noindent No futuro, alguns desses fatos podem ser alterados, mas vale abrir a discussão sobre esses tópicos, em especial incentivamos o contato de novos usuários de Lean com a ampla comunidade de desenvolvedores.
