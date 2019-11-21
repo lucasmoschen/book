@@ -54,6 +54,22 @@ da seguinte forma:
 \begin{lstlisting}
 variables X Y : Type
 variable f : X → Y
+
+def square (n : ℕ) := n*n 
+
+def double (n : ℕ) := 2*n
+
+variable n: ℕ 
+
+#check square n     -- square n : ℕ 
+
+#reduce square 3    -- 9
+
+#eval square 12120  -- #reduce 12120 return an error, because the 
+                    -- calculation is by deep recursion
+
+example (n : ℕ) : double 2 = square 2 :=
+by rw [double, square]
 \end{lstlisting}
 
 Lembre-se que diferenciamos o tipo $X$ do tipo $set~X$ em Lean.
