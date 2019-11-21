@@ -859,7 +859,99 @@ Primeiramente, não confunda isso com o Cálculo da matemática que envolve deri
   \end{equation*}
 
   \subsection{Calc em Lean}
-  Ainda vai ter algo escrito aqui
+  Existe uma forma de fazer cálculos matemáticos em lean: utilizando o identificador calc, seguido por um cadeia de igualdades e justificativas, separadas por ``$:$'', conforme abaixo:
+
+  \begin{lstlisting}
+    calc
+      e1 = e2 : justification1
+     ... = e3 : justification2
+     ... = e4 : justification3 \end{lstlisting}
+
+  A cadeia pode se extender quanto quisermos, até chegar na expressão desejada. E cada justificativa é composta por afirmações ou lemas/teoremas. Um exemplo super simples do uso do {\fontencoding{U}\fontfamily{cmtt}\selectfont calc} em conjuntos é o seguinte:
+
+  \begin{lstlisting}
+    import data.set
+    open set
+    variable U : Type
+    variables A B C : set U
+
+    example (h : A = B) : B = A :=
+    calc
+      B = A : eq.symm h \end{lstlisting}
+
+  \textbf{Obs:} Iremos omitir as $4$ primeiras linhas daqui pra frente, no entanto, lembre-se que elas existem.
+
+  Nesse caso, utilizamos {\fontencoding{U}\fontfamily{cmtt}\selectfont eq.symm h}, que já nos deu a igualdade {\fontencoding{U}\fontfamily{cmtt}\selectfont B = A} direto. Mas tem outro jeito. Podemos querer somente baseado em {\fontencoding{U}\fontfamily{cmtt}\selectfont h}, reescrever {\fontencoding{U}\fontfamily{cmtt}\selectfont B}, e para isso utilizamos a tática {\fontencoding{U}\fontfamily{cmtt}\selectfont rewrite}.
+
+  \begin{lstlisting}
+    example (h : A = B) : B = A :=
+    calc
+      B = A : by rewrite h \end{lstlisting}
+
+  Sempre utilizaremos essa tática quando quisermos a partir de uma igualdade, reescrever alguma parte da expressão, e pra agilizar o processo, ela pode ser abreviada para somente {\fontencoding{U}\fontfamily{cmtt}\selectfont rw}.
+  Podemos também escrever isso como lema/teorema e ainda colocar o universo e os conjuntos na definição dele (nesse caso, excluimos as linhas $3$ e $4$ que definem variáveis, omitidas anteriormente), veja:
+
+  \begin{lstlisting}
+    lemma a_eq_b {U : Type} {A B : set U} (h : A = B) : B = A :=
+    calc
+      B = A : by rw h \end{lstlisting}
+
+  É evidente que o nosso objetivo não é utilizar {\fontencoding{U}\fontfamily{cmtt}\selectfont calc} somente para coisas tão simples. Queremos usar diversas propriedades sobre conjuntos que já estão a nossa disposição, para provar cada vez mais novas propriedades, como o exemplo a seguir:
+
+  \textbf{Exemplo 1:}
+  \begin{lstlisting}
+    example : -(A \ B) = -A ∪ B :=
+    calc
+      -(A \ B) = -(A ∩ -B)  : by rw diff_eq
+           ... = -A ∪ -(-B) : by rw compl_inter
+           ... = -A ∪ B     : by rw compl_compl \end{lstlisting}
+
+
+  Todavia, não é factível esperar que todo mundo adivinhe o nome dos lemas que representa cada propriedade para então poder utilizá-las em provas de cálculo. Por esse fato, apresentamos a seguir os nomes dos lemas para todas as propriedades da seção anterior e entre parênteses, a sua versão se os conjuntos estiverem na ordem inversa.
+
+  \begin{itemize}
+    \item $A \cap A = A$ : {\fontencoding{U}\fontfamily{cmtt}\selectfont inter\_self}
+    \item $A \cup A = A$ : {\fontencoding{U}\fontfamily{cmtt}\selectfont union\_self}
+    \item $A \cap \mathcal U = A$ : {\fontencoding{U}\fontfamily{cmtt}\selectfont inter\_univ} ({\fontencoding{U}\fontfamily{cmtt}\selectfont univ\_inter})
+    \item $A \cup \mathcal U = \mathcal U$ : não existe
+    \item $A \cap \emptyset = \emptyset$ : {\fontencoding{U}\fontfamily{cmtt}\selectfont inter\_empty} ({\fontencoding{U}\fontfamily{cmtt}\selectfont empty\_inter})
+    \item $A \cup \emptyset = A$ : {\fontencoding{U}\fontfamily{cmtt}\selectfont union\_empty} ({\fontencoding{U}\fontfamily{cmtt}\selectfont empty\_union})
+    \item $\mathcal U ^c = \emptyset$ : {\fontencoding{U}\fontfamily{cmtt}\selectfont compl\_univ}
+    \item $\emptyset ^c = \mathcal U$ : {\fontencoding{U}\fontfamily{cmtt}\selectfont compl\_empty}
+    \item $A \cap A^c = \emptyset$ : {\fontencoding{U}\fontfamily{cmtt}\selectfont inter\_compl\_self} ({\fontencoding{U}\fontfamily{cmtt}\selectfont compl\_inter\_self})
+    \item $A \cup A^c = \mathcal U$ : {\fontencoding{U}\fontfamily{cmtt}\selectfont union\_compl\_self} ({\fontencoding{U}\fontfamily{cmtt}\selectfont compl\_union\_self})
+    \item $(A^c)^c = A$ : {\fontencoding{U}\fontfamily{cmtt}\selectfont compl\_compl}
+    \item $A \cap B = B \cap A$ : {\fontencoding{U}\fontfamily{cmtt}\selectfont inter\_comm}
+    \item $A \cup B = B \cup A$ : {\fontencoding{U}\fontfamily{cmtt}\selectfont union\_comm}
+    \item $(A \cap B) \cap C = A \cap (B \cap C)$ : {\fontencoding{U}\fontfamily{cmtt}\selectfont inter\_assoc}
+    \item $(A \cup B) \cup C = A \cup (B \cup C)$ : {\fontencoding{U}\fontfamily{cmtt}\selectfont union\_assoc}
+    \item $A \cap (B \cup C) = (A \cap B) \cup (A \cap C)$ : {\fontencoding{U}\fontfamily{cmtt}\selectfont inter\_distrib\_left} ({\fontencoding{U}\fontfamily{cmtt}\selectfont inter\_distrib\_right})
+    \item $A \cup (B \cap C) = (A \cup B) \cap (A \cup C)$ : {\fontencoding{U}\fontfamily{cmtt}\selectfont union\_distrib\_left} ({\fontencoding{U}\fontfamily{cmtt}\selectfont union\_distrib\_right})
+    \item $(A \cap B)^c = A^c \cup B^c$ : {\fontencoding{U}\fontfamily{cmtt}\selectfont compl\_inter}
+    \item $(A \cup B)^c = A^c \cap B^c$ : {\fontencoding{U}\fontfamily{cmtt}\selectfont compl\_union}
+    \item $A \setminus B = A \cap B^c$ : {\fontencoding{U}\fontfamily{cmtt}\selectfont diff\_eq}
+  \end{itemize}
+
+  Com toda essa bagagem já somos capazes de resolver provas bem mais complexas e que envolvem diversos passos, como a seguir:
+
+  \textbf{Exemplo 2:}
+  \begin{lstlisting}
+    example : (A \ B) ∪ (B \ A) = (A ∪ B) \ (A ∩ B) :=
+    calc
+      (A \ B) ∪ (B \ A) = (A ∩ -B) ∪ (B \ A) : by rw diff_eq
+      ... = (A ∩ -B) ∪ (B ∩ -A) : by rw diff_eq
+      ... = ((A ∩ -B) ∪ B) ∩ ((A ∩ -B) ∪ -A) : by rw union_distrib_left
+      ... = ((A ∪ B) ∩ (-B ∪ B)) ∩ ((A ∩ -B) ∪ -A) : by rw union_distrib_right
+      ... = ((A ∪ B) ∩ univ) ∩ ((A ∩ -B) ∪ -A) : by rw compl_union_self
+      ... = (A ∪ B) ∩ ((A ∩ -B) ∪ -A) : by rw inter_univ
+      ... = (A ∪ B) ∩ ((A ∪ -A) ∩ (-B ∪ -A)) : by rw union_distrib_right
+      ... = (A ∪ B) ∩ (univ ∩ (-B ∪ -A)) : by rw union_compl_self
+      ... = (A ∪ B) ∩ (-B ∪ -A) : by rw univ_inter
+      ... = (A ∪ B) ∩ -(B ∩ A) : by rw compl_inter
+      ... = (A ∪ B) ∩ -(A ∩ B) : by rw inter_comm B A
+      ... = (A ∪ B) \ (A ∩ B) : by rw diff_eq \end{lstlisting}
+
+  O leitor bem atento já notou uma pequena diferença na linha $13$ do código, não escreve...
 
 \section{Famílias Indexadas}
 
