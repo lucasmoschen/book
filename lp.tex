@@ -1,9 +1,9 @@
 \chapter{Lógica Proposicional}
 \section{Introdução}
 
-A lógica proposicional é uma vertente da lógica no qual representamos proposições como fórmulas (que podem ser falsas ou verdadeiras) e trabalhamos com argumentação desenvolvida por meio de letras, como $A$ e $B$, que representam essas proposições. Essas fórmulas podem ser proposições atômicas (que não podem ser divididas em outras sentenças mais simples) ou um conjunto de proposições atômicas combinadas por conectivos lógicos, o que nos permite perceber que,em lógica proposicional, a definição de fórmula é recursiva.\\
-De forma diferente de outras vertentes, a lógica proposicional não trabalha com quantificadores ou predicados sobre objetos, o que a torna de certo modo menos geralista e mais limitada em descrever determinadas situações.
-Este capítulo irá estudar a lógica proposicional sob três pontos de vista: a partir da dedução natural, das tabelas verdade e do uso do Lean. 
+A lógica proposicional é uma vertente da lógica na qual representamos proposições como fórmulas (que podem ser falsas ou verdadeiras) e trabalhamos com argumentação desenvolvida por meio de letras, como $A$ e $B$, que representam essas proposições. Essas fórmulas podem ser proposições atômicas (que não podem ser divididas em outras sentenças mais simples) ou um conjunto de proposições atômicas combinadas por conectivos lógicos, o que nos permite perceber que, em lógica proposicional, a definição de fórmula é recursiva.
+
+De forma diferente de outras vertentes, a lógica proposicional não trabalha com quantificadores ou predicados sobre objetos. Isso a torna, de certo modo, menos geralista e mais limitada em descrever determinadas situações.
 
 Para exemplificar o tipo de problema que será possível resolver utilizando lógica proposicional, considere o seguinte cenário:
 
@@ -20,7 +20,9 @@ Pense um pouco sobre o problema e determine qual vestido cada uma das irmãs est
 \bigbreak
 %colocar ref para livro do herman: introdução à teoria das categorias
 
-É possível concluir que Ana estava com o vestido preto, Cláudia com o branco e Maria com o azul. Contudo, utilizamos um raciocínio informal para chegar a esse resultado. A lógica proposicional permite que o método utilizado para chegar a essa conclusão seja formalizado, de forma que chega-se a uma  \textit{prova} de qual cor era o vestido de cada irmã, mas para isso precisamos primeiro conhecer quais são as regras que utilizamos nessa ferramenta.
+É possível concluir que Ana estava com o vestido preto, Cláudia com o branco e Maria com o azul. Contudo, utilizamos um raciocínio informal para chegar a esse resultado. A lógica proposicional permite que o método utilizado para chegar a essa conclusão seja formalizado, de forma que chega-se a uma  \textit{prova} de qual cor era o vestido de cada irmã. 
+
+Para apresentar o assunto, este capítulo foi dividido em outras três seções. Na primeira, são descritas as regras de inferência utilizadas nas provas de lógica proposicional. Na segunda, são apresentadas e discutidas provas mais complexas que utilizam essas mesmas regras. A terceira seção consiste em uma série de exercícios que contam também com um gabarito. Por fim, vale notar que, ao longo dessas seções, optou-se por abordar a lógica proposicional sob três pontos de vista: a partir da dedução natural, das tabelas verdade e do uso do Lean. 
 
 \section{Regras de Inferência}
 Quando nos comunicamos, é habitual utilizar diferentes estruturas de linguagem que nos aproximem do sentido que queremos dar a alguma sentença. Na lógica proposicional, esses padrões são também amplamente utilizados e importantes para a construção de fórmulas e serão melhor aprofundados a seguir.
