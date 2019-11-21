@@ -892,13 +892,13 @@ Primeiramente, não confunda isso com o Cálculo da matemática que envolve deri
   Podemos também escrever isso como lema/teorema e ainda colocar o universo e os conjuntos na definição dele (nesse caso, excluimos as linhas $3$ e $4$ que definem variáveis, omitidas anteriormente), veja:
 
   \begin{lstlisting}
-    lemma a_eq_b {U : Type} {A B : set U} (h : A = B) : B = A :=
+    lemma a_eq_b {U : Type} (A B : set U) (h : A = B) : B = A :=
     calc
       B = A : by rw h \end{lstlisting}
 
   É evidente que o nosso objetivo não é utilizar {\fontencoding{U}\fontfamily{cmtt}\selectfont calc} somente para coisas tão simples. Queremos usar diversas propriedades sobre conjuntos que já estão a nossa disposição, para provar cada vez mais novas propriedades, como o exemplo a seguir:
 
-  \textbf{Exemplo 1:}
+  \textbf{Exemplo 1:} Demonstre que $(A \setminus B)^c = A^c \cup B$.
   \begin{lstlisting}
     example : -(A \ B) = -A ∪ B :=
     calc
@@ -906,8 +906,17 @@ Primeiramente, não confunda isso com o Cálculo da matemática que envolve deri
            ... = -A ∪ -(-B) : by rw compl_inter
            ... = -A ∪ B     : by rw compl_compl \end{lstlisting}
 
+  Para aquelas pessoas que gostam de ser minimalistas e tentam usar o mínimo de linhas possível, existe como reduzir a prova em calc pra somente uma linha, veja:
 
-  Todavia, não é factível esperar que todo mundo adivinhe o nome dos lemas que representa cada propriedade para então poder utilizá-las em provas de cálculo. Por esse fato, apresentamos a seguir os nomes dos lemas para todas as propriedades da seção anterior e entre parênteses, a sua versão se os conjuntos estiverem na ordem inversa.
+  \begin{lstlisting}
+    example : -(A \ B) = -A ∪ B :=
+    calc
+      -(A \ B) = -A ∪ B : by rw [diff_eq, compl_inter, compl_compl]
+    --OU
+    example : -(A \ B) = -A ∪ B :=
+    by rw [diff_eq, compl_inter, compl_compl] \end{lstlisting}
+
+  Todavia, não é factível esperar que todo mundo adivinhe o nome dos lemas que representam cada propriedade para então poder utilizá-los em provas de cálculo. Por esse fato, apresentamos a seguir os nomes dos lemas para todas as propriedades da seção anterior e entre parênteses, a sua versão caso os conjuntos estejam na ordem inversa.
 
   \begin{itemize}
     \item $A \cap A = A$ : {\fontencoding{U}\fontfamily{cmtt}\selectfont inter\_self}
@@ -932,9 +941,9 @@ Primeiramente, não confunda isso com o Cálculo da matemática que envolve deri
     \item $A \setminus B = A \cap B^c$ : {\fontencoding{U}\fontfamily{cmtt}\selectfont diff\_eq}
   \end{itemize}
 
-  Com toda essa bagagem já somos capazes de resolver provas bem mais complexas e que envolvem diversos passos, como a seguir:
+  Com toda essa bagagem já somos capazes de fazer provas bem mais complexas e que envolvem diversos passos, como a seguir:
 
-  \textbf{Exemplo 2:}
+  \textbf{Exemplo 2:} Demonstre que $(A \setminus B) \cup (B \setminus A) = (A \cup B) \setminus (A \cap B)$
   \begin{lstlisting}
     example : (A \ B) ∪ (B \ A) = (A ∪ B) \ (A ∩ B) :=
     calc
@@ -951,8 +960,25 @@ Primeiramente, não confunda isso com o Cálculo da matemática que envolve deri
       ... = (A ∪ B) ∩ -(A ∩ B) : by rw inter_comm B A
       ... = (A ∪ B) \ (A ∩ B) : by rw diff_eq \end{lstlisting}
 
-  O leitor bem atento já notou uma pequena diferença na linha $13$ do código, não escreve...
+  O leitor bem atento já notou uma pequena diferença na linha $13$ do código, não escrevemos {\fontencoding{U}\fontfamily{cmtt}\selectfont by rw inter\_comm}, mas sim {\fontencoding{U}\fontfamily{cmtt}\selectfont by rw inter\_comm B A}. Isso é necessário, porque na expressão dessa linha existem $2$ símbolos de intersecção em que poderia ser aplicado o lema, criando uma ambiguidade pro provador decidir em qual deles vai aplicá-lo. Quando isso acontece, o provador sempre escolhe a primeira ocorrência, ou seja, quando aplicamos o lema {\fontencoding{U}\fontfamily{cmtt}\selectfont inter\_comm} na expressão {\fontencoding{U}\fontfamily{cmtt}\selectfont (A ∪ B) ∩ -(B ∩ A)}, obtemos {\fontencoding{U}\fontfamily{cmtt}\selectfont -(B ∩ A) ∩ (A ∪ B)}. Entretanto, o objetivo é {\fontencoding{U}\fontfamily{cmtt}\selectfont (A ∪ B) ∩ -(A ∩ B)}, e para especificar isso, é só passar depois do lema os parâmetros que queremos que ele seja aplicado, no nosso caso, {\fontencoding{U}\fontfamily{cmtt}\selectfont B A}.
 
+  Outro caso de ambiguidade que também vemos nesse exemplo, está na linha $4$. A expressão anterior é {\fontencoding{U}\fontfamily{cmtt}\selectfont (A ∩ -B) ∪ (B \ A)}, ou seja, temos dois termos possíveis para aplicar o lema {\fontencoding{U}\fontfamily{cmtt}\selectfont diff\_eq}, podemos reescrever {\fontencoding{U}\fontfamily{cmtt}\selectfont (A ∩ -B)} como {\fontencoding{U}\fontfamily{cmtt}\selectfont (A $\setminus$ B)} ou podemos reescrever  {\fontencoding{U}\fontfamily{cmtt}\selectfont (B $\setminus$ A)} como {\fontencoding{U}\fontfamily{cmtt}\selectfont (B ∩ -A)}. Nesse caso, o Lean prioriza a ida do lemma, que significa transformar o lado esquerdo da igualdade no lado direito (veja a lista de propriedades novamente pra entender melhor), e demos sorte de ser exatamente o que queríamos. Para fazer o inverso, só precisamos especificar os parâmetros pro lema: {\fontencoding{U}\fontfamily{cmtt}\selectfont by rw diff\_eq A B}.
+
+  Em algumas vezes, é necessário colocar cada parâmetro entre parênteses. Por exemplo, se um parâmetro for parecido com {\fontencoding{U}\fontfamily{cmtt}\selectfont -(A ∩ B) ∩ C}, o que vamos escrever depois do lemma é {\fontencoding{U}\fontfamily{cmtt}\selectfont (-(A ∩ B) ∩ C)} e os outros parâmetros.
+
+  \textbf{Exemplo 3:} Demonstre que $(A \cup B \cup C \cup D)^c = (A \cup B)^c \cap (C \cup D)^c$.
+
+  \begin{lstlisting}
+    example : -(A ∪ B ∪ C ∪ D) = -(A ∪ B) ∩ -(C ∪ D) :=
+    calc
+      -(A ∪ B ∪ C ∪ D) = -(A ∪ B ∪ C) ∩ -D : by rw compl_union
+      ... = -(A ∪ B) ∩ -C ∩ -D : by rw compl_union
+      ... = -(A ∪ B) ∩ (-C ∩ -D) : by rw inter_assoc (-(A ∪ B)) (-C) (-D)
+      ... = -(A ∪ B) ∩ -(C ∪ D) : by rw compl_union C D \end{lstlisting}
+
+  Esse é um ótimo exemplo de especificação de parâmetros no lema, entretanto, a $5$ linha está confundindo bastante. Após as duas primeiras transformações, o Lean interpreta que {\fontencoding{U}\fontfamily{cmtt}\selectfont -(A ∪ B) ∩ -C ∩ -D = (-(A ∪ B) ∩ -C) ∩ -D} implicitamente. Logo, precisamos utilizar a associatividade para rearranjar a expressão de uma maneira que podemos continuar trabalhando com ela.
+
+  Antes de finalizarmos a seção, saiba que os lemas que usamos dentro do {\fontencoding{U}\fontfamily{cmtt}\selectfont calc}, não precisam ser já criados dentro do Lean. Você pode criar um lema, prová-lo e depois utilizá-lo para provar outros lemas, o que se torna muito divertido!
 \section{Famílias Indexadas}
 
   \subsection{Definição}
