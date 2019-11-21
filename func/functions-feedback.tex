@@ -1,0 +1,165 @@
+\begin{enumerate}
+    \item b e c. No primeiro caso, a função não é definida para $f(0)$, pois
+    esse não tem antecessor. No quarto caso, a função não é definida para
+    $h(0)$. 
+    \item Seguem as provas: 
+    \begin{enumerate}
+        \item Sejam $x_1 \in X$ e $x_2 \in X$, com $f(x_1) = f(x_2)$. Como $g$
+       é uma função bem definida, $g(f(x_1)) = (g \circ f)(x_1) = (g \circ
+       f)(x_2) = g(f(x_2))$. Pela injetividade da composição, $x_1 = x_2$ está
+        provado. 
+        \item Para essa questão, existem vários exemplos. Seja $f : \mathbb{N}
+        \to \mathbb{R} $ definida por $f(n) = n$ e seja $g : \mathbb{R} \to
+        \mathbb{R}$, $g(x) = x^2 $. Temos que $(g \circ f) : \mathbb{N} \to
+        \mathbb{R}$ é definida por $g(f(n)) = n^2$. Note que essa função é
+        injetiva, porém $g$ não é. 
+        \item Assuma $y_1, y_2 \in Y$. Se $g(y_1) = g(y_2)$, pela
+        sobrejetividade de $f$, existem $x_1, x_2 \in X$, tal que $f(x_1) =
+        y_1$ e $f(x_2) = y_2$. Pela injetividade da composição, $x_1 = x_2$.
+        Como $f$ é uma função bem definida, $y_1 = f(x_1) = f(x_2) = y_2$, o
+        que demostra a injetividade de $g$.
+        \item Em lean, 
+\begin{lstlisting}
+import data.set 
+open function
+open set 
+
+variables {X Y Z: Type}
+
+theorem e2a (f : X → Y) (g: Y → Z) (h: injective (g ∘ f)) : injective f := 
+assume x₁ x₂ h₁,
+have h₂ : g(f(x₁)) = g(f(x₂)), from eq.subst h₁ (eq.refl (g(f x₁))), 
+show x₁ = x₂, from h h₂
+
+theorem e2c (f : X → Y) (g: Y → Z) (h₁: injective (g ∘ f)) (h₂: surjective f) :
+        injective g := 
+assume y₁ y₂ g₁, 
+have g₂ : ∃ x, f(x) = y₁, from h₂ y₁,
+have g₃ : ∃ x, f(x) = y₂, from h₂ y₂,
+show y₁ = y₂, from exists.elim g₂ 
+    (assume x₁ i₁, 
+    show y₁ = y₂, from exists.elim g₃ 
+        (assume x₂ i₂, 
+        have i₃ : g(f(x₁)) = g(y₁), from eq.subst i₁ (eq.refl (g(f x₁))),
+        have i₄ : g(f(x₂)) = g(y₂), from eq.subst i₂ (eq.refl (g(f x₂))),
+        have i₅ : x₁ = x₂, from h₁ (eq.trans i₃ (eq.trans g₁ (eq.symm i₄))), 
+        have i₆ : f(x₁) = f(x₂), from eq.subst i₅ (eq.refl (f(x₁))),
+        show y₁ = y₂, from eq.trans (eq.trans (eq.symm i₁) i₆) i₂))    
+\end{lstlisting}
+    \end{enumerate}
+    \item Seja $f: X \to Y$ monótona. Assuma $x_1, x_2 \in X$ e $f(x_1) =
+    f(x_2)$. Se $x_1 < x_2$ ou $x_1 > x_2$, temos um absurdo. Logo $x_1 =
+    x_2$, o que mostra que $f$ é monótona. 
+
+    Para lean, eu faço uso de uma função \lstinline{ne_of_lt}, que significa
+    que dado uma relação de menor ou maior entre dois naturais, eles são
+    diferentes. 
+
+\begin{lstlisting}
+open function 
+
+variables {X Y Z: Type}
+
+def strict_cresc (f: ℕ → ℕ) := 
+    ∀ x1, ∀ x2, x1 < x2 → f x1 < f x2 
+
+def strict_decresc (f: ℕ → ℕ) := 
+    ∀ x1, ∀ x2, x1 < x2 → f x1 > f x2 
+
+def monotonous (f: ℕ → ℕ) : Prop := 
+    strict_cresc f ∨ strict_decresc f 
+
+lemma inj_of_cresc (f: ℕ → ℕ) (h: strict_cresc f) : injective f := 
+assume x1 x2 h1,
+nat.lt_by_cases
+    (assume : x1 < x2, 
+    have h2: f x1 < f x2, from h x1 x2 this,
+    show x1 = x2, from false.elim (ne_of_lt h2 h1))
+    (assume : x1 = x2, this)
+    (assume : x1 > x2, 
+    have h2: f x2 < f x1, from h x2 x1 this, 
+    show x1 = x2, from false.elim (ne_of_lt h2 (eq.symm h1)))
+
+lemma inj_of_decresc (f: ℕ → ℕ) (h: strict_decresc f) : injective f := 
+assume x1 x2 h1,
+nat.lt_by_cases
+    (assume : x1 < x2, 
+    have h2: f x1 > f x2, from h x1 x2 this,
+    show x1 = x2, from false.elim (ne_of_lt h2 (eq.symm h1)))
+    (assume : x1 = x2, this)
+    (assume : x1 > x2, 
+    have h2: f x2 > f x1, from h x2 x1 this, 
+    show x1 = x2, from false.elim (ne_of_lt h2 h1))
+
+theorem inf_mon (f: ℕ → ℕ)(h: monotonous f):injective f := 
+begin 
+    cases h, 
+    apply inj_of_cresc f h, 
+    apply inj_of_decresc f h
+end
+
+#check @ne_of_lt   
+\end{lstlisting}
+
+\item Suponha $y \in \mathbb{N}$. Note que posso escrever $2\cdot y = n$. De
+fato, $g(n) = \left \lceil \frac{2y}{2} \right \rceil = \left \lceil y \right
+\rceil = y $, pois $y$ é natural. Assim $\exists n \in \mathbb{N}, g(n) = y$.
+Assim, a função é sobrejetiva. 
+
+\item Considere o item 5 Suponha $y \in f[A_1 \cup A_2]$ Assim, existe $x \in
+A_1 \cup A_2 $, tal que $f(x) = y$. Se $x \in A_1$, $f(x) = y \in f[A_1]$ e
+análogo se $x \in A_2$. Logo $y \in f[A_1] \cup f[A_2]$. Alternativamente, se
+$y \in f[A_1] \cup f[A_2]$. Suponha $y \in f[A_1]$. Então existe $x \in A_1$,
+tal que $f(x)= y$ e $x \in A_1 \cup A_2$ que implica $y \in f[A_1 \cup A_2]$.
+Análogo para $y \in f[A_2]$.
+
+\begin{lstlisting}
+import data.set
+open function set
+
+variables {X Y : Type}
+variable  f : X → Y
+variables A1 A2 : set X
+
+example : f '' (A1 ∪ A2) = f '' A1 ∪ f '' A2 :=
+eq_of_subset_of_subsetimport data.set
+open function set
+
+variables {X Y : Type}
+variable  f : X → Y
+variables A1 A2 : set X
+
+example : f '' (A1 ∪ A2) = f '' A1 ∪ f '' A2 :=
+eq_of_subset_of_subset
+    (assume y,
+    assume h1 : y ∈ f '' (A1 ∪ A2),
+    exists.elim h1
+    (assume x h,
+    have h2 : x ∈ A1 ∪ A2, from h.left,
+    have h3 : f x = y, from h.right,
+    or.elim h2
+        (assume h4 : x ∈ A1,
+        have h5 : y ∈ f '' A1, from ⟨x, h4, h3⟩,
+        show y ∈ f '' A1 ∪ f '' A2, from or.inl h5)
+        (assume h4 : x ∈ A2,
+        have h5 : y ∈ f ''  A2, from ⟨x, h4, h3⟩,
+        show y ∈ f '' A1 ∪ f '' A2, from or.inr h5)))
+    (assume y,
+    assume h2 : y ∈ f '' A1 ∪ f '' A2,
+    or.elim h2
+        (assume h3 : y ∈ f '' A1,
+        exists.elim h3 
+        (assume x h,
+        have h4 : x ∈ A1, from h.left,
+        have h5 : f x = y, from h.right,
+        have h6 : x ∈ A1 ∪ A2, from or.inl h4,
+        show y ∈ f '' (A1 ∪ A2), from ⟨x, h6, h5⟩))
+        (assume h3 : y ∈ f '' A2,
+        exists.elim h3 
+        (assume x h,
+        have h4 : x ∈ A2, from h.left,
+        have h5 : f x = y, from h.right,
+        have h6 : x ∈ A1 ∪ A2, from or.inr h4,
+        show y ∈ f '' (A1 ∪ A2), from ⟨x, h6, h5⟩)))
+\end{lstlisting}
+\end{enumerate}

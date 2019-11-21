@@ -1,0 +1,32 @@
+\begin{enumerate}
+    \item Quais das seguintes funções são totais: 
+    \begin{enumerate}
+        \item $f : \mathbb{N} \to \mathbb{N}$, definida por $f(n) = n - 1$.
+        \item $g : \mathbb{R}\setminus\{1\} \to \mathbb{R}$, definida por $g(x)
+        = \frac{x}{x - 1}$. 
+        \item A função de Heaviside. \href{http://mathworld.wolfram.com/
+        HeavisideStepFunction.html}{Referência}. 
+        \item $h : \mathbb{R}^+ \to \mathbb{R}$, definida por $h(x) = log(x)$.
+    \end{enumerate}
+    \item Seja $f : X \to Y$ e $g : Y \to Z$. 
+    \begin{enumerate}
+        \item Mostre que se $g \circ f$ é uma função injetiva, então $f$ é
+        injetiva. 
+        \item Mostre um exemplo onde a condição do item anterior ocorra, porém
+        $g$ não seja injetiva. 
+        \item Prove que se $f$ é sobrejetiva e $g \circ f$ é injetiva, então
+        $g$ é injetiva. 
+        \item Demonstre (a) e (c) utilizando Lean. 
+    \end{enumerate}
+    \item Uma função $f : X \to Y$ é dita \textit{monótona} se preserva ou
+    inverte a relação de ordem. Se a função é estrita, a relação establecida é
+    a de $<$. Isto é, se $\forall x_1, \forall x_2, x_1 < x_2 \Rightarrow
+    f(x_1) < f(x_2) $ mostra que $f$ é estritamente crescente e com o sinal
+    invertido, $f$ será estritamente decrescente. Prove que toda função
+    monótona é injetiva. Defina em Lean e prove esse teorema, considerando $X
+    = Y = \mathbb{N} $. 
+    \item Prove que a função $g : \mathbb{N} \to \mathbb{N}$ definida por
+    $g(n) = \left \lceil{\frac{n}{2}}\right \rceil$ é sobrejetiva. Essa função
+    é injetiva? 
+    \item Prove os item 5 da lista \ref{iden}. Utilize Lean.
+\end{enumerate}
