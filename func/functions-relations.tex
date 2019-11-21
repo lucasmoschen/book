@@ -77,3 +77,24 @@ que retorna uma função $X \to X \to Y$. Desta maneira, $f(x_1, x_2, x_3)$ abre
         end   
     \end{lstlisting}
 \end{example}
+
+\subsection{Representação de Funções}
+
+Apesar de não ser o objetivo nesse capítulo, considere a seguinte definição: 
+
+\begin{definition}
+    \label{represent}
+    A grosso modo, uma função total $f(x_1, ..., x_k)$ é dita
+    \textit{representável}, se existe uma expressão na linguagem formal,
+    digamos $A$, que usa variáveis $x_1, ..., x_k, x_{k+1}$ tal que para
+    quaisquer números $m_1,...,m_k$ e $n$, temos $f(m_1,...,m_k) = n$ se, e
+    somente se, podemos provar em nosso sistema formal $A(m_1,...,m_k,n)$ e
+    não podemos provar $A(m_1,...,m_k,j)$ para qualquer outro número $j$.
+\end{definition}
+
+Essa definição é encontrada no livro \cite{functionsComputaveis}. Apesar de
+estar em termos um pouco diferentes dos que propomos nesse livro, essa
+definição permite, em um sistema consistente, afirmar que toda função
+representável é computável. Isso responde parcialmente nossa questão da
+primeira sessão. Entretanto, em livros mais avançados de lógica, esse conceito
+é mais discutido. 
