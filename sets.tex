@@ -961,18 +961,32 @@ Primeiramente, não confunda isso com o Cálculo da matemática que envolve deri
   \subsection{Em Lean}
   Ainda vai ter algo escrito aqui
 
-\section{Power Set}
+\section{Conjunto das Partes}
 
-  \subsection{Definição}
-  Ainda vai ter algo escrito aqui
+\subsection{Definição}
+Seja um conjunto $A$, o conjunto das partes de $A$, representado por $\wp(A)$, é o conjunto formado por todos os subconjuntos de $A$.
 
-  \subsection{Em Lean}
-  Ainda vai ter algo escrito aqui
+Os elementos de um conjunto das partes são, na verdade, outros conjuntos, e mais precisamente, são todos os subconjuntos que podem ser formados a partir dos elementos do conjunto de referência.
+
+Por exemplo:  Seja $A = \{2,6,9\}$ o conjunto referência.
+O conjunto das partes de $A$ é $\wp(A)
+= \{\emptyset,\{2\},\{6\},\{9\},\{2,6\},\{2,9\},\{6,9\},\{2,6,9\}\}$: 
+
+\subsection{Cardinalidade}
+Se um conjunto $A$ possui $n$ elementos, então o número de subconjuntos de $A$ é igual $2^A$.
+
+De fato, no exemplo anterior, o conjunto das partes $\wp(A)$ possui 8 elementos e $A$ possui 3 elementos, como $2^3 = 8$, temos uma prova para a cardinalidade de conjuntos das parte.
+Agora precisamos provar no caso de $A$ ter $k$ elementos. 
+
+%Termino amanhã
+
+\subsection{Em Lean}
+Ainda vai ter algo escrito aqui
 
 \section{Exercícios}
 \begin{enumerate}
     
-\item Questões de Identidades de conjuntos
+\item Realize as provas das seguintes propriedades: (Fornecendo uma prova tradicional e uma em Lean.)
 
 \begin{enumerate}
 
@@ -1097,7 +1111,7 @@ eq_of_subset_of_subset
         show x ∈ A ∩ (B ∪ C), from and.intro h₁.left h₂)) \end{lstlisting}
 
 $\qquad$
-\item Lei da Absorção (Dica: veja o exemplo utilizado em ``Propriedades")
+\item Lei da Absorção (Dica: veja o exemplo utilizado em "Propriedades")
 \begin{lstlisting}
 import data.set
 open set
@@ -1116,7 +1130,7 @@ eq_of_subset_of_subset
     show x ∈ A ∩ (A ∪ B), from and.intro h h₁) \end{lstlisting}
 
 $\qquad$
-\item De Morgan
+\item Lei de De Morgan
 \begin{lstlisting}
 import data.set
 open set
