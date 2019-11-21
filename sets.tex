@@ -973,18 +973,19 @@ Primeiramente, não confunda isso com o Cálculo da matemática que envolve deri
 \begin{enumerate}
     
 \item Questões de Identidades de conjuntos
-    
+
+\begin{enumerate}
+
+\item Comutatividade em ∩ e ∪ 
 \begin{lstlisting}
 import data.set
 open set
 
-section
-  variable U : Type
-  variables A B C : set U
-
---Comutatividade em ∩ e ∪ 
-  example : A ∩ B = B ∩ A := 
-  eq_of_subset_of_subset
+variable U : Type
+variables A B : set U
+ 
+example : A ∩ B = B ∩ A := 
+eq_of_subset_of_subset
     (assume x,
         assume h : x ∈ A ∩ B,
         have h₁ : x ∈ A, from h.left,
@@ -996,8 +997,8 @@ section
         have h₂ : x ∈ A, from h.right,
         show x ∈ A ∩ B, from and.intro h₂ h₁)
 
-  example : A ∪ B = B ∪ A:=
-  eq_of_subset_of_subset
+example : A ∪ B = B ∪ A:=
+eq_of_subset_of_subset
     (assume x,
         assume h : x ∈ A ∪ B,
         or.elim h
@@ -1011,11 +1012,19 @@ section
         (assume h₁ : x ∈ B,
         show x ∈ A ∪ B, from or.inr h₁)
         (assume h₁ : x ∈ A,
-        show x ∈ A ∪ B, from or.inl h₁))
+        show x ∈ A ∪ B, from or.inl h₁)) \end{lstlisting}
 
---Associatividade em ∩ e ∪ 
-  example : (A ∩ B) ∩ C = A ∩ (B ∩ C) :=
-  eq_of_subset_of_subset
+$\qquad$
+\item Associatividade em ∩ e ∪ 
+\begin{lstlisting}
+import data.set
+open set
+
+variable U : Type
+variables A B C : set U
+ 
+example : (A ∩ B) ∩ C = A ∩ (B ∩ C) :=
+eq_of_subset_of_subset
     (assume x,
         assume h : x ∈ (A ∩ B) ∩ C,
         have h₁ : x ∈ A ∩ B, from h.left,
@@ -1027,8 +1036,8 @@ section
         have h₂ : x ∈ A ∩ B, from and.intro h.left h₁.left,
         show x ∈ (A ∩ B) ∩ C, from and.intro h₂ h₁.right) 
 
-  example : (A ∪ B) ∪ C = A ∪ (B ∪ C) :=
-    eq_of_subset_of_subset
+example : (A ∪ B) ∪ C = A ∪ (B ∪ C) :=
+eq_of_subset_of_subset
     (assume x,
         assume h : x ∈ (A ∪ B) ∪ C,
         or.elim h
@@ -1054,11 +1063,19 @@ section
                 have h₃ : x ∈ A ∪ B, from or.inr h₂,
                 show x ∈ (A ∪ B) ∪ C, from or.inl h₃)
                 (assume h₂ : x ∈ C,
-                show x ∈ (A ∪ B) ∪ C, from or.inr h₂)))
+                show x ∈ (A ∪ B) ∪ C, from or.inr h₂))) \end{lstlisting}
 
---Distribuitividade (Dica: veja o exemplo utilizado na seção "Propriedades")
-  example : A ∩ (B ∪ C) = (A ∩ B) ∪ (A ∩ C) :=
-  eq_of_subset_of_subset
+$\qquad$
+\item Distribuitividade (Dica: veja o exemplo utilizado na seção ``Propriedades")
+\begin{lstlisting}
+import data.set
+open set
+
+variable U : Type
+variables A B C : set U
+
+example : A ∩ (B ∪ C) = (A ∩ B) ∪ (A ∩ C) :=
+eq_of_subset_of_subset
     (assume x,
     assume h : x ∈ A ∩ (B ∪ C),
     have h.r : x ∈ B ∪ C, from h.right,
@@ -1077,22 +1094,38 @@ section
         show x ∈ A ∩ (B ∪ C), from and.intro h₁.left h₂)
         (assume h₁ : x ∈ A ∩ C,
         have h₂ : x ∈ B ∪ C, from or.inr h₁.right,
-        show x ∈ A ∩ (B ∪ C), from and.intro h₁.left h₂))
+        show x ∈ A ∩ (B ∪ C), from and.intro h₁.left h₂)) \end{lstlisting}
 
---Lei da Absorção (Dica: veja o exemplo utilizado na seção "Propriedades")
-  example : A ∩ (A ∪ B) = A :=
-  eq_of_subset_of_subset
+$\qquad$
+\item Lei da Absorção (Dica: veja o exemplo utilizado em ``Propriedades")
+\begin{lstlisting}
+import data.set
+open set
+
+variable U : Type
+variables A B : set U
+
+example : A ∩ (A ∪ B) = A :=
+eq_of_subset_of_subset
     (assume x,
     assume h : x ∈ A ∩ (A ∪ B),
     show x ∈ A, from h.left)
     (assume x,
     assume h : x ∈ A,
     have h₁ : x ∈ A ∪ B, from or.inl h,
-    show x ∈ A ∩ (A ∪ B), from and.intro h h₁)
-    
---De Morgan
-  open classical 
-  example : -(A ∩ B) = -A ∪ -B :=
+    show x ∈ A ∩ (A ∪ B), from and.intro h h₁) \end{lstlisting}
+
+$\qquad$
+\item De Morgan
+\begin{lstlisting}
+import data.set
+open set
+open classical 
+
+variable U : Type
+variables A B : set U
+
+example : -(A ∩ B) = -A ∪ -B :=
     ext (assume x, iff.intro
         (assume h₁ : x ∈ -(A ∩ B),
             have g₁ : x ∈ (A ∪ -A), from em (x ∈ A),
@@ -1112,7 +1145,7 @@ section
                 (assume h₃ : x ∈ -A, h₃ h₂.left )
                 (assume h₃ : x ∈ -B, h₃ h₂.right)))
 
-  example : -(A ∪ B) = -A ∩ -B :=
+example : -(A ∪ B) = -A ∩ -B :=
     ext (assume x, iff.intro
         (assume h₁ : x ∈ -(A ∪ B),
             have g₁ : x ∈ -A, from
@@ -1130,17 +1163,16 @@ section
             assume h₂ : x ∈ A ∪ B,
             or.elim h₂
                 (assume h3 : x ∈ A, h₁.left h3)
-                (assume h3 : x ∈ B, h₁.right h3)))
-end \end{lstlisting}
+                (assume h3 : x ∈ B, h₁.right h3))) \end{lstlisting}
 
+\end{enumerate}
+
+$\qquad$
 \item Prove que $A \cup \overline A = \mathcal U$. (Fornecendo uma prova tradicional e uma em Lean.)
 
 \textbf{Resposta} 
 
-
-
-
+$\qquad$
 \item Questões com calc
-    
     
 \end{enumerate}
