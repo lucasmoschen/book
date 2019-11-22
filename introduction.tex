@@ -54,29 +54,40 @@ De fato, seremos capazes de formalizar problemas desse tipo, e obter métodos de
 
 \subsection{Dedução Natural}
 % Com que nível de detalhe nós devemos abordar as regras??
-Uma das maneiras de formalizar e demonstrar problemas lógicos é utilizar sistemas dedutivos como a Dedução Natural, que consiste em um grupo de regras e axiomas que nos permitem manipular expressões formalizadas, ou seja, traduzidas da forma linguística para uma forma lógica matemática de notação, estabelecendo a validade dos argumentos, derivando a conclusão do argumento a partir das premissas usando esse sistema de regras em questão. Por meio dessas regras de inferência, podemos demonstrar a validade de uma infinidade de fórmulas e argumentos sem a necesidade de considerar os valores que cada fórmula ou subfórmula recebe, ou seja, não estamos mais lidando com a semântica, mas com a sintaxe.
+
+Uma das maneiras de formalizar e demonstrar problemas lógicos é utilizar sistemas dedutivos como a Dedução Natural, que consiste em um grupo de regras e axiomas que nos permitem manipular expressões formalizadas, ou seja, traduzidas da forma linguística para uma forma lógica matemática de notação, estabelecendo a validade dos argumentos, derivando a conclusão do argumento a partir das premissas usando esse sistema de regras em questão. 
+Por meio dessas regras de inferência, podemos demonstrar a validade de uma infinidade de fórmulas e argumentos sem a necesidade de considerar os valores que cada fórmula ou subfórmula recebe, ou seja, não estamos mais lidando com a semântica, mas com a sintaxe.
+
+% Ver o que precisamos deixar aqui e o que colocar em cima
 
 
-Uma outra característica da Dedução Natural é que ela possui um certo formato para suas demonstrações, onde as provas são apresentadas de forma que cada linha corresponda a um passo da prova ou demonstração, as colunas correspondam as premissas e abaixo dessa linha teremos a nossa conclusão. Como o leitor poderá perceber mais à frente, as provas em Dedução Natural pode variar muito de tamanho dependendo das nossas premissas e do que nós queremos provar.
+Uma outra característica da Dedução Natural é que ela possui um certo formato para suas demonstrações, onde as provas são apresentadas de forma que cada linha corresponda a um passo da prova ou demonstração, as colunas correspondam as premissas e abaixo dessa linha teremos a nossa conclusão.
+Como o leitor poderá perceber mais à frente, as provas em Dedução Natural pode variar muito de tamanho dependendo das nossas premissas e do que nós queremos provar.
 
 \subsection{Cálculo de Sequentes}
 
-O Cálculo de Sequentes é um estilo de apresentação de provas que foi proposto por Gentzen, em 1934, com o objetivo de servir como uma ferramenta auxiliar para o estudo de dedução natural em lógica de primeira ordem. Assim como outros sistemas dedutivos, o Cálculo de Sequentes também possui suas regras e propriedades que funcionam de maneira harmônica e mantém o aspecto de árvore para as provas em si.
+O Cálculo de Sequentes é um estilo de apresentação de provas que foi proposto por Gentzen, em 1934, com o objetivo de servir como uma ferramenta auxiliar para o estudo de dedução natural em lógica de primeira ordem.
+Assim como outros sistemas dedutivos, o Cálculo de Sequentes também possui suas regras e propriedades que funcionam de maneira harmônica e mantém o aspecto de árvore para as provas em si.
 
 %Não acho que falar LK e LJ seja útil. LK se refere ao cálculo de sequentes para a lógica clássica e o LJ para a intuicionista.
 %Visto que isso foi pouco abordado na sala, entrar nesse nível de detalhe pode ser meio inadequado.
 
 
+
 %Tirei LK E LJ
+%Colocaremos as regras de cálculo sequentes?
+
 
 \subsection{Resolução}
 %CNF, regra da resolução
 %talvez explicar superficialmente e dar um exemplo no capitulo de lp (não vamos falar de resolução em primeira ordem; embora exista a gente não estudou né)
 
  O método da resolução foi introduzido por John Alan Robinson que foi um filósofo, matemático e cientista da computação que foi um dos pioneiros em lógica de programação e fez importantes descobertas e grandes contribuições para a área de fundamentos
-de provadores de teoremas automáticos, os ATPs (Automated theorem proving).O uso destes provadores automáticos será abordado na próxima seção.
+de provadores de teoremas automáticos, os ATPs (Automated theorem proving).
+O uso destes provadores automáticos será abordado na próxima seção.
 
- O sistema dedutivo de resolução faz uso de regras de inferência afim de demonstrar por refutação sentenças e inferências da lógica proposicional e da lógica de primeira ordem. Este sistema dedutivo usa a linguagem proposicional no formato CNF (Conjunctive Normal Form) e nâo possui axiomas, mas apenas uma regra de inferência que opera com cláusulas e origina uma nova implicada por elas.
+ O sistema dedutivo de resolução faz uso de regras de inferência afim de demonstrar por refutação sentenças e inferências da lógica proposicional e da lógica de primeira ordem.
+Este sistema dedutivo usa a linguagem proposicional no formato CNF (Conjunctive Normal Form) e nâo possui axiomas, mas apenas uma regra de inferência que opera com cláusulas e origina uma nova implicada por elas.
 
 
 \section{Provadores, ATP e ITP}
