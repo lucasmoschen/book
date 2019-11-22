@@ -71,13 +71,44 @@ Nosso intuito, durante essa aventura pelo mundo dos conjuntos será entender mel
   Lembre-se: os diagramas apresentados servem como ferramenta auxiliar para ajudar a entender os conceitos, mas não devem ser vistos como a única ferramenta para compreender as definições e  a teoria exposta.
 
   \subsection{Definições}
-  Seja $A$ e $B$ conjuntos ($\mathcal{U}$ nosso universo e $\emptyset$ o conjunto vazio, como definidos anteriormente). Assim temos, formalmente:
+  
+  Seja $A$ e $B$ conjuntos quaisquers, $\mathcal{U}$ nosso universo e $\emptyset$ o conjunto vazio. Assim, temos formalmente (e em FOL):
 
   \begin{itemize}
-    \item \textbf{Diferença}: $A \backslash B = \{x | x \in A \land x \notin B\}$
-
+    \item \textbf{Conjunto Vazio}: $\emptyset = \{x | false\}$
+    
+    \[\forall x (x \in \emptyset \iff \bot)\]
+    
+    \qquad
+    
+    \item \textbf{Universo}: $\mathbb{U} = \{x | true \}$
+    
+    \[\forall x (x \in \mathbb{U} \iff \top)\]
+    
+    \qquad
+    
+    \item \textbf{União}: $A \cup B = \{x | x \in A \vee x \in B\}$
+    
+    \[\forall x (x \in A \cup B \iff x \in A \vee x \in B)\]
+    
+    \qquad
+    
+    \item \textbf{Interseção}: $A \cap B = \{x | x \in A \wedge x \in B\}$
+    
+    \[\forall x (x \in A \cap B \iff x \in A \wedge x \in B)\]
+    
+    \qquad
+    
+    \item \textbf{Diferença}: $A \backslash B = \{x | x \in A \wedge x \notin B\}$
+    
+    \[\forall x (x \in A \backslash B \iff x \in A \wedge x \notin B)\]
+    
+    \qquad
+    
     \item \textbf{Complementar}: $\overline A = \mathcal{U} \backslash A = \{x | x \in \mathcal{U} \land x \notin A\}$
-  \end{itemize}
+    
+    \[\forall x (x \in \overline A \iff x \notin A)\]
+  \end{itemize} 
 
   \subsection{Axiomas}
   Agora iremos apresentar alguns axiomas que servirão como base para todo o desenvolvimento dos conteúdos aqui propostos. Quando utilizarmos a palavra elemento, estaremos utilizando-a com a ideia de que um conjunto que pertença a outro é um elemento do segundo, para evitar repetir o uso excessivo da palavra conjunto.
