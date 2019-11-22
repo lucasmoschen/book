@@ -622,7 +622,7 @@ eq_of_subset_of_subset
             show x ∈ A ∪ (B ∩ C), from or.inl h₄)
             (assume h₄ : x ∈ C,
             have h₅ : x ∈ B ∩ C, from and.intro h₃ h₄,
-            show x ∈ A ∪ (B ∩ C), from or.inr h₅)))\end{lstlisting}
+            show x ∈ A ∪ (B ∩ C), from or.inr h₅))) \end{lstlisting}
 
   \end{itemize}
 
@@ -926,20 +926,20 @@ show x ∈ A ∪ B, from or.inl h
 
 \section{Exercícios}
 \begin{enumerate}
-    
+
 \item Realize as provas das seguintes propriedades: (Fornecendo uma prova tradicional e uma em Lean.)
 
 \begin{enumerate}
 
-\item Comutatividade em ∩ e ∪ 
+\item Comutatividade em ∩ e ∪
 \begin{lstlisting}
 import data.set
 open set
 
 variable U : Type
 variables A B : set U
- 
-example : A ∩ B = B ∩ A := 
+
+example : A ∩ B = B ∩ A :=
 eq_of_subset_of_subset
 (assume x,
     assume h : x ∈ A ∩ B,
@@ -970,14 +970,14 @@ eq_of_subset_of_subset
     show x ∈ A ∪ B, from or.inl h₁)) \end{lstlisting}
 
 $\qquad$
-\item Associatividade em ∩ e ∪ 
+\item Associatividade em ∩ e ∪
 \begin{lstlisting}
 import data.set
 open set
 
 variable U : Type
 variables A B C : set U
- 
+
 example : (A ∩ B) ∩ C = A ∩ (B ∩ C) :=
 eq_of_subset_of_subset
 (assume x,
@@ -1076,7 +1076,7 @@ $\qquad$
 \begin{lstlisting}
 import data.set
 open set
-open classical 
+open classical
 
 variable U : Type
 variables A B : set U
@@ -1122,9 +1122,9 @@ ext (assume x, iff.intro
 $\qquad$
 \item Prove que $A \cup \overline A = \mathcal U$. (Fornecendo uma prova tradicional e uma em Lean.)
 
-\textbf{Resposta} 
+\textbf{Resposta}
 
 $\qquad$
 \item Questões com calc
-    
+
 \end{enumerate}
