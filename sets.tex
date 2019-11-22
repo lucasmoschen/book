@@ -388,10 +388,10 @@ Aqui serão apresentadas algumas provas em Lean para o conteúdo apresentado. N�
   Ainda vai ter algo escrito aqui
 
 \section{Conjuntos em Lean}
-Embora na teoria axiomática dos conjuntos se considere conjuntos de objetos distintos, em matemática é mais comum considerar subconjuntos de algum dominio fixo ($\mathcal U $). É assim que os conjuntos são tratados em Lean. Para qualquer dado do tipo $U$, Lean nos retorna um novo dado tipo $conjunto$ $U$, que consiste no conjunto dos elementos de $U$. Assim, por exemplo, podemos raciocinar sobre conjuntos de números naturais, conjuntos de números inteiro ou conjuntos de pares de números naturais.
+Embora na teoria axiomática dos conjuntos se considere conjuntos de objetos distintos, em matemática é mais comum considerar subconjuntos de algum domínio fixo ($\mathcal U $). É assim que os conjuntos são tratados em Lean. Para qualquer dado do tipo {\fontencoding{U}\fontfamily{cmtt}\selectfont U}, Lean nos retorna um novo dado tipo {\fontencoding{U}\fontfamily{cmtt}\selectfont set U}, que consiste no conjunto dos elementos de {\fontencoding{U}\fontfamily{cmtt}\selectfont U}. Assim, por exemplo, podemos raciocinar sobre conjuntos de números naturais, conjuntos de números inteiro ou conjuntos de pares de números naturais.
 
   \subsection{Notações}
-  O lean possui uma biblioteca padrão para lidar com conjuntos chamada set e, sempre que formos utilizar um comando que pertence à ela, é necessário escrever {\fontencoding{U}\fontfamily{cmtt}\selectfont set.comando}. Entretanto, pra facilitar nossa vida, podemos escrever {\fontencoding{U}\fontfamily{cmtt}\selectfont open set} no início do código, o que permite escrevermos somente {\fontencoding{U}\fontfamily{cmtt}\selectfont comando}, e o lean já entende que ele pertence a biblioteca set.
+  O lean possui uma biblioteca padrão para lidar com conjuntos chamada {\fontencoding{U}\fontfamily{cmtt}\selectfont set} e, sempre que formos utilizar um comando que pertence a ela, é necessário escrever {\fontencoding{U}\fontfamily{cmtt}\selectfont set.comando}. Entretanto, pra facilitar nossa vida, podemos escrever {\fontencoding{U}\fontfamily{cmtt}\selectfont open set} no início do código, o que permite escrevermos somente {\fontencoding{U}\fontfamily{cmtt}\selectfont comando}, e o lean já entende que ele pertence a biblioteca set.
 
   Além disso, para trabalharmos com conjuntos, também é essencial definirmos um tipo {\fontencoding{U}\fontfamily{cmtt}\selectfont U} e sabermos utilizar conjuntos e elementos desse tipo. Para isso, utilizamos o código abaixo:
 
@@ -422,7 +422,7 @@ Embora na teoria axiomática dos conjuntos se considere conjuntos de objetos dis
 
   Obs$^{1}$.: O conjunto universal é denotado {\fontencoding{U}\fontfamily{cmtt} \selectfont univ}.
 
-  Obs$^{2}$.: O complementar de um conjunto é denotado com um símbolo de negação antes de seu símbolo, assim: $-A$
+  Obs$^{2}$.: O complementar de um conjunto é denotado com um símbolo de subtração antes dele: $-A$
 
   Podemos ver alguns exemplos abaixo:
   \begin{lstlisting}
@@ -449,7 +449,7 @@ Embora na teoria axiomática dos conjuntos se considere conjuntos de objetos dis
     variables A B C : set U
     variable x : U \end{lstlisting}
 
-  A partir desse momento, para evitar repetição, iremos omitir as $4$ primeiras linhas do código, no entanto \textbf{você deve lembrar que elas existem para seu código funcionar.} Já sobre a linha $5$, não é necessário escrever nos próximos exemplos, pois sempre iremos se referenciar a um elemento do tipo{\fontencoding{U}\fontfamily{cmtt} \selectfont U}, dentro de {\fontencoding{U}\fontfamily{cmtt}\selectfont example, lemma} ou {\fontencoding{U}\fontfamily{cmtt}\selectfont theorem}.
+  A partir desse momento, para evitar repetição, iremos omitir as $4$ primeiras linhas do código, no entanto \textbf{você deve lembrar que elas existem para seu código funcionar.} Já sobre a linha $5$, não é necessário escrever nos próximos exemplos, pois sempre iremos nos referenciar a um elemento do tipo{\fontencoding{U}\fontfamily{cmtt} \selectfont U}, dentro de {\fontencoding{U}\fontfamily{cmtt}\selectfont example, lemma} ou {\fontencoding{U}\fontfamily{cmtt}\selectfont theorem}.
 
   \subsection{Primeiros Passos}
 
@@ -487,7 +487,7 @@ Embora na teoria axiomática dos conjuntos se considere conjuntos de objetos dis
     (assume h : x ∈ B,
       show x ∈ A, from sorry)) \end{lstlisting}
 
-  Além disso, o Lean possui interpretação ambígua para regras de união, interseção e outras operações em conjuntos que são consideradas “definições”. Isso significa que as expressões $x$ $\in$ $A$ $\cap$ $B$ e $x$ $\in$ $A$ $\wedge$ $x$ $\in$ $B$ possuem a mesma interpretação no Lean. Isso também é válido para outras construções em conjuntos, como: $x$ $\in$ $A$ $\backslash $ $B$ e $x$ $\in$ $A$ $\wedge$ $\neg$ $(x$ $\in$ $B)$. O termo $\neg$ $(x$ $\in$ $B)$ é somente outra forma de escrever $x$ $\notin$ $B$. Abaixo são apresentadas algumas aplicações dessa interpretação:
+  Além disso, o Lean possui interpretação ambígua para regras de união, interseção e outras operações em conjuntos que são consideradas “definições”. Isso significa que as expressões $x$ $\in$ $A$ $\cap$ $B$ e $x$ $\in$ $A$ $\wedge$ $x$ $\in$ $B$ possuem a mesma interpretação no Lean. Isso também é válido para outras construções em conjuntos, como: $x$ $\in$ $A$ $\backslash $ $B$ e $x$ $\in$ $A$ $\wedge$ $\neg$ $(x$ $\in$ $B)$. O termo $\neg$ $(x$ $\in$ $B)$ é somente outra forma de escrever $x$ $\notin$ $B$. Abaixo são apresentadas algumas aplicações dessas interpretações:
 
   \begin{lstlisting}
   example : ∀ x, x ∈ A → x ∈ B → x ∈ A ∩ B :=
@@ -506,7 +506,7 @@ Embora na teoria axiomática dos conjuntos se considere conjuntos de objetos dis
   assume h : x ∈ (∅ : set U),
   show x ∈ A, from false.elim h \end{lstlisting}
 
-  Observe no último exemplo a necessidade de usar a notação {\fontencoding{U}\fontfamily{cmtt} \selectfont ($\emptyset$ : set U)}, dizendo ao nosso provador que o $\emptyset$ é um conjunto de {\fontencoding{U}\fontfamily{cmtt}
+  Observe no último exemplo a necessidade de usar a notação {\fontencoding{U}\fontfamily{cmtt} \selectfont ($\emptyset$ : set U)}, dizendo ao nosso provador que o $\emptyset$ é um conjunto de{\fontencoding{U}\fontfamily{cmtt}
   \selectfont U}. Isso acontece pois ele não consegue inferir que tipo é o conjunto vazio, dado que por definição, esse conjunto existe em qualquer universo, ou seja, pode ser de qualquer tipo.
 
   Opcionalmente, podemos usar alguns teoremas da biblioteca {\fontencoding{U}\fontfamily{cmtt}
@@ -535,7 +535,6 @@ Embora na teoria axiomática dos conjuntos se considere conjuntos de objetos dis
   Aqui, o teorema {\fontencoding{U}\fontfamily{cmtt}
   \selectfont not\_mem\_empty x} significa $x$ $\notin$ $\emptyset$. Para ver a declaração de teoremas disponíveis, utilize o comando{\fontencoding{U}\fontfamily{cmtt}
   \selectfont \#check}:
-
   \begin{lstlisting}
   #check @mem_inter
   #check @mem_of_mem_inter_left
@@ -546,9 +545,9 @@ Embora na teoria axiomática dos conjuntos se considere conjuntos de objetos dis
   #check @not_mem_empty \end{lstlisting}
 
   Neste caso, o símbolo{\fontencoding{U}\fontfamily{cmtt}
-  \selectfont @} impede que ele tente preencher argumentos implícitos automaticamente, forçando-o a exibir a declaração completa do teorema.
+  \selectfont @} (arroba) impede que ele tente preencher argumentos implícitos automaticamente, forçando-o a exibir a declaração completa do teorema.
 
-  Já que podemos relacionar conjuntos com suas definições lógica, isso auxilia a comprovação de inclusões entre conjuntos:
+  Já que podemos relacionar conjuntos com suas definições lógica, isso auxilia a comprovação de certas relações entre conjuntos:
 
   \begin{lstlisting}
   example : A \ B ⊆ A :=
@@ -586,8 +585,8 @@ Embora na teoria axiomática dos conjuntos se considere conjuntos de objetos dis
   have h₂ : x ∈ B, from and.right h,
   and.intro h₂ h₁ \end{lstlisting}
 
-  Uma solução alternativa é usar o comando {\fontencoding{U}\fontfamily{cmtt}\selectfont show}. Na maioria das vezes, fornecer informações adicionais para o Lean pode ser útil. Outra solução é nomear um teorema, o que leva o Lean a usar um método um pouco diferente de processar a prova, corrigindo o problema como um efeito colateral de sorte.
-
+  Uma solução alternativa é usar o comando {\fontencoding{U}\fontfamily{cmtt}\selectfont show}. Na maioria das vezes, fornecer informações adicionais para o Lean pode ser útil. Outra solução é nomear um teorema, o que leva o nosso provador a usar um método um pouco diferente de processar a prova, corrigindo o problema como um efeito colateral.
+  
   \begin{lstlisting}
   example : A ∩ B ⊆ B ∩ A :=
   assume x,
@@ -604,9 +603,10 @@ Embora na teoria axiomática dos conjuntos se considere conjuntos de objetos dis
   sorry \end{lstlisting}
 
 \section{Propriedades}
-A seguir teremos algumas propriedades e a prova do porque estão corretas.
+A seguir teremos algumas propriedades e a prova do porque estão corretas, utilizando várias maneiras vistas anteriormente neste capítulo.
 
-  \subsection{Básicas}
+\begin{enumerate}
+  \item{\textbf{Básicas}}
   \begin{itemize}
   \item $A \cap A = A$
   \item $A \cup A = A$
@@ -616,31 +616,25 @@ A seguir teremos algumas propriedades e a prova do porque estão corretas.
   \item $A \cup \emptyset = A$
   \end{itemize}
 
-  \subsection{Comutatividade}
+  \item{\textbf{Comutatividade}}
   \begin{itemize}
-  \item $A \cap B = B \cap A$
+  \item $A \cap B = B \cap A$ (a prova desta identidade escontra-se na seção de Provas de Teoremas)
   \item $A \cup B = B \cup A$
   \end{itemize}
 
-  \subsection{Associatividade}
+  \item{\textbf{Associatividade}}
   \begin{itemize}
   \item $(A \cap B) \cap C = A \cap (B \cap C)$
   \item $(A \cup B) \cup C = A \cup (B \cup C)$
   \end{itemize}
 
-  \subsection{Distributividade}
+  \item{\textbf{Distributividade}}
   \begin{itemize}
   \item $A \cap (B \cup C) = (A \cap B) \cup (A \cap C)$
   \item $A \cup (B \cap C) = (A \cup B) \cap (A \cup C)$
 
 \textbf{Prova em Lean:}
 \begin{lstlisting}
-import data.set
-open set
-
-variable U : Type
-variables A B C : set U
-
 example : A ∪ (B ∩ C) = (A ∪ B) ∩ (A ∪ C) :=
 eq_of_subset_of_subset
     (assume x,
@@ -673,7 +667,7 @@ eq_of_subset_of_subset
 
   \end{itemize}
 
-  \subsection{Complementar/Lei de Demorgan}
+  \item{\textbf{Complementar/Lei de Demorgan}}
   \begin{itemize}
   \item $\mathcal U ^c = \emptyset$
   \item $\emptyset ^c = \mathcal U$
@@ -730,35 +724,36 @@ eq_of_subset_of_subset
   \item $(A \cup B)^c = A^c \cap B^c$
   \end{itemize}
 
-  \subsection{Lei da Absorção}
+  \item{\textbf{Lei da Absorção}}
   \begin{itemize}
   \item $A \cap (A \cup B) = A$
 
-  \begin{lstlisting}
-    lemma inter_subseq (H : Type)(P Q : set H) : P ∩ (P ∪ Q) = P :=
-    eq_of_subset_of_subset
-      (assume x,
-        assume h : x ∈ P ∩ (P ∪ Q),
-        show x ∈ P, from h.left)
-      (assume x,
-        assume h : x ∈ P,
-        have h₁ : x ∈ P ∪ Q, from or.inl h,
-        show x ∈ P ∩ (P ∪ Q), from and.intro h h₁)\end{lstlisting}
+\begin{lstlisting}
+lemma inter_subseq (H : Type)(P Q : set H) : P ∩ (P ∪ Q) = P :=
+eq_of_subset_of_subset
+  (assume x,
+    assume h : x ∈ P ∩ (P ∪ Q),
+    show x ∈ P, from h.left)
+  (assume x,
+    assume h : x ∈ P,
+    have h₁ : x ∈ P ∪ Q, from or.inl h,
+    show x ∈ P ∩ (P ∪ Q), from and.intro h h₁)\end{lstlisting}
 
   \item $A \cup (A \cap B) = A$
   \end{itemize}
 
-  \subsection{Extras}
+  \item{\textbf{Extras}}
   \begin{itemize}
   \item $A \setminus B = A \cap B^c$
   \end{itemize}
+\end{enumerate}
 
 \section{Cálculo em Conjuntos}
 Podemos provar que dois conjuntos são iguais argumentando sobre seus elementos, ou podemos ser mais eficientes e utilizar o cálculo juntamente com as propriedades vistas na seção $5.6$. Veja alguns exemplos:
 
   \textbf{Exemplo 1:} Demonstre que $(A \setminus B)^c = A^c \cup B$
 
-  \textbf{Prova:} Expressamos o cálculo:
+  \textbf{Prova:} Utilizando cálculo:
   \begin{equation*}
     \begin{aligned}
       (A \setminus B)^c &= (A \cap B^c)^c)\\
@@ -773,7 +768,7 @@ Podemos provar que dois conjuntos são iguais argumentando sobre seus elementos,
 
   \textbf{Exemplo 2:} Demonstre que $(A \setminus B) \cup (B \setminus A) = (A \cup B) \setminus (A \cap B)$
 
-  \textbf{Prova:} Novamente, o cálculo:
+  \textbf{Prova:} Utilizando cálculo:
   \begin{equation*}
     \begin{aligned}
       (A \setminus B) \cup (B \setminus A) &= (A \cap B^c) \cup (B \cap A^c)\\
@@ -787,9 +782,9 @@ Podemos provar que dois conjuntos são iguais argumentando sobre seus elementos,
     \end{aligned}
   \end{equation*}
 
-Esses são exemplos simples de prova de teoremas sobre conjuntos com uso de cálculo; no entanto, podemos desejar realizar provas mais longas, com verificação. Felizmente, Lean ofereçe uma gama de axiomas sobre conjuntos que permitem desenvolver cálculos desse tipo, através do modo Cáculo.
+COLOCAR ALGO AQUI
 
-Nos próximos exemplos, omitomos as quatro primeiras linhas, no entanto, lembre-se que elas existem, e devem ser incluídas no uso do provador.
+Nos próximos exemplos, omitimos as quatro primeiras linhas, no entanto, lembre-se que elas existem, e devem ser incluídas no uso do provador.
 
 \begin{lstlisting}
     import data.set
@@ -827,7 +822,7 @@ Nesse caso, utilizamos {\fontencoding{U}\fontfamily{cmtt}\selectfont eq.symm h},
            ... = -A ∪ -(-B) : by rw compl_inter
            ... = -A ∪ B     : by rw compl_compl \end{lstlisting}
 
-  Para aquelas pessoas que gostam de ser minimalistas e tentam usar o mínimo de linhas possível, existe como reduzir a prova em calc pra somente uma linha, veja:
+  Para aquelas pessoas que gostam de ser minimalistas e tentam usar o mínimo de linhas possível, existe como reduzir a prova em {\fontencoding{U}\fontfamily{cmtt}\selectfont calc} pra somente uma linha, veja:
 
   \begin{lstlisting}
     example : -(A \ B) = -A ∪ B :=
@@ -883,7 +878,7 @@ Nesse caso, utilizamos {\fontencoding{U}\fontfamily{cmtt}\selectfont eq.symm h},
 
   O leitor bem atento já notou uma pequena diferença na linha $13$ do código, não escrevemos {\fontencoding{U}\fontfamily{cmtt}\selectfont by rw inter\_comm}, mas sim {\fontencoding{U}\fontfamily{cmtt}\selectfont by rw inter\_comm B A}. Isso é necessário, porque na expressão dessa linha existem $2$ símbolos de intersecção em que poderia ser aplicado o lema, criando uma ambiguidade pro provador decidir em qual deles vai aplicá-lo. Quando isso acontece, o provador sempre escolhe a primeira ocorrência, ou seja, quando aplicamos o lema {\fontencoding{U}\fontfamily{cmtt}\selectfont inter\_comm} na expressão {\fontencoding{U}\fontfamily{cmtt}\selectfont (A ∪ B) ∩ -(B ∩ A)}, obtemos {\fontencoding{U}\fontfamily{cmtt}\selectfont -(B ∩ A) ∩ (A ∪ B)}. Entretanto, o objetivo é {\fontencoding{U}\fontfamily{cmtt}\selectfont (A ∪ B) ∩ -(A ∩ B)}, e para especificar isso, é só passar depois do lema os parâmetros que queremos que ele seja aplicado, no nosso caso, {\fontencoding{U}\fontfamily{cmtt}\selectfont B A}.
 
-  Outro caso de ambiguidade que também vemos nesse exemplo, está na linha $4$. A expressão anterior é {\fontencoding{U}\fontfamily{cmtt}\selectfont (A ∩ -B) ∪ (B \ A)}, ou seja, temos dois termos possíveis para aplicar o lema {\fontencoding{U}\fontfamily{cmtt}\selectfont diff\_eq}, podemos reescrever {\fontencoding{U}\fontfamily{cmtt}\selectfont (A ∩ -B)} como {\fontencoding{U}\fontfamily{cmtt}\selectfont (A $\setminus$ B)} ou podemos reescrever  {\fontencoding{U}\fontfamily{cmtt}\selectfont (B $\setminus$ A)} como {\fontencoding{U}\fontfamily{cmtt}\selectfont (B ∩ -A)}. Nesse caso, o Lean prioriza a ida do lemma, que significa transformar o lado esquerdo da igualdade no lado direito (veja a lista de propriedades novamente pra entender melhor), e demos sorte de ser exatamente o que queríamos. Para fazer o inverso, só precisamos especificar os parâmetros pro lema: {\fontencoding{U}\fontfamily{cmtt}\selectfont by rw diff\_eq A B}.
+  Outro caso de ambiguidade que também vemos nesse exemplo, está na linha $4$. A expressão anterior é {\fontencoding{U}\fontfamily{cmtt}\selectfont (A ∩ -B) ∪ (B $\setminus$ A)}, ou seja, temos dois termos possíveis para aplicar o lema {\fontencoding{U}\fontfamily{cmtt}\selectfont diff\_eq}, podemos reescrever {\fontencoding{U}\fontfamily{cmtt}\selectfont (A ∩ -B)} como {\fontencoding{U}\fontfamily{cmtt}\selectfont (A $\setminus$ B)} ou podemos reescrever  {\fontencoding{U}\fontfamily{cmtt}\selectfont (B $\setminus$ A)} como {\fontencoding{U}\fontfamily{cmtt}\selectfont (B ∩ -A)}. Nesse caso, o Lean prioriza a ida do lemma, que significa transformar o lado esquerdo da igualdade no lado direito (veja a lista de propriedades novamente pra entender melhor), e demos sorte de ser exatamente o que queríamos. Para fazer o inverso, só precisamos especificar os parâmetros pro lema: {\fontencoding{U}\fontfamily{cmtt}\selectfont by rw diff\_eq A B}.
 
   Em algumas vezes, é necessário colocar cada parâmetro entre parênteses. Por exemplo, se um parâmetro for parecido com {\fontencoding{U}\fontfamily{cmtt}\selectfont -(A ∩ B) ∩ C}, o que vamos escrever depois do lemma é {\fontencoding{U}\fontfamily{cmtt}\selectfont (-(A ∩ B) ∩ C)} e os outros parâmetros.
 
