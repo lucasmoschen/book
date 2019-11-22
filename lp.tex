@@ -653,7 +653,8 @@ delas. A de azul respondeu: ``Ana é a que está de branco”. A de branco falou
 
 O anfitrião foi capaz de identificar corretamente quem era cada pessoa considerando que: (i) Ana sempre diz a verdade; (ii) Maria às vezes diz a verdade; e (iii) Cláudia nunca diz a verdade.
 
-Para começar a análise desse problema, precisamos identificar quais proposições serão representadas pelas letras. Como nossa principal meta é descobrir quem veste qual cor, usaremos : AA (Ana veste azul),AB (Ana veste branco), AP (Ana veste preto), MA (Maria veste azul), MB (Maria veste branco), MP (Maria veste preto), CA(Cláudia veste azul),CB (Cláudia veste branco),CP (Cláudia veste preto).
+Para começar a análise desse problema, precisamos identificar quais proposições serão representadas pelas letras. Como nossa principal meta é descobrir quem veste cada cor, usaremos: AA (Ana veste azul), AB (Ana veste branco), AP (Ana veste preto), MA (Maria veste azul), MB (Maria veste branco), MP (Maria veste preto), CA (Cláudia veste azul), CB (Cláudia veste branco) e CP (Cláudia veste preto).
+
 Antes de começar a analisar as regras impostas pelo problema, por bom senso, sabemos que nenhuma das irmãs veste mais de uma cor de vestido. Então temos que:
 \begin{itemize}
     \item AA ∨ (AB ∨ AP)
@@ -663,35 +664,38 @@ Antes de começar a analisar as regras impostas pelo problema, por bom senso, sa
     \item (MA → (¬ MB ∧ ¬ MP)) ∧ (MB → (¬ MA ∧ ¬ MP)) ∧ (MP → (¬ MB ∧ ¬ MA))
     \item (CA → (¬ CB ∧ ¬ CP)) ∧ (CB → (¬ CA ∧ ¬ CP)) ∧ (CP → (¬ CB ∧ ¬ CA))
 \end{itemize}
-No começo do problema, nos é dito que as três irmãs foram para festa com cores diferentes de vestido, logo, sabemos que, se sabemos de uma irmã foi de determinada cor, as outras duas certamente não vestiram aquela cor. Assim:
+
+No começo do problema, nos é dito que as três irmãs foram para a festa com cores diferentes de vestido. Logo, sabemos que, se uma irmã foi de determinada cor, as outras duas certamente não vestiram aquela cor. Assim:
+
 \begin{itemize}
     \item (AA → (¬ MA ∧ ¬ CA)) ∧ (AB → (¬ MB ∧ ¬ CB)) ∧ (AP → (¬ MP ∧ ¬ CP))
     \item (MA → (¬ AA ∧ ¬ CA)) ∧ ((MB → (¬ AB ∧ ¬ CB)) ∧ (MP → (¬ AP ∧ ¬ CP)))
     \item (CA → (¬ AA ∧ ¬ MA)) ∧ (CB → (¬ AB ∧ ¬ MB)) ∧ (CP → (¬ AP ∧ ¬ MP))
 \end{itemize}
+
 Vamos agora analisar as sentenças ditas pelas irmãs, sabendo suas características individuais:
 \bigbreak
-Se Ana está de azul, sabemos sua sentença é verdadeira e, portanto, Ana está de branco. Escrevemos então:
+Se Ana está de azul, sabemos que sua sentença é verdadeira e, portanto, Ana está de branco. Escrevemos então:
 \begin{itemize}
 	\item AA → AB
 \end{itemize}
-Se Ana está de branco, sabemos sua sentença é verdadeira e, portanto, Maria está de branco. Escrevemos então:
+Se Ana está de branco, sabemos que sua sentença é verdadeira e, portanto, Maria está de branco. Escrevemos então:
 \begin{itemize}
 	\item AB → MB
 \end{itemize}
-Se Ana está de preto, sabemos sua sentença é verdadeira e, portanto, Cláudia é quem está de branco. Escrevemos então:
+Se Ana está de preto, sabemos que sua sentença é verdadeira e, portanto, Cláudia é quem está de branco. Escrevemos então:
 \begin{itemize}
 	\item AP → CB
 \end{itemize}
-Se Claudia está de azul, sabemos sua sentença é falsa e, portanto, Ana não está de branco. Escrevemos então:
+Se Claudia está de azul, sabemos que sua sentença é falsa e, portanto, Ana não está de branco. Escrevemos então:
 \begin{itemize}
 	\item CA → ¬ AB
 \end{itemize}
-Se Claudia está de branco, sabemos sua sentença é falsa e, portanto, Maria não está de branco. Escrevemos então:
+Se Claudia está de branco, sabemos que sua sentença é falsa e, portanto, Maria não está de branco. Escrevemos então:
 \begin{itemize}
 	\item CB → ¬ MB
 \end{itemize}
-Se Claudia está de preto, sabemos sua sentença é falsa e, portanto, Cláudia não está de branco. Escrevemos então:
+Se Claudia está de preto, sabemos que sua sentença é falsa e, portanto, Cláudia não está de branco. Escrevemos então:
 \begin{itemize}
 	\item CP → ¬ CB
 \end{itemize}
@@ -700,7 +704,7 @@ Por fim, sabemos que Ana não pode estar de branco, pois, caso estivesse, estari
 	\item ¬ AB
 \end{itemize}
 \bigbreak
-Por meio de manipulações das fórmulas descritas acima, convidamos  o leitor nos exercícios a chegar na resposta encontrada no início deste capítulo.
+Por meio das fórmulas descritas acima, convidamos o leitor, nos exercícios, a chegar na prova da resposta encontrada no início deste capítulo.
 
 
 \section{Exemplos adicionais de Dedução Natural}
