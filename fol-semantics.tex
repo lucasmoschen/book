@@ -67,7 +67,24 @@
      Outra distinção importante é entre os objetos dos domínio e os símbolos constantes. Se considerarmos o domínio U de todas as cores, conhecemos os objetos deste domínio, mas podemos escrever o símbolo constante $verde$ e podemos interpretá-lo com verde ou como rosa, objetos do domínio.
      De maneira análoga, podemos definir os símbolos $0$, $1$, $2$ e interpretálos como os objetos do domínio $0$, $1$ e $2$.
      
-    \subsection{Verdade e modelos}
+    \subsection{Verdade em modelos}
+    
+     
+    Na lógica proposicional a valoração dizia quais elementos deveriam ser interpretados como falsos e quais como verdadeiros. Já na lógica de primeira ordem serão avaliados cada termo e em seguida a interpretação é aplicada na estrutura. Mais adiante veremos exemplos que deixarão a ideia mais clara.
+    
+    Suponhamos um domínio D, em linguagem de primeira ordem, e uma interpretação em D para cada símbolo da linguagem. Um \textbf{modelo} é esta estrutura formada por um domínio D e a interpretação relativa a este domínio. Um modelo fornece as informações necessárias para avaliarmos todas as sentenças da linguagem em verdadeiro ou falso.
+    
+    Vamos relembrar a diferença entre termo e sentença e descrever as respectivas interpretações:
+    
+    \begin{itemize}
+        \item  \textit{Termos} representam objetos e não possuem valor verdade. São termos: $a + b, f(x), c$. E a sua interpretação é definida pelo próprio modelo e são elementos do domínio. Para interpretar $a + b$, verificamos a interpretação do modelo para cada termo $a$ e $b$ e em seguida aplicamos a interpretação de $+$ à estes termos. Da mesma forma, para $f(x)$, analizamos a interpretação do termo $x$, dada pelo modelo e plicamos a interpretação de $f$ ao termo $x$.
+        
+        \item \textit{Sentenças} são relações ou predicados que assumem valor verdade. Alguns exemplos: $ R(a,b), x + y < x, P(a)$. Para interpretar um predicado ou uma relação primeiro se interpreta os termos como objetos do domínio, e em seguida verificar se a interpretação do símbolo da relação é verdadeira para estes objetos do domínio.
+        
+        
+    \end{itemize}
+    
+    Seja A uma sentença e $\mathbb{M}$ um modelo da linguagem de A. Por questão de praticidade, vamos adotar as notações $\mathbb{M} \vDash A$ (pode ser lido como \textit{modela}, \textit{satisfaz} ou \textit{valida}) para quando o modelo $\mathbb{M}$ avalia a sentença $A$ como verdadeira ($ \textbf{T}$) e $\mathbb{M} \not \vDash A$ para quando $\mathbb{M}$ avalia $A$ como falsa ($ \textbf{F}$).
        
     \subsection{Exemplos}
     
