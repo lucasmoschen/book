@@ -24,6 +24,7 @@ Pense um pouco sobre o problema e determine qual vestido cada uma das irmãs est
 
 Para apresentar o assunto, este capítulo foi dividido em outras três seções. Na primeira, são descritas as regras de inferência utilizadas nas provas de lógica proposicional. Na segunda, são apresentadas e discutidas provas mais complexas que utilizam essas mesmas regras. A terceira seção consiste em uma série de exercícios que contam também com um gabarito. Por fim, vale notar que, ao longo dessas seções, optou-se por abordar a lógica proposicional sob três pontos de vista: a partir da dedução natural, das tabelas verdade e do uso do Lean. 
 
+
 \section{Regras de Inferência}
 Quando nos comunicamos, é habitual utilizar diferentes estruturas de linguagem que nos aproximem do sentido que queremos dar a alguma sentença. Na lógica proposicional, esses padrões são também amplamente utilizados e importantes para a construção de fórmulas e serão melhor aprofundados a seguir.
 
@@ -453,7 +454,7 @@ or.elim h3
 
 \subsection{Negação}
 A negação de $A$ é  representada  em  símbolos por $\neg A $. 
-Mostrar que $\neg A $ ocorre, em termos lógicos, é o mesmo que mostrar que $A $ leva a uma contradição. Em dedução natural, a seguinte estrutura para representar regra de introdução da negação, na qual $\bot$ é o símbolo para falso, contradição ou absurdo:
+Mostrar que $\neg A $ ocorre, em termos lógicos, é o mesmo que mostrar que $A $ leva a uma contradição. Em dedução natural, a seguinte estrutura representa a regra de introdução da negação, na qual $\bot$ é o símbolo para falso, contradição ou absurdo:
 
 \begin{prooftree}
     \AxiomC{}
@@ -525,7 +526,7 @@ Ao observar as tabelas anteriores, você pode constatar que:
 $\neg$ (P $\lor$ Q) $\equiv \neg$ P $\land \neg$ Q e $\neg$ (P $\land$ Q ) $\equiv \neg $P $\lor \neg$ Q    
 
 \bigbreak
-As equivalências acima são chamadas de Leis de De Morgan, e significam que a negação da disjunção (de duas sentenças) é a conjunção das negações e a negação da conjunção (de duas sentenças) é a disjunção das negações (destas sentenças). (Nos exercícios pedimos que você prove essas identidades). 
+As equivalências acima são chamadas de Leis de De Morgan, e significam que a negação da disjunção (de duas sentenças) é a conjunção das negações e a negação da conjunção (de duas sentenças) é a disjunção das negações (destas sentenças). (Nos exercícios pedimos que você prove algumas equivalências como essas). 
 
 Ao utilizarmos o Lean, as regras de inferência de eliminação e introdução da negação podem ser obtidas através dos comandos a seguir: 
 
@@ -555,6 +556,18 @@ E para $\bot $ , quais regras regem o mundo dos absurdos? A regra de eliminaçã
  \RightLabel{\scriptsize $\bot$ E}
  \UnaryInfC{A}
 \end{prooftree}
+
+Uma discussão interessante surge a partir dessa regra, que não abordaremos com profundidade pois fogem do escopo desse livro. Considere a seguinte sentença:
+
+\begin{itemize}
+    \item Para todo número natural, se \textit{n} é par, então \textit{n + 1} é ímpar.
+\end{itemize}
+\par
+Gostaríamos que essa sentença fosse verdadeira para todo \textit{n}. Sendo ela verdadeira para todos os naturais, podemos tomar um valor particular de \textit{n}, por exemplo \textit{n = 3}. Nessa sentença condicional, ambos antecedente e sucedente são falsos. O fato de estarmos comprometidos em dizer que essa afirmação é verdadeira mostra que devemos ser capazes de provar que a afirmação $3 + 1$ é ímpar decorre da afirmação falsa de que $3$ é par. O \textit{ex falso} encapsula ordenadamente esse tipo de inferência.
+
+Observe atentamente outra vez a tabela verdade para a implicação, note que em qualquer um dos casos onde o antecedente é falso, a sentença de implicação é verdadeira (por vacuidade). 
+
+Como definimos $\neg A$ como $A \rightarrow \bot $, então as regras para introdução e eliminação da negação nada mais são do que as regras de introdução e eliminação da implicação, respectivamente.
 
 \subsection{Prova por contradição}
 % Sugestão de leitura : https://home.sandiego.edu/~shulman/papers/rabbithole.pdf
@@ -627,6 +640,71 @@ Em dedução natural, a seguinte árvore corresponderia ao exemplo acima:
  \RightLabel{\scriptsize(1)}
  \UnaryInfC{$\neg \neg P \to P$}
 \end{prooftree}
+
+\subsection{Problema dos vestidos}
+
+Temos agora todas as ferramentas necessárias para começar a formalização do primeiro problema apresentado no capítulo. Relembrando o enunciado, temos que:
+
+Três irmãs - Ana, Maria e Cláudia - foram a uma festa com vestidos de cores diferentes. Uma vestia azul, a outra branco e a terceira
+preto. 
+
+Chegando à festa, o anfitrião perguntou quem era cada uma
+delas. A de azul respondeu: ``Ana é a que está de branco”. A de branco falou: ``Eu sou Maria”. Por fim, a de preto disse:  ``Cláudia é quem está de branco”.
+
+O anfitrião foi capaz de identificar corretamente quem era cada pessoa considerando que: (i) Ana sempre diz a verdade; (ii) Maria às vezes diz a verdade; e (iii) Cláudia nunca diz a verdade.
+
+Para começar a análise desse problema, precisamos identificar quais proposições serão representadas pelas letras. Como nossa principal meta é descobrir quem veste cada cor, usaremos: AA (Ana veste azul), AB (Ana veste branco), AP (Ana veste preto), MA (Maria veste azul), MB (Maria veste branco), MP (Maria veste preto), CA (Cláudia veste azul), CB (Cláudia veste branco) e CP (Cláudia veste preto).
+
+Antes de começar a analisar as regras impostas pelo problema, por bom senso, sabemos que nenhuma das irmãs veste mais de uma cor de vestido. Então temos que:
+\begin{itemize}
+    \item AA ∨ (AB ∨ AP)
+    \item  MA ∨ (MB ∨ MP)
+    \item CA ∨ (CB ∨ CP)
+    \item (AA → (¬ AB ∧ ¬ AP)) ∧ (AB → (¬ AA ∧ ¬ AP)) ∧ (AP → (¬ AB ∧ ¬ AA))
+    \item (MA → (¬ MB ∧ ¬ MP)) ∧ (MB → (¬ MA ∧ ¬ MP)) ∧ (MP → (¬ MB ∧ ¬ MA))
+    \item (CA → (¬ CB ∧ ¬ CP)) ∧ (CB → (¬ CA ∧ ¬ CP)) ∧ (CP → (¬ CB ∧ ¬ CA))
+\end{itemize}
+
+No começo do problema, nos é dito que as três irmãs foram para a festa com cores diferentes de vestido. Logo, sabemos que, se uma irmã foi de determinada cor, as outras duas certamente não vestiram aquela cor. Assim:
+
+\begin{itemize}
+    \item (AA → (¬ MA ∧ ¬ CA)) ∧ (AB → (¬ MB ∧ ¬ CB)) ∧ (AP → (¬ MP ∧ ¬ CP))
+    \item (MA → (¬ AA ∧ ¬ CA)) ∧ ((MB → (¬ AB ∧ ¬ CB)) ∧ (MP → (¬ AP ∧ ¬ CP)))
+    \item (CA → (¬ AA ∧ ¬ MA)) ∧ (CB → (¬ AB ∧ ¬ MB)) ∧ (CP → (¬ AP ∧ ¬ MP))
+\end{itemize}
+
+Vamos agora analisar as sentenças ditas pelas irmãs, considerando as suas características individuais:
+\bigbreak
+Se Ana está de azul, sabemos que a sua sentença é verdadeira e, portanto, Ana está de branco. Escrevemos então:
+\begin{itemize}
+	\item AA → AB
+\end{itemize}
+Se Ana está de branco, sabemos que a sua sentença é verdadeira e, portanto, Maria está de branco. Escrevemos então:
+\begin{itemize}
+	\item AB → MB
+\end{itemize}
+Se Ana está de preto, sabemos que a sua sentença é verdadeira e, portanto, Cláudia é quem está de branco. Escrevemos então:
+\begin{itemize}
+	\item AP → CB
+\end{itemize}
+Se Claudia está de azul, sabemos que a sua sentença é falsa e, portanto, Ana não está de branco. Escrevemos então:
+\begin{itemize}
+	\item CA → ¬ AB
+\end{itemize}
+Se Claudia está de branco, sabemos que a sua sentença é falsa e, portanto, Maria não está de branco. Escrevemos então:
+\begin{itemize}
+	\item CB → ¬ MB
+\end{itemize}
+Se Claudia está de preto, sabemos que a sua sentença é falsa e, portanto, Cláudia não está de branco. Escrevemos então:
+\begin{itemize}
+	\item CP → ¬ CB
+\end{itemize}
+Por fim, sabemos que Ana não pode estar de branco, pois, caso estivesse, estaria mentindo em sua sentença. Escrevemos então:
+\begin{itemize}
+	\item ¬ AB
+\end{itemize}
+\bigbreak
+Por meio das fórmulas descritas acima, convidamos o leitor, nos exercícios, a chegar na prova da resposta encontrada no início deste capítulo.
 
 
 \section{Exemplos adicionais de Dedução Natural}
@@ -1246,6 +1324,7 @@ end
 \end{lstlisting}
 
 No entanto, ao passo que possa parecer mais conveniente escrever a prova assim, note que o entendimento imediato de alguns passos é dificultado, por isso é necessário cuidado ao utilizar esse recurso.
+
 \bigbreak
 \textbf{9. Prova do Princípio da Casa dos Pombos (PHP-3):}
     O princípio da casa dos pombos afirma que se $n$ pombos devem ser postos em $m$ casas, e se $n > m$, então pelo menos uma casa irá conter mais de um pombo. Apesar desse princípio  generalizado ser muito amplo para ser provado por árvores dedutivas, conseguimos provar o caso de três pombos e duas casas de pombo utilizando a dedução natural. A árvore de solução desse problema é muito grande para ser mostrada aqui, contudo vamos explicar como seria a estrutura dela e como solucionar esse problema no Lean. 
@@ -1253,8 +1332,6 @@ No entanto, ao passo que possa parecer mais conveniente escrever a prova assim, 
     Para pensar nessa árvore, vamos analisar como estruturar o problema em lógica proposicional. Se temos três pombos e duas casas, podemos descrever essa situação por $P_{ij}$, sendo $i$ o número representativo do pombo e $j$ o número representativo da casa. Cada pombo vai ficar somente em uma casa, logo temos: $(P_{11} \lor P_{12}) \land (P_{21} \lor P_{22}) \land (P_{31} \lor P_{32})$. Queremos provar que isso implica em ao menos dois pombos em uma mesma casa, o que pode ser representado por: $(P_{22} \land P_{32}) \lor (P_{11} \land P_{31}) \lor (P_{12} \land P_{22}) \lor (P_{11} \land P_{21}) \lor (P_{12} \land P_{32}) \lor (P_{21} \land P_{31})$. Assim, queremos provar que: $(P_{11} \lor P_{12}) \land (P_{21} \lor P_{22}) \land (P_{31} \lor P_{32}) \rightarrow (P_{22} \land P_{32}) \lor (P_{11} \land P_{31}) \lor (P_{12} \land P_{22}) \lor (P_{11} \land P_{21}) \lor (P_{12} \land P_{32}) \lor (P_{21} \land P_{31})$.
     
     De início, podemos notar que queremos chegar em um ``ou''. Logo, provando apenas um dos ``e'' podemos chegar em todo esse ``ou''. Como provar essas conjunções? É possível observar que todos os pares formando o $\land$ da conclusão estão em pares diferentes de $\lor$ na hipótese. Logo, é necessário abrir esses ``ou''. O que será feito é abrir cada uma das dinjunções da hipótese dentro das outras, de modo que teremos todos os termos necessários para formar as conjunções da conclusão. 
-    
-    
     
 Para tornar a ideia acima mais concreta, é possível observar como essa prova poderia ser construída no modo termo do Lean: 
 \begin{lstlisting}
@@ -1322,6 +1399,7 @@ show B ∧ C, from and.right h
 \end{lstlisting}
 
 
+
 Contudo, não é tão simples obter $A \land B$ a partir dessa mesma hipótese. Apesar de $A$ e $B$ estarem lado a lado, assim como $B$ e $C$ estavam, é necessário redigir uma prova mais extensa:
 
 \begin{lstlisting}
@@ -1343,7 +1421,6 @@ example: (A ∧ B) ∧ C → A ∧ B :=
 assume h: (A ∧ B) ∧ C,
 show A ∧ B, from and.left h
 \end{lstlisting}
-
 
 \bigbreak
 \textbf{10. Prova de $\neg (A \land B) \rightarrow (A \rightarrow \neg B)$:}
@@ -1876,7 +1953,14 @@ As condições de R(G) são:
     \end{itemize}
     \item Nenhum dos dois nós j e k ocupam  a mesma posição no caminho, onde j $\neq $ k.
     \item Nós i e j não adjacentes não podem ser adjacentes no caminho. 
+    \begin{itemize}
+    \item $\neg$ xki $\lor \neg$ x$_{k + 1}$j
+    para todos (i,j) $\notin$ G e k= 1,2, ..., n-1 
+    \end{itemize}
+    (Arestas que não existem no grafo não podem fazer parte do caminho)
 \end{enumerate}
+
+Escolhido um caminho, verificamos se ele obedece as restrições estabelecidas, se sim, ele é um caminho hamiltoniano. Ao interpretar e começar a formular um modo de resolver esse problema podemos iniciar tentando fazer algo parecido com o que fizemos para o exemplo dos vestidos e provar que uma dada fórmula xij $\land ... \land$ xkn é verdadeira, mas nesse caso observe que não há só uma possibilidade de caminho que satisfaz as restrições, e xij sozinho não nos diz muita coisa já que ele depende do restante da fórmula.
 
 \bigbreak
 Possível gabarito:
