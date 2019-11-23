@@ -1,5 +1,5 @@
 \section{Dedução Natural}
-Como visto na seção anterior, devemos estabelecer as regras de inclusão e exclusão
+Devemos estabelecer as regras de inclusão e exclusão
 de dedução para os quantificadores e para a igualdade. Listamos elas inicialmente:
 \newline \textbf{Quantificador universal:}
  \newline 
@@ -194,8 +194,6 @@ $\exists x A(x)$ como mais uma de nossas hipóteses e aplicamos a regra de exclu
 dessa forma obtemos no mesmo ramo $A(t)$ e $\neg A(t)$, obtendo a contradição que estávamos procurando.
 \subsection{Igualdade}
 TO DO 
-\subsection{Exercícios}
-TO DO
 \subsection{Dedução natural no LEAN}
 No Lean a dedução ocorre de forma similar a dedução em primeira ordem, apenas devemos utilizar de novos símbolos e das 
 regras de exclusão e inclusão dos quantificadores. Os símbolos $\exists $ e $\forall $ são escritos no Lean como \textbackslash exist 
@@ -251,15 +249,148 @@ exists.elim h$_1$
         show $\exists$ x, A x, from exists.intro t h$_2$.left) 
 \end{lstlisting}
 \subsection{Exercícios}
-\textbf{1.}Resolve as seguintes deduções naturais:
-\newline \textbf{a)} $\forall x A(x) \to \neg \exists x \neg A(x)$.
-\newline \textbf{SOLUÇÃO:}
+\textbf{1.} Temos que 
+que $A \to A \lor B$, apresente uma dedução natural 
+para $(\forall x A (x)) \to (\forall x A(x)\lor B(x))$. Em seguida,
+demonstre utilizando Lean.
+\newline \textbf{2.} Assim como temos em lógica proposicional
+ que $A \land B \to A$, de uma dedução natural para 
+ $(\forall x A (x) \land B(x)) \to (\forall x A(x))$. Em seguinda,
+ demonstre utilizando Lean.
+\newline \textbf{3.} Apresente uma dedução natural e uma
+prova Lean para a relação $(\forall x A(x) \to \neg B(x)) \iff \neg (\exists x A(x) \land B(x))$.
+ \newline \textbf{4.}Resolve as seguintes deduções naturais com auxílio do Lean.
+\newline \textbf{a)} $\forall x A(x) \iff \neg \exists x \neg A(x)$.
+\newline \textbf{b)} $\forall x(A(x) \to B(x)) \to (\forall x A(x) \to \forall x B(x))$.
+\newline \textbf{c)} Utilizando $\forall y \neg A (y)$ e $\forall x A(x)
+\lor B(x)$ prove $\forall x B(x)$.
+\newline \textbf{d)} Utilizando $\forall x A(x) \land B(x)$ e 
+$\forall x A(x) \land B(x) \to C(x)$ prove $\forall x A(x) \land C(x)$.
+\newline \textbf{e)}De uma prova de $\forall y P(y) \to P(f (f y))$ utilizando 
+de $\forall x P(x) \to P(f(x))$.
+\newline \textbf{5.} Utilizando dos predicados unários 
+$even$ e $odd$, e da função unária $succ$, das hipóteses
+$\forall x even(x) \lor odd(x)$ e $\forall x odd(x) \to even(succ(x))$,
+prove que $\forall x even(x) \lor even(succ(x))$.
+\newline \textbf{6.} Prove que $y = x → y = z → x = z$.
+\newline \textbf{7.} Retornando ao capítulo anterior com o exercício de Ana, Cláudia e Maria e seus três vestidos
+agora podemos resolver o problema utilizando de proposição de primeira ordem. Na situação, temos: 
+\newline Três irmãs - Ana, Maria e Cláudia - foram a uma festa com vestidos de
+cores diferentes. Uma vestia azul, a outra branco e a Terceira
+preto. Chegando à festa, o anfitrião perguntou quem era cada uma
+delas. As respostas foram:
+\newline - A de azul respondeu: “Ana é a que está de branco”
+\newline - A de branco falou: “Eu sou Maria”
+\newline - A de preto disse:  “Cláudia é quem está de branco”
+\newline O anfitrião foi capaz de identificar corretamente quem era cada pessoa
+considerando que:
+\newline - Ana sempre diz a verdade
+\newline - Maria às vezes diz a verdade
+\newline - Cláudia nunca diz a verdade
+\newline Pensando um pouco sobre o problema, pode-se concluir que a Ana estava
+com o vestido preto, a Cláudia com o branco e a Maria com o
+azul.  
+\newline \textbf{a)} Escreva as fórmulas de primeira ordem necessárias para o problema.
+\newline \textbf{b)} Utilizando da ferramente Lean, apresente uma
+deduração natural que prove que Ana veste preto, Cláudia
+branco e Maria azul.
+\subsection{Gabarito}
+\textbf{1.}
+\begin{lstlisting}
+variable U : Type
+variables A B : U → Prop
+--term mode
+example : (∀ x, A x) → ∀ x, A x ∨ B x :=
+assume h1: ∀ x, A x,
+assume t,
+have h2 : A t, from h1 t,
+or.inl h2
+
+--tatics
+example : (∀ x, A x) → ∀ x, A x ∨ B x :=
+begin
+intros h1 t,
+exact or.inl (h1 t)
+end
+\end{lstlisting}
+\textbf{2.}
+\begin{lstlisting}
+variable U : Type
+variables A B : U → Prop
+--term mode
+example : (∃ x, A x ∧ B x) → ∃ x, A x :=
+assume h1 : ∃ x, A x ∧ B x,
+exists.elim h1
+    (assume (t) (h2 : A t ∧ B t),
+    have h3 : A t, from h2.left,
+    show ∃ x, A x, from exists.intro t h3)
+    
+--tatics
+example : (∃ x, A x ∧ B x) → ∃ x, A x :=
+begin
+intros h1,
+cases h1 with t h2,
+apply exists.intro t,
+exact h2.left
+end    
+\end{lstlisting}
+\textbf{3.}
+\begin{lstlisting}
+variable U : Type
+variables A B : U → Prop 
+
+--term mode
+example : (∀ x, A x → ¬ B x) ↔ ¬ ∃ x, A x ∧ B x :=
+iff.intro
+  (assume h1 : ∀ x, A x → ¬ B x,
+  assume h2 : ∃ x, A x ∧ B x,
+  exists.elim h2
+    (assume (t) (h3 : A t ∧ B t), 
+    have h4 : A t → ¬ B t, from h1 t,
+    have h5 : ¬ B t, from h4 h3.left,
+    show false, from h5 h3.right))
+  (assume h2 : ¬ ∃ x, A x ∧ B x,
+  assume t, 
+  assume h3 : A t,
+  assume h4 : B t,
+  have h5 : A t ∧ B t, from and.intro h3 h4,
+  have h6 : ∃ x, A x ∧ B x, from exists.intro t h5,
+  show false, from h2 h6)
+
+--observe que no term mode podemos passar mais de uma hipótse
+--para o comando assume
+example : (∀ x, A x → ¬ B x) ↔ ¬ ∃ x, A x ∧ B x :=
+iff.intro
+  (assume (h1 : ∀ x, A x → ¬ B x) (h2 : ∃ x, A x ∧ B x),
+  exists.elim h2
+    (assume (t) (h3 : A t ∧ B t), 
+    have h4 : A t → ¬ B t, from h1 t,
+    have h5 : ¬ B t, from h4 h3.left,
+    show false, from h5 h3.right))
+  (assume (h2 : ¬ ∃ x, A x ∧ B x) t (h3 : A t) (h4 : B t),
+   have h5 : A t ∧ B t, from and.intro h3 h4,
+   have h6 : ∃ x, A x ∧ B x, from exists.intro t h5,
+   show false, from h2 h6)  
+
+--tatics
+example : (∀ x, A x → ¬ B x) ↔ ¬ ∃ x, A x ∧ B x :=
+begin
+apply iff.intro,
+intros h1 h2,
+cases h2 with t h3,
+exact ((h1 t) h3.left) h3.right,
+intros h1 t h2 h3,
+exact h1 (exists.intro t (and.intro h2 h3))
+end
+
+\end{lstlisting}
+\textbf{4)a):}
 
 \begin{lstlisting}
 variable U : Type
 variables A : U → Prop
     
-    
+--ida  
 --term mode
 example : (∀ x, A x) → (¬ ∃ x, ¬ A x) :=
 assume h1 : ∀ x, A x,
@@ -278,13 +409,8 @@ intro t,
 intro h3,
 exact h3 (h1 t)
 end 
-\end{lstlisting}
-\textbf{b)} $\exists x \neg A (x) \to \neg \forall x A(x)$.
-\newline \textbf{SOLUÇÃO:} 
-\begin{lstlisting}
-variable U : Type
-variable A : U → Prop
 
+--volta
 --term mode
 example : (∃ x, ¬ A x) → ¬ ∀ x, A x :=
 assume h1 : ∃ x, ¬ A x,
@@ -307,28 +433,139 @@ intro h3,
 exact h3 (h2 t)
 end
 \end{lstlisting}
-\textbf{c)}
-\textbf{d)}
-\textbf{e)}
-\newline \textbf{2.} Retornando ao capítulo anterior com o exercício de Ana, Cláudia e Maria e seus três vestidos
-agora podemos resolver o problema utilizando de proposição de primeira ordem. Na situação, temos: 
-\newline Três irmãs - Ana, Maria e Cláudia - foram a uma festa com vestidos de
-cores diferentes. Uma vestia azul, a outra branco e a Terceira
-preto. Chegando à festa, o anfitrião perguntou quem era cada uma
-delas. As respostas foram:
-\newline - A de azul respondeu: “Ana é a que está de branco”
-\newline - A de branco falou: “Eu sou Maria”
-\newline - A de preto disse:  “Cláudia é quem está de branco”
-\newline O anfitrião foi capaz de identificar corretamente quem era cada pessoa
-considerando que:
-\newline - Ana sempre diz a verdade
-\newline - Maria às vezes diz a verdade
-\newline - Cláudia nunca diz a verdade
-\newline Pensando um pouco sobre o problema, pode-se concluir que a Ana estava
-com o vestido preto, a Cláudia com o branco e a Maria com o
-azul.  
-\newline \textbf{a)} Escreva as fórmulas de primeira ordem necessárias para o problema.
-\newline \textbf{SOLUÇÃO:}
+\textbf{4.b)}
+\begin{lstlisting}
+variable U : Type
+variables A B : U → Prop 
+
+--term mode
+example : (∀ x, A x → B x) → ((∀ x, A x) → ∀ x, B x) :=
+assume h1 : ∀ x, A x → B x, 
+assume h2 : ∀ x, A x, 
+assume t, 
+have h3 : A t → B t, from h1 t,
+have h4 :  A t, from h2 t,
+show B t, from h3 h4
+
+
+--tatics
+example : (∀ x, A x → B x) → ((∀ x, A x) → ∀ x, B x) :=
+begin
+intros h1 h2 t,
+exact (h1 t) (h2 t)
+end
+\end{lstlisting}
+\textbf{4.c)}
+\begin{lstlisting}
+open classical
+variable U : Type
+variables A B : U → Prop
+--term mode
+example (h1 : ∀ y, ¬ A y) (h2: ∀ x, A x ∨ B x) : ∀ x, B x :=
+assume t, 
+have h3 : ¬ A t, from h1 t,
+have h4 : A t ∨ B t, from h2 t,
+or.elim h4
+    (assume h5 : A t, 
+    by_contradiction
+    (assume h6 : ¬ B t, show false, from h3 h5))
+    (assume h6 : B t, show B t, from h6)
+
+--tatics
+example (h1 : ∀ y, ¬ A y) (h2: ∀ x, A x ∨ B x) : ∀ x, B x :=
+begin
+intro t,
+cases (h2 t),
+apply classical.by_contradiction,
+intro h3,
+exact (h1 t) h,
+exact h
+end   
+\end{lstlisting}
+\textbf{4.d)}
+\begin{lstlisting}
+variable U : Type
+variables A B C : U → Prop 
+    
+--term mode
+example (h1 : ∃ x, A x ∧ B x) (h2 : ∀ x, (A x ∧ B x → C x)) : ∃ x, A x ∧ C x :=
+exists.elim h1 
+    (assume t (h3 : A t ∧ B t),
+    have h4 : A t ∧ B t → C t, from h2 t,
+    have h5 : C t, from h4 h3,
+    have h6 : A t ∧ C t, from and.intro  (h3.left) h5,
+    show ∃ x, A x ∧ C x, from exists.intro t h6)
+    
+--tatics
+example (h1 : ∃ x, A x ∧ B x) (h2 : ∀ x, (A x ∧ B x → C x)) : ∃ x, A x ∧ C x :=
+begin
+cases h1 with t h3,
+apply exists.intro t,
+apply and.intro,
+exact h3.left,
+exact (h2 t) h3
+end  
+\end{lstlisting}
+\textbf{4.e)}
+\begin{lstlisting}
+variable U : Type
+variable f : U → U
+variable P : U → Prop
+example  (h1 : ∀ x, P x → P (f x)) : ∀ y, P y → P ( f (f y)) :=
+begin
+intros t h2,
+exact (h1 (f t))((h1 t) h2)
+end  
+\end{lstlisting}
+\textbf{5.}
+\begin{lstlisting}
+variables even odd: U → Prop
+variable s : U → U
+example (h1 : ∀ x, even(x) ∨ odd(x)) (h2: ∀ x, odd(x) → even(s(x))) 
+: (∀ x, even(x) ∨ even(s(x))) :=
+assume t,
+have h3 : even(t) ∨ odd(t), from h1 t,
+have h4 : odd(t) → even(s(t)), from h2 t,
+or.elim h3
+    (assume h5 : even(t), show even(t) ∨ even(s(t)), 
+    from or.inl h5)
+    (assume h5 : odd(t),
+    have h6: even(s(t)), from h4 h5,
+    show even(t) ∨ even(s(t)), from or.inr h6)
+    
+example (h1 : ∀ x, even(x) ∨ odd(x)) (h2: ∀ x, odd(x) → even(s(x))) 
+: (∀ x, even(x) ∨ even(s(x))) :=
+begin
+intro t,
+apply or.elim (h1 t),
+intro h3,
+apply or.inl,
+exact h3,
+intro h3,
+apply or.inr,
+exact (h2 t) h3
+end  
+\end{lstlisting}
+\textbf{6.}
+\begin{lstlisting}
+variable N : Type
+variables x y z : N
+    
+example : y = x → y = z → x = z :=
+assume h1 : y = x,
+assume h2 : y = z,
+show x = z, from eq.trans (eq.symm h1) h2
+    
+example : y = x → y = z → x = z :=
+begin
+intros h1 h2,
+apply eq.trans,
+apply eq.symm,
+exact h1,
+exact h2
+end
+\end{lstlisting}
+\textbf{7.}
 \begin{lstlisting}
 section 
 variable {pessoa : Type} 
@@ -381,8 +618,4 @@ have n3 : veste Maria azul, from h5 (and.intro n1 n2),
 and.intro n1 (and.intro n2 n3)
 
 end
-\end{lstlisting}
-\textbf{SOLUÇÃO COM TÁTICAS}:
-\begin{lstlisting}
-    
 \end{lstlisting}
