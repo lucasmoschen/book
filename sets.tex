@@ -4,17 +4,24 @@ Para tratar de conjuntos iremos tentar uma abordagem que não deixe de lado o ri
 
 Caro leitor, como você definiria conjunto? Vamos, pense um pouco. No século XIX, o matemático Georg Cantor, no jornal acadêmico Mathematische Annalen, descreveu um conjunto (ou utilizando sua terminologia, \textit{Menge}) como, em tradução livre: ``Por conjunto nós entendemos qualquer coleção $M$ de objetos deteminados e distintos (chamados de elementos de $M$) da nossa intuição ou do nosso pensamento em um todo."
 
-Ou seja, mesmo um conjunto podendo ser algo tão abstrato quanto os números naturais ($\mathbb{N}$), os números reais ($\mathbb{R}$) e o Conjuntor de Cantor, podemos ter coisas menos abstratas como o conjunto das palavras desse texto, o dos planetas do Sistema Solar ou até dos alunos de sua turma. A questão é, todos esses conjuntos podem ser mais intuitivos ou abstratos (além de como são definidos) dependendo da pessoa que irá interpretá-los, por exemplo o conjunto dos naturais pode ser definido como $\mathbb{N} = \{1,2,3,...\}$ ou $\mathbb{N}=\{0,1,2,3,...\}$ (para não desagradar ninguém), o de planetas do Sistema Solar $ P = \{ Mercurio, Venus, Ter$-$\\ra, Marte, Jupiter, Saturno, Urano, Netuno \}$ (lembramos que se este livro fosse escrito a uns 15 anos atrás, Plutão ainda seria considerado como um planeta, isto é, estaria no conjunto), por consequência, vemos que a interpretação do que determinado conjunto representa varia de pessoa para pessoa, mesmo que a ideia principal continue a mesma.
+Ou seja, mesmo um conjunto podendo ser algo tão abstrato quanto os números naturais ($\mathbb{N}$), os números reais ($\mathbb{R}$) e o Conjunto de Cantor, podemos ter coisas menos abstratas como o conjunto das palavras desse texto, o dos planetas do Sistema Solar ou até dos alunos de sua turma. A questão é, todos esses conjuntos podem ser mais intuitivos ou abstratos (além de como são definidos) dependendo da pessoa que irá interpretá-los, por exemplo, o conjunto dos naturais pode ser definido como $\mathbb{N} = \{1,2,3,...\}$ ou $\mathbb{N}=\{0,1,2,3,...\}$ (para não desagradar ninguém), o de planetas do Sistema Solar $ P = \{ Mercurio, Venus, Ter$-$\\ra, Marte, Jupiter, Saturno, Urano, Netuno \}$ (lembramos que se este livro fosse escrito há uns 15 anos, Plutão ainda seria considerado como um planeta, isto é, estaria no conjunto), por consequência, vemos que a interpretação do que determinado conjunto representa varia de pessoa para pessoa, mesmo que a ideia principal continue a mesma.
 
-Nosso intuito, durante essa aventura pelo mundo dos conjuntos será entender melhor certos conceitos e definições (como o fato do conjunto vazio estar contido em todos os conjuntos, ou se chegarmos até lá, porque o intervalo [0,1] nos reais não é enumerável), através de demosntrações, exemplos e exercícios, aumentando sua capacidade de abstração e a nossa também, já que para escrever esse capítulo nós teremos que ir além, pois não queremos apenas entender o que está aqui, mas que você entenda e aprenda também.
+Nosso intuito, durante essa aventura pelo mundo dos conjuntos será entender melhor certos conceitos e definições (como o fato do conjunto vazio estar contido em todos os conjuntos), através de demonstrações, exemplos e exercícios, aumentando sua capacidade de abstração e a nossa também, já que para escrever esse capítulo nós teremos que ir além, pois não queremos apenas entender o que está aqui, mas que você entenda e aprenda também.
 
 \section{Fundamentações}
   \subsection{Notações}
   Nesta seção iremos começar a introduzir notações matemáticas e algumas definições sobre conjuntos.
 
+$\qquad$
+
   \textbf{Pertence e Não Pertence:} Quando um determinado elemento $x$ faz parte de determinado conjunto $A$, nós dizemos que $x$ pertence a $A$ (denotamos $x \in A$). Caso $x$ não faça parte de $A$, diz-se que $x$ não pertence a $A$ (denota-se  $x \notin A$).
 
-  \textbf{Contém, Contido e similares:} Já quando um conjunto $B$ possui todos os elementos que $A$ possui e, $B$ tem, pelo menos, um objeto que $A$ não possua, dizemos que $A$ está contido em $B$ ($\space A \subset B$) ou que $B$ contém $A$ ($B \supset A$)$^{\ref{fig:sets-02-00}}$. Se não sabemos se $B$ possui um objeto que $A$ não possua (e $B$ ainda possui todos os elementos que $A$), denotamos $A \subseteq B$, que quer dizer que $A \subset B$ ou $A=B$, de modo equivalente $B \supseteq A$, significa que $B \supset A$ ou $A=B$. Se $A$ possui pelo menos um elemento que $B$ não possua, dizemos que $A$ não está contido em $B$ ($A \not\subset B$) ou que $B$ não contém $B\not\supset A$, assim $A \neq B$.
+  \textbf{Contém, Contido e similares:} Já quando um conjunto $B$ possui todos os elementos que $A$ possui e, $B$ tem, pelo menos, um objeto que $A$ não possua, dizemos que $A$ está contido em $B$ ($\space A \subset B$) ou que $B$ contém $A$ ($B \supset A$)$^{\ref{fig:sets-02-00}}$.  Também podemos chamar $A$ de subconjunto próprio de $B$.
+  
+  Se não sabemos se $B$ possui um objeto que $A$ não possua (e $B$ ainda possui todos os elementos que $A$), denotamos $A \subseteq B$, que significa $A \subset B$ ou $A=B$, de modo equivalente $B \supseteq A$, significa $B \supset A$ ou $A=B$. Neste caso, dizemos que $A$ é um subconjunto de $B$.
+  
+  
+  Se $A$ possui pelo menos um elemento que $B$ não possua, dizemos que $A$ não está contido em $B$ ($A \not\subset B$) ou que $B$ não contém $B\not\supset A$, assim $A \neq B$.
 
   \begin{figure}[hbt!]
       \centering
@@ -50,7 +57,7 @@ Nosso intuito, durante essa aventura pelo mundo dos conjuntos será entender mel
       \label{fig:sets-02-03}
   \end{figure}
 
-  \textbf{Conjunto Complementar:} Sendo $A$ um conjunto, dizemos que o conjunto $A$ complementar ou complemento de $A$ (denotado como $\overline A$ ou $A^C$)contém todos os conjuntos/elementos que não estão contidos/pertencem a $A$, mas fazem parte de nosso universo ($\mathcal U$)$^{\ref{fig:sets-02-04}}$.
+  \textbf{Conjunto Complementar:} Sendo $A$ um conjunto, dizemos que o conjunto $A$ complementar ou complemento de $A$ (denotado como $\overline A$ ou $A^C$) contém todos os conjuntos/elementos que não estão contidos/pertencem a $A$, mas fazem parte de nosso universo ($\mathcal U$)$^{\ref{fig:sets-02-04}}$.
 
   \begin{figure}[hbt!]
       \centering
@@ -59,7 +66,7 @@ Nosso intuito, durante essa aventura pelo mundo dos conjuntos será entender mel
       \label{fig:sets-02-04}
   \end{figure}
 
-  \textbf{Diferença de Conjuntos :} Quando temos dois conjuntos e nosso objetivo são os conjuntos/elementos que pertencem a um destes conjuntos, mas não do outro dizemos que estamos interessados na diferença destes conjuntos. No caso, se quero os conjuntos/elementos de $B$, mas não queremos pegar os que também pertencem a $A$, queremos os elementos/conjuntos que pertencem a diferença de $B$ com $A$ (denotamos como $B-A$ ou $B \backslash A$)$^{\ref{fig:sets-02-05}}$.
+  \textbf{Diferença de Conjuntos :} Quando temos dois conjuntos e nosso objetivo são os conjuntos/elementos que pertencem a um destes conjuntos, mas não do outro, dizemos que estamos interessados na diferença destes conjuntos. No caso, se queremos os conjuntos/elementos de $B$, mas não desejamos pegar os que também pertencem a $A$, queremos os elementos/conjuntos que pertencem a diferença de $B$ com $A$ (denotamos como $B-A$ ou $B \backslash A$)$^{\ref{fig:sets-02-05}}$.
 
   \begin{figure}[hbt!]
       \centering
@@ -70,14 +77,45 @@ Nosso intuito, durante essa aventura pelo mundo dos conjuntos será entender mel
 
   Lembre-se: os diagramas apresentados servem como ferramenta auxiliar para ajudar a entender os conceitos, mas não devem ser vistos como a única ferramenta para compreender as definições e  a teoria exposta.
 
-  \subsection{Definições}
-  Seja $A$ e $B$ conjuntos ($\mathcal{U}$ nosso universo e $\emptyset$ o conjunto vazio, como definidos anteriormente). Assim temos, formalmente:
+\subsection{Definições}
+  
+  Seja $A$ e $B$ conjuntos quaisquers, $\mathcal{U}$ nosso universo e $\emptyset$ o conjunto vazio. Assim, temos formalmente (e em Linguagem de Primeira Ordem):
 
   \begin{itemize}
-    \item \textbf{Diferença}: $A \backslash B = \{x | x \in A \land x \notin B\}$
-
+    \item \textbf{Conjunto Vazio}: $\emptyset = \{x | false\}$
+    
+    \[\forall x (x \in \emptyset \iff \bot)\]
+    
+    \qquad
+    
+    \item \textbf{Universo}: $\mathcal{U} = \{x | true \}$
+    
+    \[\forall x (x \in \mathcal{U} \iff \top)\]
+    
+    \qquad
+    
+    \item \textbf{União}: $A \cup B = \{x | x \in A \vee x \in B\}$
+    
+    \[\forall x (x \in A \cup B \iff x \in A \vee x \in B)\]
+    
+    \qquad
+    
+    \item \textbf{Interseção}: $A \cap B = \{x | x \in A \wedge x \in B\}$
+    
+    \[\forall x (x \in A \cap B \iff x \in A \wedge x \in B)\]
+    
+    \qquad
+    
+    \item \textbf{Diferença}: $A \backslash B = \{x | x \in A \wedge x \notin B\}$
+    
+    \[\forall x (x \in A \backslash B \iff x \in A \wedge x \notin B)\]
+    
+    \qquad
+    
     \item \textbf{Complementar}: $\overline A = \mathcal{U} \backslash A = \{x | x \in \mathcal{U} \land x \notin A\}$
-  \end{itemize}
+    
+    \[\forall x (x \in \overline A \iff x \notin A)\]
+  \end{itemize} 
 
   \subsection{Axiomas}
   Agora iremos apresentar alguns axiomas que servirão como base para todo o desenvolvimento dos conteúdos aqui propostos. Quando utilizarmos a palavra elemento, estaremos utilizando-a com a ideia de que um conjunto que pertença a outro é um elemento do segundo, para evitar repetir o uso excessivo da palavra conjunto.
@@ -90,13 +128,15 @@ Nosso intuito, durante essa aventura pelo mundo dos conjuntos será entender mel
 
   Deste axioma, vem a explicação do motivo de que a ordem dos elementos de um conjunto não importa. Pois dado dois conjuntos com os mesmos elementos, mas em ordem diferente (por exemplo, $X=\{a,b,c,d,e,f\}$ e o conjunto $Y=\{e,c,f,b,a,d\}$) eles ainda satisfazem a propriedade de que se $t$ pertence a um deles implica $t$ pertencer ao outro. Outro ponto interessante é que não importa se um conjunto possui elementos repetidos ele continuará igual ao que possui apenas um elemento, isto é, $X=\{a,b,d,e\}$ é igual ao $Y=\{b,a,d,a,e,b,b\}$. Ou seja, em um conjunto não importa a ordem e nem as repetições de elementos.
 
-  \textbf{Axioma da Existencia do Conjunto Vazio: } Diremos que no nosso universo ($\mathbb{U}$), existe um conjunto tal que ele não contém ninguém, ou seja, ele é vazio, daí seu nome, Conjunto Vazio (denotado por $\emptyset$). O axioma é:
+\textbf{Axioma da Existencia do Conjunto Vazio:} Diremos que no nosso universo ($\mathcal{U}$), existe um conjunto tal que ele não contém ninguém, ou seja, ele é vazio, daí seu nome, Conjunto Vazio (denotado por $\emptyset$). O axioma é:
 
     \[\exists A \hspace{1.5mm} \forall x \hspace{1.5mm} \neg\hspace{0.5mm} (x \in A)\]
 
+$\qquad$
+
   \textbf{Unicidade do Conjunto Vazio}
 
-  Podemos provar a unicidade do conjunto vazio a partir dos dois axiomas acimas, suponhamos que existam dois conjuntos ($A$ e $B$) com a propriedade do conjunto vazio, assim utilizando o axioma da Extensão concluíremos que eles são iguais, suponhamos $t$ arbitrário:
+  Podemos provar a unicidade do conjunto vazio a partir dos dois axiomas acima. Suponhamos que existam dois conjuntos ($A$ e $B$) com a propriedade do conjunto vazio, assim utilizando o axioma da Extensão concluíremos que eles são iguais, seja $t$ arbitrário:
 
   \begin{center}
       \begin{landscape}
@@ -125,18 +165,18 @@ Nosso intuito, durante essa aventura pelo mundo dos conjuntos será entender mel
       \end{landscape}
   \end{center}
 
-  \textbf{Axioma do Par: } Este axioma nos diz que para todos os conjuntos $A$ e $B$, existe um conjunto conjunto que é $\{A,B\}$. Ou seja,
+  \textbf{Axioma do Par:} Este axioma nos diz que para todos os conjuntos $A$ e $B$, existe um conjunto conjunto que é $\{A,B\}$. Ou seja,
 
     \[\forall A \hspace{1.5mm} \forall B \hspace{1.5mm} \exists C \hspace{1.5mm} \forall x \hspace{1.5mm} (x \in C \leftrightarrow x = A \vee x = B)\]
 
   Vale ressaltar que se $A=B$, teremos $\{A,B\}=\{A,A\}=\{A\}$. A aplicação sucessiva deste axioma nos permite criar uma infinidade de conjuntos finitos. Por exemplo, $A=\emptyset$ e seja $B=\emptyset$, assim teremos $\{\emptyset\}$, sendo $B=\{\emptyset\}$, teremos agora $\{\emptyset,\{\emptyset\}\}$, agora fazendo $A=\{\emptyset\}$, teremos $\{\{\emptyset\}\}$.
 
-  Não pretendemos nos aprofundar mais nos axiomas de conjuntos, dado que eles utilizarão conceitos abordados futuramente, nos capítulos de Relações, Funções e Axiomas.
+  Não pretendemos nos aprofundar mais nos axiomas de conjuntos, dado que eles utilizarão conceitos abordados futuramente, nos capítulos de Relações, Funções e Indução.
 
-  Mas como se pode ver em ..., podemos reduzir uma grande gama de coisas a conjuntas, assim podemos tratá-las na Teoria dos Conjuntos. Para saber mais sobre Teoria dos Conjuntos dê uma olhada em ... .
+  Mas como se pode ver em Lean - Logic and Proof, podemos reduzir uma grande gama de coisas a conjuntos, assim podemos tratá-las na Teoria dos Conjuntos. Para saber mais sobre Teoria dos Conjuntos, consulte Teoria dos Conjuntos - USP.
 
 \section{Diagrama de Venn}
-A maneira mais simples de entender a Teoria de Conjuntos, talvez seja o Diagrama de Venn. Criado por John Venn em 1880, esse sistema de representar graficamente conjuntos auxilia imensamente quem está começando a aprender esse assunto, principalmente para entender sobre a parte inicial de notações. Basicamente, consiste em representar num plano, o universo $\mathcal U$ como sendo um retângulo e cada conjunto $A,B,...$ como uma curva fechada simples (geralmente, círculo).
+A maneira mais simples de entender a Teoria de Conjuntos, talvez seja o Diagrama de Venn. Criado por John Venn em 1880, esse sistema de representar graficamente conjuntos auxilia imensamente quem está começando a aprender esse assunto, principalmente para entender sobre a parte inicial de notações e definições. Basicamente, ele consiste em representar num plano, o universo $\mathcal U$ como sendo um retângulo e cada conjunto $A,B,...$ como uma curva fechada simples (geralmente, círculo).
 
   \subsection{Para 1 ou 2 conjuntos}
   Começando com a ideia mais simples, a imagem abaixo representa em vermelho o conjunto $A$ dentro do universo $\mathcal U$:
@@ -148,7 +188,7 @@ A maneira mais simples de entender a Teoria de Conjuntos, talvez seja o Diagrama
   %    \label{fig:fig_set_01_01}
   %\end{figure}
 
-  Já sobre o conjunto complementar $A^c$, ele simplesmente é a parte que está no retângulo, mas não está no círculo, justamente o que não estava de vermelho na figura anterior.
+  Já sobre o conjunto complementar $\overline A$, ele simplesmente é a parte que está no retângulo, mas não está no círculo, justamente o que não estava de vermelho na figura anterior.
 
   %\begin{figure}[h!]
   %    \centering
@@ -167,9 +207,9 @@ A maneira mais simples de entender a Teoria de Conjuntos, talvez seja o Diagrama
   %    \label{fig:figure_set_01_03}
   %\end{figure}
 
-  Quando vamos representar mais de um conjunto em um diagrama de Venn, devemos necessariamente ter todas as possíveis relações, mas o que isso significa? Por exemplo, quando temos $2$ conjuntos $A$ e $B$, significa que devemos ter $4$ regiões representando respectivamente: elementos que pertencem somente à $A$, elementos que pertencem somente à $B$, elementos que pertencem à $A$ e à $B$ simultaneamente e elementos que não pertencem a nenhum dos conjuntos. Precisamos disso, para que tudo que provarmos para dois conjuntos $A$ e $B$, possa ser generalizado para dois conjuntos quaisquer, independente do problema e da situação que estamos estudando.
+  Quando vamos representar mais de um conjunto em um diagrama de Venn, devemos necessariamente ter todas as possíveis relações, mas o que isso significa? Por exemplo, quando temos $2$ conjuntos $A$ e $B$, significa que devemos ter $4$ regiões representando respectivamente: elementos que pertencem somente a $A$, elementos que pertencem somente a $B$, elementos que pertencem a $A$ e $B$ simultaneamente e elementos que não pertencem a nenhum dos conjuntos. Precisamos disso, para que tudo que provarmos para dois conjuntos $A$ e $B$ possa ser generalizado para dois conjuntos quaisquer, independente do problema e da situação que estamos estudando.
 
-  Utilizando esse artífiico, podemos representar todas as definições de intersecçāo, uniāo e diferença de $2$ conjuntos, introduzidas na seçāo anterior. Veja nas figuras abaixo:
+  Utilizando esse artifício, podemos representar todas as definições de interseçāo, uniāo e diferença de $2$ conjuntos, introduzidas na seçāo anterior. Veja nas figuras abaixo:
 
   %\begin{figure}[h!]
   %    \centering
@@ -201,7 +241,7 @@ A maneira mais simples de entender a Teoria de Conjuntos, talvez seja o Diagrama
   %    \label{fig:figure_set_01_07}
   %\end{figure}
 
-  É inegável que para muitos exemplos isso se torna inviável, principalmente quando o único objetivo é fazer uma ilustração matemática do problema, como por exemplo: tomamos o universo $\mathcal U$ como a fauna do nosso planeta, nele temos dois conjuntos $A$ de humanos e $B$ de mamíferos. É previamente conhecido que todos os humanos são mamíferos, falando de outra forma, que $A \subseteq B$. Logo, pra representar um problema que envolva esses elementos, podemos utilizar o \textbf{Diagrama de Euler}, similar ao Diagrama de Venn, com a diferença de que não é necessário mostrar todas as possíveis relações, mas apenas as relações específicas do problema retratado. E assim, fazemos exatamente o que tinha sido proposto no parágrafo anterior e, colocar o círculo $A$ dentro do círculo $B$.
+  É inegável que para muitos exemplos isso se torna inviável, principalmente quando o único objetivo é fazer uma ilustração matemática do problema, como por exemplo: tomamos o universo $\mathcal U$ como a fauna do nosso planeta, nele temos dois conjuntos $A$ de humanos e $B$ de mamíferos. É previamente conhecido que todos os humanos são mamíferos, falando de outra forma, que $A \subseteq B$. Logo, para representar um problema que envolva esses elementos, podemos utilizar o \textbf{Diagrama de Euler}, similar ao Diagrama de Venn, com a diferença de que não é necessário mostrar todas as possíveis relações, mas apenas aquelas específicas do problema retratado. E assim, fazemos exatamente o que tinha sido proposto no parágrafo anterior, colocar o círculo $A$ dentro do círculo $B$.
 
   %\begin{figure}[h!]
   %    \centering
@@ -214,26 +254,31 @@ A maneira mais simples de entender a Teoria de Conjuntos, talvez seja o Diagrama
   Já foi bastante falado sobre Diagrama de Venn, mas nem chegamos a trabalhar com mais de $2$ conjuntos, o que é importante, dado que a Teoria de Conjuntos não se resume a $A$ e $B$. Mas antes de partirmos para mais conjuntos, vamos pensar numa generalização de quantas regiões diferentes devemos ter para que o diagrama seja um Diagrama de Venn. Dado $n$ conjuntos diferentes, tomamos um elemento qualquer $x$, e para cada um dos $n$ conjuntos existem duas possibilidades: $x \in $ conjunto e $x \notin $ conjunto. Logo, concluímos que existem $\underbrace{\begin{matrix} 2\cdot2\cdots2\cdot2\end{matrix}}_{n} = 2^n$ possibilidades de pertencimento de $x$ nos conjuntos, equivalente à dizer que existem $2^n$ regiões diferentes. Isso bate perfeitamente com o caso anterior pra $2$ conjuntos, pois vimos que era necessário ter $4=2^2$ regiões diferentes.
 
   Agora, com $3$ conjuntos $A$, $B$ e $C$, o número de regiões diferentes é $2^3=8$, mas como iremos representá-las? A primeira ideia que vem a cabeça é adicionar um círculo representando o conjunto $C$ no diagrama da figura $\ref{fig:sets-02-00}$, intersectando as regiões já existentes, resultando na figura abaixo:
-
+  %\begin{figure}[h!]
+  %    \centering
+  %    \includegraphics{figure_set_01_10.png}
+  %    \caption{Intersecção $A \cap B \cap C$}
+  %    \label{fig:figure_set_01_09}
+  %\end{figure}
   Fazendo uma rápida contagem, obtemos $8$ regiões diferentes, exatamente como deve ser (lembrete: A região fora dos conjuntos mas dentro do universo $\mathcal U$, também é considerada na contagem). E da mesma forma que representamos intersecção, união e diferença de conjuntos anteriormente, também podemos representar com $3$ conjuntos, veja abaixo:
 
   %\begin{figure}[h!]
   %    \centering
-  %    \includegraphics{figure_set_01_09.png}
+  %    \includegraphics{figure_set_01_11.png}
   %    \caption{Intersecção $A \cap B \cap C$}
   %    \label{fig:figure_set_01_09}
   %\end{figure}
 
   %\begin{figure}[h!]
   %    \centering
-  %    \includegraphics{figure_set_01_10.png}
+  %    \includegraphics{figure_set_01_12.png}
   %    \caption{União $A \cup B \cup C$}
   %    \label{fig:figure_set_01_10}
   %\end{figure}
 
   %\begin{figure}[h!]
   %    \centering
-  %    \includegraphics{figure_set_01_11.png}
+  %    \includegraphics{figure_set_01_13.png}
   %    \caption{Diferença $A \setminus (B \cup C)$}
   %    \label{fig:figure_set_01_11}
   %\end{figure}
@@ -244,13 +289,13 @@ A maneira mais simples de entender a Teoria de Conjuntos, talvez seja o Diagrama
 
   É válido ressaltar que é impóssível utilizar $4$ círculos pra representar $4$ conjuntos em um diagrama de Venn. Contudo, existem diagramas de Venn pra $4$ conjuntos, e antes de ler o próximo parágrafo, pegue uma folha e tente encontrar possíveis maneiras dessa representação. Dica: Não se abstenha de utilizar formas bem diferenciadas.
 
-  Se você conseguiu, parabéns. Saiba que existem diversas maneiras, como por exemplo: $4$ elipses ou $3$ círculos e uma forma semelhante à metade de uma rosquinha. Fique a vontade para pesquisar na internet essas e outras maneiras de representação. Ainda assim, é relevante mostrar pelo menos uma delas, e escolhemos a da figura abaixo, muito semelhante a dois corações.
+  Se você conseguiu, parabéns. Saiba que existem diversas maneiras, como por exemplo: $4$ elipses ou $3$ círculos e uma forma semelhante à metade de uma rosquinha. Fique a vontade para pesquisar na internet essas e outras maneiras de representação. Ainda assim, é relevante mostrar pelo menos uma delas aqui, e escolhemos a da figura abaixo, muito semelhante a dois corações.
 
   %\begin{figure}[h!]
   %    \centering
-  %    \includegraphics{figure_set_01_11.png}
+  %    \includegraphics{figure_set_01_12.png}
   %    \caption{Diagrama de Venn para 4 conjuntos}
-  %    \label{fig:figure_set_01_11}
+  %    \label{fig:figure_set_01_14}
   %\end{figure}
 
   Podemos continuar e encontrar representações para $5$ ou mais conjuntos, as quais vão ficando cada vez mais complicadas. Porém, como nosso principal objetivo é utilizar visualizações gráficas para facilitar o aprendizado em Teoria de Conjuntos, a partir do momento que isso vem a se tornar complicado, perde totalmente a utilidade. Por esse motivo, vamos parar em $4$ conjuntos, mas se a curiosidade for grande, procure aprender mais sobre esse assunto.
@@ -258,7 +303,7 @@ A maneira mais simples de entender a Teoria de Conjuntos, talvez seja o Diagrama
   \subsection{Aplicações}
   A mais importante e útil das aplicações é justamente demonstrar propriedades da Teoria de Conjuntos. Se fosse solicitado para você leitor demonstrar as propriedades a seguir, somente com o que aprendeu até agora, já conseguiria utilizar o Diagrama de Venn para demonstrá-las. Apesar de parecer complicado, é incrivelmente simples, veja:
 
-  \textbf{Exemplo 1:} Demonstre que $A \setminus B = A \cap B^c$.
+  \textbf{Exemplo 1:} Demonstre que $A \setminus B = A \cap \overline B$.
 
   \textbf{Resposta:} Primeiramente, vamos fazer o Diagrama de Venn desses dois conjuntos e enumerar as $4$ regiões:
 
@@ -269,16 +314,16 @@ A maneira mais simples de entender a Teoria de Conjuntos, talvez seja o Diagrama
   %    \label{fig:figure_set_01_12}
   %\end{figure}
 
-  Assim, temos que $A=\{1,2\}$, $B=\{2,3\}$, $A^c=\{3,4\}$ e $B^c=\{1,4\}$. Utilizando esse valores, podemos calcular $A \setminus B$ e $A \cap B^c$, conforme abaixo:
+  Assim, temos que $A=\{1,2\}$, $B=\{2,3\}$, $\overline A=\{3,4\}$ e $\overline B=\{1,4\}$. Utilizando esse valores, podemos calcular $A \setminus B$ e $A \cap \overline B$, conforme abaixo:
 
   \begin{equation*}
     \begin{aligned}
       A \setminus B &= \{1,2\} \setminus \{2,3\} = \{1\}\\
-      A \cap B^c &= \{1,2\} \cap \{1,4\} = \{1\}
+      A \cap \overline B &= \{1,2\} \cap \{1,4\} = \{1\}
     \end{aligned}
   \end{equation*}
 
-  Portanto, concluímos que $A \setminus B = A \cap B^c$.
+  Portanto, concluímos que $A \setminus B = A \cap \overline B$.
 
   \textbf{Exemplo 2:} Demonstre que $(A \setminus B) \cup (B \setminus A) = (A \cup B) \setminus (A \cap B)$.
 
@@ -301,7 +346,7 @@ A maneira mais simples de entender a Teoria de Conjuntos, talvez seja o Diagrama
 
   $\qquad$
 
-  Outra aplicação interessante, muito recorrente em testes de lógica e vestibulares, é tentar interpretar problemas da vida real com conjuntos, conforme no exemplo a seguir.
+  Outra aplicação interessante, muito recorrente em testes de lógica e vestibulares, é tentar interpretar problemas da vida real com conjuntos, conforme no exemplo a seguir:
 
   \textbf{Exemplo 3:} Em uma sala de aula do Ensino Fundamental com $40$ alunos, a professora Ana perguntou quem gostava de matemática e quem gostava de português. Ela obteve os seguintes dados:
 
@@ -312,6 +357,8 @@ A maneira mais simples de entender a Teoria de Conjuntos, talvez seja o Diagrama
   \end{itemize}
 
   Quantos alunos gostam de ambas as matérias?
+
+$\qquad$
 
   \textbf{Resposta:} Vamos utilizar um Diagrama de Venn para dois conjuntos, onde um conjunto representa os alunos que gostam de matemática e o outro representa os que gostam de português.
   Dado que $9$ alunos não gostam de nenhuma das matérias e temos $40$ alunos na sala, então $40-9=31$ alunos pertencem a pelo menos um dos conjuntos, ou seja, gostam de matemática ou português.
@@ -341,10 +388,10 @@ Aqui serão apresentadas algumas provas em Lean para o conteúdo apresentado. N�
   Ainda vai ter algo escrito aqui
 
 \section{Conjuntos em Lean}
-Embora na teoria axiomática dos conjuntos se considere conjuntos de objetos distintos, em matemática é mais comum considerar subconjuntos de algum dominio fixo ($\mathcal U $). É assim que os conjuntos são tratados em Lean. Para qualquer dado do tipo $U$, Lean nos retorna um novo dado tipo $conjunto$ $U$, que consiste no conjunto dos elementos de $U$. Assim, por exemplo, podemos raciocinar sobre conjuntos de números naturais, conjuntos de números inteiro ou conjuntos de pares de números naturais.
+Embora na teoria axiomática dos conjuntos se considere conjuntos de objetos distintos, em matemática é mais comum considerar subconjuntos de algum domínio fixo ($\mathcal U $). É assim que os conjuntos são tratados em Lean. Para qualquer dado do tipo {\fontencoding{U}\fontfamily{cmtt}\selectfont U}, Lean nos retorna um novo dado tipo {\fontencoding{U}\fontfamily{cmtt}\selectfont set U}, que consiste no conjunto dos elementos de {\fontencoding{U}\fontfamily{cmtt}\selectfont U}. Assim, por exemplo, podemos raciocinar sobre conjuntos de números naturais, conjuntos de números inteiro ou conjuntos de pares de números naturais.
 
   \subsection{Notações}
-  O lean possui uma biblioteca padrão para lidar com conjuntos chamada set e, sempre que formos utilizar um comando que pertence à ela, é necessário escrever {\fontencoding{U}\fontfamily{cmtt}\selectfont set.comando}. Entretanto, pra facilitar nossa vida, podemos escrever {\fontencoding{U}\fontfamily{cmtt}\selectfont open set} no início do código, o que permite escrevermos somente {\fontencoding{U}\fontfamily{cmtt}\selectfont comando}, e o lean já entende que ele pertence a biblioteca set.
+  O lean possui uma biblioteca padrão para lidar com conjuntos chamada {\fontencoding{U}\fontfamily{cmtt}\selectfont set} e, sempre que formos utilizar um comando que pertence a ela, é necessário escrever {\fontencoding{U}\fontfamily{cmtt}\selectfont set.comando}. Entretanto, pra facilitar nossa vida, podemos escrever {\fontencoding{U}\fontfamily{cmtt}\selectfont open set} no início do código, o que permite escrevermos somente {\fontencoding{U}\fontfamily{cmtt}\selectfont comando}, e o lean já entende que ele pertence a biblioteca set.
 
   Além disso, para trabalharmos com conjuntos, também é essencial definirmos um tipo {\fontencoding{U}\fontfamily{cmtt}\selectfont U} e sabermos utilizar conjuntos e elementos desse tipo. Para isso, utilizamos o código abaixo:
 
@@ -375,7 +422,7 @@ Embora na teoria axiomática dos conjuntos se considere conjuntos de objetos dis
 
   Obs$^{1}$.: O conjunto universal é denotado {\fontencoding{U}\fontfamily{cmtt} \selectfont univ}.
 
-  Obs$^{2}$.: O complementar de um conjunto é denotado com um símbolo de negação antes de seu símbolo, assim: $-A$
+  Obs$^{2}$.: O complementar de um conjunto é denotado com um símbolo de subtração antes dele: $-A$
 
   Podemos ver alguns exemplos abaixo:
   \begin{lstlisting}
@@ -402,7 +449,7 @@ Embora na teoria axiomática dos conjuntos se considere conjuntos de objetos dis
     variables A B C : set U
     variable x : U \end{lstlisting}
 
-  A partir desse momento, para evitar repetição, iremos omitir as $4$ primeiras linhas do código, no entanto \textbf{você deve lembrar que elas existem para seu código funcionar.} Já sobre a linha $5$, não é necessário escrever nos próximos exemplos, pois sempre iremos se referenciar a um elemento do tipo{\fontencoding{U}\fontfamily{cmtt} \selectfont U}, dentro de {\fontencoding{U}\fontfamily{cmtt}\selectfont example, lemma} ou {\fontencoding{U}\fontfamily{cmtt}\selectfont theorem}.
+  A partir desse momento, para evitar repetição, iremos omitir as $4$ primeiras linhas do código, no entanto \textbf{você deve lembrar que elas existem para seu código funcionar.} Já sobre a linha $5$, não é necessário escrever nos próximos exemplos, pois sempre iremos nos referenciar a um elemento do tipo{\fontencoding{U}\fontfamily{cmtt} \selectfont U}, dentro de {\fontencoding{U}\fontfamily{cmtt}\selectfont example, lemma} ou {\fontencoding{U}\fontfamily{cmtt}\selectfont theorem}.
 
   \subsection{Primeiros Passos}
 
@@ -440,7 +487,7 @@ Embora na teoria axiomática dos conjuntos se considere conjuntos de objetos dis
     (assume h : x ∈ B,
       show x ∈ A, from sorry)) \end{lstlisting}
 
-  Além disso, o Lean possui interpretação ambígua para regras de união, interseção e outras operações em conjuntos que são consideradas “definições”. Isso significa que as expressões $x$ $\in$ $A$ $\cap$ $B$ e $x$ $\in$ $A$ $\wedge$ $x$ $\in$ $B$ possuem a mesma interpretação no Lean. Isso também é válido para outras construções em conjuntos, como: $x$ $\in$ $A$ $\backslash $ $B$ e $x$ $\in$ $A$ $\wedge$ $\neg$ $(x$ $\in$ $B)$. O termo $\neg$ $(x$ $\in$ $B)$ é somente outra forma de escrever $x$ $\notin$ $B$. Abaixo são apresentadas algumas aplicações dessa interpretação:
+  Além disso, o Lean possui interpretação ambígua para regras de união, interseção e outras operações em conjuntos que são consideradas “definições”. Isso significa que as expressões $x$ $\in$ $A$ $\cap$ $B$ e $x$ $\in$ $A$ $\wedge$ $x$ $\in$ $B$ possuem a mesma interpretação no Lean. Isso também é válido para outras construções em conjuntos, como: $x$ $\in$ $A$ $\backslash $ $B$ e $x$ $\in$ $A$ $\wedge$ $\neg$ $(x$ $\in$ $B)$. O termo $\neg$ $(x$ $\in$ $B)$ é somente outra forma de escrever $x$ $\notin$ $B$. Abaixo são apresentadas algumas aplicações dessas interpretações:
 
   \begin{lstlisting}
   example : ∀ x, x ∈ A → x ∈ B → x ∈ A ∩ B :=
@@ -459,7 +506,7 @@ Embora na teoria axiomática dos conjuntos se considere conjuntos de objetos dis
   assume h : x ∈ (∅ : set U),
   show x ∈ A, from false.elim h \end{lstlisting}
 
-  Observe no último exemplo a necessidade de usar a notação {\fontencoding{U}\fontfamily{cmtt} \selectfont ($\emptyset$ : set U)}, dizendo ao nosso provador que o $\emptyset$ é um conjunto de {\fontencoding{U}\fontfamily{cmtt}
+  Observe no último exemplo a necessidade de usar a notação {\fontencoding{U}\fontfamily{cmtt} \selectfont ($\emptyset$ : set U)}, dizendo ao nosso provador que o $\emptyset$ é um conjunto de{\fontencoding{U}\fontfamily{cmtt}
   \selectfont U}. Isso acontece pois ele não consegue inferir que tipo é o conjunto vazio, dado que por definição, esse conjunto existe em qualquer universo, ou seja, pode ser de qualquer tipo.
 
   Opcionalmente, podemos usar alguns teoremas da biblioteca {\fontencoding{U}\fontfamily{cmtt}
@@ -488,7 +535,6 @@ Embora na teoria axiomática dos conjuntos se considere conjuntos de objetos dis
   Aqui, o teorema {\fontencoding{U}\fontfamily{cmtt}
   \selectfont not\_mem\_empty x} significa $x$ $\notin$ $\emptyset$. Para ver a declaração de teoremas disponíveis, utilize o comando{\fontencoding{U}\fontfamily{cmtt}
   \selectfont \#check}:
-
   \begin{lstlisting}
   #check @mem_inter
   #check @mem_of_mem_inter_left
@@ -499,9 +545,9 @@ Embora na teoria axiomática dos conjuntos se considere conjuntos de objetos dis
   #check @not_mem_empty \end{lstlisting}
 
   Neste caso, o símbolo{\fontencoding{U}\fontfamily{cmtt}
-  \selectfont @} impede que ele tente preencher argumentos implícitos automaticamente, forçando-o a exibir a declaração completa do teorema.
+  \selectfont @} (arroba) impede que ele tente preencher argumentos implícitos automaticamente, forçando-o a exibir a declaração completa do teorema.
 
-  Já que podemos relacionar conjuntos com suas definições lógica, isso auxilia a comprovação de inclusões entre conjuntos:
+  Já que podemos relacionar conjuntos com suas definições lógica, isso auxilia a comprovação de certas relações entre conjuntos:
 
   \begin{lstlisting}
   example : A \ B ⊆ A :=
@@ -539,8 +585,8 @@ Embora na teoria axiomática dos conjuntos se considere conjuntos de objetos dis
   have h₂ : x ∈ B, from and.right h,
   and.intro h₂ h₁ \end{lstlisting}
 
-  Uma solução alternativa é usar o comando {\fontencoding{U}\fontfamily{cmtt}\selectfont show}. Na maioria das vezes, fornecer informações adicionais para o Lean pode ser útil. Outra solução é nomear um teorema, o que leva o Lean a usar um método um pouco diferente de processar a prova, corrigindo o problema como um efeito colateral de sorte.
-
+  Uma solução alternativa é usar o comando {\fontencoding{U}\fontfamily{cmtt}\selectfont show}. Na maioria das vezes, fornecer informações adicionais para o Lean pode ser útil. Outra solução é nomear um teorema, o que leva o nosso provador a usar um método um pouco diferente de processar a prova, corrigindo o problema como um efeito colateral.
+  
   \begin{lstlisting}
   example : A ∩ B ⊆ B ∩ A :=
   assume x,
@@ -557,9 +603,10 @@ Embora na teoria axiomática dos conjuntos se considere conjuntos de objetos dis
   sorry \end{lstlisting}
 
 \section{Propriedades}
-A seguir teremos algumas propriedades e a prova do porque estão corretas.
+A seguir teremos algumas propriedades e a prova do porque estão corretas, utilizando várias maneiras vistas anteriormente neste capítulo.
 
-  \subsection{Básicas}
+\begin{enumerate}
+  \item{\textbf{Básicas}}
   \begin{itemize}
   \item $A \cap A = A$
   \item $A \cup A = A$
@@ -569,31 +616,25 @@ A seguir teremos algumas propriedades e a prova do porque estão corretas.
   \item $A \cup \emptyset = A$
   \end{itemize}
 
-  \subsection{Comutatividade}
+  \item{\textbf{Comutatividade}}
   \begin{itemize}
-  \item $A \cap B = B \cap A$
+  \item $A \cap B = B \cap A$ (a prova desta identidade escontra-se na seção de Provas de Teoremas)
   \item $A \cup B = B \cup A$
   \end{itemize}
 
-  \subsection{Associatividade}
+  \item{\textbf{Associatividade}}
   \begin{itemize}
   \item $(A \cap B) \cap C = A \cap (B \cap C)$
   \item $(A \cup B) \cup C = A \cup (B \cup C)$
   \end{itemize}
 
-  \subsection{Distributividade}
+  \item{\textbf{Distributividade}}
   \begin{itemize}
   \item $A \cap (B \cup C) = (A \cap B) \cup (A \cap C)$
   \item $A \cup (B \cap C) = (A \cup B) \cap (A \cup C)$
 
 \textbf{Prova em Lean:}
 \begin{lstlisting}
-import data.set
-open set
-
-variable U : Type
-variables A B C : set U
-
 example : A ∪ (B ∩ C) = (A ∪ B) ∩ (A ∪ C) :=
 eq_of_subset_of_subset
     (assume x,
@@ -626,7 +667,7 @@ eq_of_subset_of_subset
 
   \end{itemize}
 
-  \subsection{Complementar/Lei de Demorgan}
+  \item{\textbf{Complementar/Lei de Demorgan}}
   \begin{itemize}
   \item $\mathcal U ^c = \emptyset$
   \item $\emptyset ^c = \mathcal U$
@@ -683,35 +724,36 @@ eq_of_subset_of_subset
   \item $(A \cup B)^c = A^c \cap B^c$
   \end{itemize}
 
-  \subsection{Lei da Absorção}
+  \item{\textbf{Lei da Absorção}}
   \begin{itemize}
   \item $A \cap (A \cup B) = A$
 
-  \begin{lstlisting}
-    lemma inter_subseq (H : Type)(P Q : set H) : P ∩ (P ∪ Q) = P :=
-    eq_of_subset_of_subset
-      (assume x,
-        assume h : x ∈ P ∩ (P ∪ Q),
-        show x ∈ P, from h.left)
-      (assume x,
-        assume h : x ∈ P,
-        have h₁ : x ∈ P ∪ Q, from or.inl h,
-        show x ∈ P ∩ (P ∪ Q), from and.intro h h₁)\end{lstlisting}
+\begin{lstlisting}
+lemma inter_subseq (H : Type)(P Q : set H) : P ∩ (P ∪ Q) = P :=
+eq_of_subset_of_subset
+  (assume x,
+    assume h : x ∈ P ∩ (P ∪ Q),
+    show x ∈ P, from h.left)
+  (assume x,
+    assume h : x ∈ P,
+    have h₁ : x ∈ P ∪ Q, from or.inl h,
+    show x ∈ P ∩ (P ∪ Q), from and.intro h h₁)\end{lstlisting}
 
   \item $A \cup (A \cap B) = A$
   \end{itemize}
 
-  \subsection{Extras}
+  \item{\textbf{Extras}}
   \begin{itemize}
   \item $A \setminus B = A \cap B^c$
   \end{itemize}
+\end{enumerate}
 
 \section{Cálculo em Conjuntos}
 Podemos provar que dois conjuntos são iguais argumentando sobre seus elementos, ou podemos ser mais eficientes e utilizar o cálculo juntamente com as propriedades vistas na seção $5.6$. Veja alguns exemplos:
 
   \textbf{Exemplo 1:} Demonstre que $(A \setminus B)^c = A^c \cup B$
 
-  \textbf{Prova:} Expressamos o cálculo:
+  \textbf{Prova:} Utilizando cálculo:
   \begin{equation*}
     \begin{aligned}
       (A \setminus B)^c &= (A \cap B^c)^c)\\
@@ -726,7 +768,7 @@ Podemos provar que dois conjuntos são iguais argumentando sobre seus elementos,
 
   \textbf{Exemplo 2:} Demonstre que $(A \setminus B) \cup (B \setminus A) = (A \cup B) \setminus (A \cap B)$
 
-  \textbf{Prova:} Novamente, o cálculo:
+  \textbf{Prova:} Utilizando cálculo:
   \begin{equation*}
     \begin{aligned}
       (A \setminus B) \cup (B \setminus A) &= (A \cap B^c) \cup (B \cap A^c)\\
@@ -740,9 +782,9 @@ Podemos provar que dois conjuntos são iguais argumentando sobre seus elementos,
     \end{aligned}
   \end{equation*}
 
-Esses são exemplos simples de prova de teoremas sobre conjuntos com uso de cálculo; no entanto, podemos desejar realizar provas mais longas, com verificação. Felizmente, Lean ofereçe uma gama de axiomas sobre conjuntos que permitem desenvolver cálculos desse tipo, através do modo Cáculo.
+COLOCAR ALGO AQUI
 
-Nos próximos exemplos, omitomos as quatro primeiras linhas, no entanto, lembre-se que elas existem, e devem ser incluídas no uso do provador.
+Nos próximos exemplos, omitimos as quatro primeiras linhas, no entanto, lembre-se que elas existem, e devem ser incluídas no uso do provador.
 
 \begin{lstlisting}
     import data.set
@@ -780,7 +822,7 @@ Nesse caso, utilizamos {\fontencoding{U}\fontfamily{cmtt}\selectfont eq.symm h},
            ... = -A ∪ -(-B) : by rw compl_inter
            ... = -A ∪ B     : by rw compl_compl \end{lstlisting}
 
-  Para aquelas pessoas que gostam de ser minimalistas e tentam usar o mínimo de linhas possível, existe como reduzir a prova em calc pra somente uma linha, veja:
+  Para aquelas pessoas que gostam de ser minimalistas e tentam usar o mínimo de linhas possível, existe como reduzir a prova em {\fontencoding{U}\fontfamily{cmtt}\selectfont calc} pra somente uma linha, veja:
 
   \begin{lstlisting}
     example : -(A \ B) = -A ∪ B :=
@@ -836,7 +878,7 @@ Nesse caso, utilizamos {\fontencoding{U}\fontfamily{cmtt}\selectfont eq.symm h},
 
   O leitor bem atento já notou uma pequena diferença na linha $13$ do código, não escrevemos {\fontencoding{U}\fontfamily{cmtt}\selectfont by rw inter\_comm}, mas sim {\fontencoding{U}\fontfamily{cmtt}\selectfont by rw inter\_comm B A}. Isso é necessário, porque na expressão dessa linha existem $2$ símbolos de intersecção em que poderia ser aplicado o lema, criando uma ambiguidade pro provador decidir em qual deles vai aplicá-lo. Quando isso acontece, o provador sempre escolhe a primeira ocorrência, ou seja, quando aplicamos o lema {\fontencoding{U}\fontfamily{cmtt}\selectfont inter\_comm} na expressão {\fontencoding{U}\fontfamily{cmtt}\selectfont (A ∪ B) ∩ -(B ∩ A)}, obtemos {\fontencoding{U}\fontfamily{cmtt}\selectfont -(B ∩ A) ∩ (A ∪ B)}. Entretanto, o objetivo é {\fontencoding{U}\fontfamily{cmtt}\selectfont (A ∪ B) ∩ -(A ∩ B)}, e para especificar isso, é só passar depois do lema os parâmetros que queremos que ele seja aplicado, no nosso caso, {\fontencoding{U}\fontfamily{cmtt}\selectfont B A}.
 
-  Outro caso de ambiguidade que também vemos nesse exemplo, está na linha $4$. A expressão anterior é {\fontencoding{U}\fontfamily{cmtt}\selectfont (A ∩ -B) ∪ (B \ A)}, ou seja, temos dois termos possíveis para aplicar o lema {\fontencoding{U}\fontfamily{cmtt}\selectfont diff\_eq}, podemos reescrever {\fontencoding{U}\fontfamily{cmtt}\selectfont (A ∩ -B)} como {\fontencoding{U}\fontfamily{cmtt}\selectfont (A $\setminus$ B)} ou podemos reescrever  {\fontencoding{U}\fontfamily{cmtt}\selectfont (B $\setminus$ A)} como {\fontencoding{U}\fontfamily{cmtt}\selectfont (B ∩ -A)}. Nesse caso, o Lean prioriza a ida do lemma, que significa transformar o lado esquerdo da igualdade no lado direito (veja a lista de propriedades novamente pra entender melhor), e demos sorte de ser exatamente o que queríamos. Para fazer o inverso, só precisamos especificar os parâmetros pro lema: {\fontencoding{U}\fontfamily{cmtt}\selectfont by rw diff\_eq A B}.
+  Outro caso de ambiguidade que também vemos nesse exemplo, está na linha $4$. A expressão anterior é {\fontencoding{U}\fontfamily{cmtt}\selectfont (A ∩ -B) ∪ (B $\setminus$ A)}, ou seja, temos dois termos possíveis para aplicar o lema {\fontencoding{U}\fontfamily{cmtt}\selectfont diff\_eq}, podemos reescrever {\fontencoding{U}\fontfamily{cmtt}\selectfont (A ∩ -B)} como {\fontencoding{U}\fontfamily{cmtt}\selectfont (A $\setminus$ B)} ou podemos reescrever  {\fontencoding{U}\fontfamily{cmtt}\selectfont (B $\setminus$ A)} como {\fontencoding{U}\fontfamily{cmtt}\selectfont (B ∩ -A)}. Nesse caso, o Lean prioriza a ida do lemma, que significa transformar o lado esquerdo da igualdade no lado direito (veja a lista de propriedades novamente pra entender melhor), e demos sorte de ser exatamente o que queríamos. Para fazer o inverso, só precisamos especificar os parâmetros pro lema: {\fontencoding{U}\fontfamily{cmtt}\selectfont by rw diff\_eq A B}.
 
   Em algumas vezes, é necessário colocar cada parâmetro entre parênteses. Por exemplo, se um parâmetro for parecido com {\fontencoding{U}\fontfamily{cmtt}\selectfont -(A ∩ B) ∩ C}, o que vamos escrever depois do lemma é {\fontencoding{U}\fontfamily{cmtt}\selectfont (-(A ∩ B) ∩ C)} e os outros parâmetros.
 
@@ -1126,5 +1168,7 @@ $\qquad$
 
 $\qquad$
 \item Questões com calc
+
+%adicionar questões do LEAN
 
 \end{enumerate}
