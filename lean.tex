@@ -2,15 +2,16 @@
 % https://leanprover.github.io/theorem_proving_in_lean/introduction.html
 
 Ao final do último capítulo, definimos duas classes fundamentais de ferramentas de auxílio a prova de teoremas, os \textit{ATPs} e \textit{ITPs}.
-Esses grupos de ferramentas em geral são muito bem definidos, e distanciados, mantendo um espaço vazio entre si, o que pode parecer desvantajoso:o  matemático pode desejar algo entre a prova automática e interativa, ou o acesso a ambos os recursos numa mesma ferramenta.
+Esses grupos de ferramentas em geral são muito bem definidos, e distanciados, mantendo um espaço vazio entre si, o que pode parecer desvantajoso: o  matemático pode desejar algo entre a prova automática e interativa, ou o acesso a ambos os recursos numa mesma ferramenta.
 
 O provador de teoremas Lean\footnote{documentação, ambiente e tutoriais estão disponiveis em: leanprover.github.io} busca preencher essa lacuna: uma única ferramenta contendo o melhor de ambos os mundos acessíveis.
 Nesse sentido, age como uma \textit{ponte entre os dois mundos}.
 
 O ambiente do Lean suporta interação, construção de termos, e verificação passo-a-passo das expressões desenvolvidas.
-Lean implementa o chamado \textit{calculus of constructions}, ou cálculo de contruções, um sistema dedutivo bastante poderoso, que contém os demais sistemas a serem discutidos ao longo do livro, tais como Lógica de Proposições, ou Lógica de Primeira Ordem.
+Lean implementa o chamado \textit{calculus of constructions}, ou cálculo de contruções, um sistema dedutivo bastante poderoso, que 
+consegue codificar lógicas, como as futuramente discutidas lógica proposicional e lógica de primeira ordem, com o respaldo da teoria que une lógica e teoria dos tipos, o isomorfismo de Curry-Howard.
 
-Um usuário inicial pode se deparar com algumas dúvidas pertinentes: \textit{porque contruir um termo é uma prova?}, \textit{consigo desenvolver provas top-down e botton-up?}, ou \textit{como conhecer as bibliotecas que o Lean já tem implementadas?}Algumas dessas dúvidas são esclarecidas logo mais, enquanto outras serão deixadas para pŕatica ao longo dos proximos capítulos.
+Um usuário inicial pode se deparar com algumas dúvidas pertinentes: \textit{porque contruir um termo é uma prova?}, \textit{consigo desenvolver provas top-down e botton-up?} (), ou \textit{como conhecer as bibliotecas que o Lean já tem implementadas?}Algumas dessas dúvidas são esclarecidas logo mais, enquanto outras serão deixadas para pŕatica ao longo dos proximos capítulos.
 
 \section{Teoria dos tipos}
 % https://leanprover.github.io/theorem_proving_in_lean/dependent_type_theory.html
