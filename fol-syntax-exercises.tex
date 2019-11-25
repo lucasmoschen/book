@@ -1,15 +1,25 @@
     \subsection{Exercícios}
 
     \begin{enumerate}
-        \item Formalize as afirmações abaixo em Lógica de Primeira Ordem, utilizando os seguintes predicados e relações:
+        \item Lembra-se dos exemplos, na introdução deste capítulo, que esperávamos que esclarecesse a necessidade da Lógica de Primeira Ordem?
+        Formalize-os utilizando funções e predicados que forem convenientes.
         
+        \begin{enumerate}
+            \item Todo natural é maior do que ou igual a zero.
+            \item Existe número natural que é primo e é par.
+        \end{enumerate}
+
+        \item Formalize as afirmações abaixo em Lógica de Primeira Ordem, utilizando os seguintes predicados e relações:
+
         $primo(x)$, $par(x)$, $impar(x)$, $perfeito(x)$ e $amigos(x, y)$.
+
         \begin{enumerate}
             \item Todo número primo maior do que $2$ é ímpar.
             \item A soma de dois números pares é par.
             \item Existe um número perfeito menor do que $10$.
             \item $220$ e $284$ são números amigos.
         \end{enumerate}
+
         \item Considere que os quantificadores variam sobre estudantes de determinada escola. Formalize as afirmações abaixo, utilizando os seguintes predicados e relações:
         $amigos(x, y)$, $roqueiro(x)$, $estudioso(x)$, $estudamJuntos(x, y)$ e $irmaos(x, y)$.
         
@@ -25,6 +35,11 @@
     \textbf{Soluções:}
 
     \begin{enumerate}
+        \item        
+        \begin{enumerate}
+            \item $\forall x \ x \ge 0$.
+            \item $\exists x \ primo(x) \land par(x)$.
+        \end{enumerate}
         \item
         \begin{enumerate}
             \item $\forall x \ ((primo(x) \land x > 2) \rightarrow impar(x))$.
