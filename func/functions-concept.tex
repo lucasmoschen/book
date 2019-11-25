@@ -44,6 +44,24 @@ definição no Capítulo de \textit{\hyperlink{chapter.4}{FOL}} de variável
 ligada (\textit{bound}), visto que se renomearmos $x$ com $y$, os valores
 continuam os mesmos.
 
+ Outra forma muito comum, principalmente na ciência da computação de definir
+ funções é utilizando \textbf{recorrência}. Esse tipo de escrita é mais comum
+ quando o domínio são os números naturais. Essas função são conhecidas como
+ \textbf{sequências}. 
+
+\begin{example}
+     Considere $f: \mathbb{N} \to \mathbb{N}$, onde definimos $f(0) = 1$ e
+     $f(n) = n\cdot f(n-1)$, para todo $n \in \mathbb{N}, n > 0$. Essa função
+     é chamada de \textit{fatorial} de $n$. 
+\end{example}
+
+\begin{example}
+    Considere $g: \mathbb{N} \to \mathbb{N}$, onde definimos $f(0) = 0$, $f(1)
+   = 1$ e $f(n) = f(n-1) + f(n-2)$, para todo $n \in \mathbb{N}, n > 1$. Essa função
+   é chamada de \textit{fibonacci}. Ela determina uma sequência conhecida, dada
+   por $0, 1, 1, 2, 3, 5 ,8, ...$.  
+\end{example}
+
 Lógicos frequentemente utilizam a notação $\lambda x ~e(x)$ para denotar a
 função que mapeia $x$ para $e(x)$. Essa notação chama-se \textit{notação
 lambda} e pode ser usada da seguinte forma: $f = \lambda x(x + 1)$, que
