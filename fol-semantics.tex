@@ -86,7 +86,7 @@
     
     Seja A uma sentença e $\mathbb{M}$ um modelo da linguagem de A. Por questão de praticidade, vamos adotar as notações $\mathbb{M} \vDash A$ (pode ser lido como \textit{modela}, \textit{satisfaz} ou \textit{valida}) para quando o modelo $\mathbb{M}$ avalia a sentença $A$ como verdadeira ($ \textbf{T}$) e $\mathbb{M} \not \vDash A$ para quando $\mathbb{M}$ avalia $A$ como falsa ($ \textbf{F}$).
     
-    Suponhamos um modelo $\math{bb}$ com domínio $\mathbb{N}$ de uma linguagem com símbolo de relação $maiorDoQue$, função binária $soma$
+    Suponhamos um modelo $\mathbb{M}$ com domínio $\mathbb{N}$ de uma linguagem com símbolo de relação $maiorDoQue$, função binária $soma$
     e símbolos constantes $a$ e $b$ interpretados como $5$ e $8$, e a relação e função interpretados como os proprios nomes sugerem. Então $\mathbb{M} \not \vDash  maiorDoQue(a,b)$, pois $5$ não é maior que $8$, mas $\mathbb{M} \vDash maiorDoQue(soma(a,b),b)$, já que $5+8=13$ que é maior que $8$.
     
     Sejam $A$ e $B$ expressões em uma linguagem com interpretação $\mathbb{M}$ e domínio $D$, escrevemos $\mathbb{M} \vDash A \land B$, ou seja, $\mathbb{M}$ valida $A \and B$ somente quando $\mathbb{M} \vDash A$ e $\mathbb{M} \vDash B$. E os conectivos $\lor$, $ \rightarrow$ e $\neg$ também funcionam de maneira análoga ao conjunto proposicional.
