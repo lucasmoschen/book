@@ -85,21 +85,52 @@
     \end{itemize}
     
     Seja A uma sentença e $\mathbb{M}$ um modelo da linguagem de A. Por questão de praticidade, vamos adotar as notações $\mathbb{M} \vDash A$ (pode ser lido como \textit{modela}, \textit{satisfaz} ou \textit{valida}) para quando o modelo $\mathbb{M}$ avalia a sentença $A$ como verdadeira ($ \textbf{T}$) e $\mathbb{M} \not \vDash A$ para quando $\mathbb{M}$ avalia $A$ como falsa ($ \textbf{F}$).
-       
-    \subsection{Exemplos}
     
-    \subsection{Validação e consequência lógica}
+    Suponhamos um modelo $\mathbb{M}$ com domínio $\mathbb{N}$ de uma linguagem com símbolo de relação $maiorDoQue$, função binária $soma$
+    e símbolos constantes $a$ e $b$ interpretados como $5$ e $8$, e a relação e função interpretados como os proprios nomes sugerem. Então $\mathbb{M} \not \vDash  maiorDoQue(a,b)$, pois $5$ não é maior que $8$, mas $\mathbb{M} \vDash maiorDoQue(soma(a,b),b)$, já que $5+8=13$ que é maior que $8$.
     
-    \subsection{Correção e completude}
+    Sejam $A$ e $B$ expressões em uma linguagem com interpretação $\mathbb{M}$ e domínio $D$, escrevemos $\mathbb{M} \vDash A \land B$, ou seja, $\mathbb{M}$ valida $A \and B$ somente quando $\mathbb{M} \vDash A$ e $\mathbb{M} \vDash B$. E os conectivos $\lor$, $ \rightarrow$ e $\neg$ também funcionam de maneira análoga ao conjunto proposicional.
     
-    \begin{table}[htb]
-      \centering
-      \begin{tabular}{|l|l|l|l|}
-      \hline
-      G          & G          & B     &b           \\ \hline
-      b          & b          & G     &G           \\ \hline
-      g          & B          & b     &b            \\ \hline
-      G          & g          & G     &B            \\ \hline
+    Agora veremos como interpretar expressões com os quantificadores existencial e universal. 
+    
+    Vimos que $\exists x A$, significa que existe algum elemento no domínio tal que a expressão $A$ seja verdadeira, ou seja, quando "substituirmos" $x$ por este elemento, $A$ seria verdadeira. Sendo mais preciso, dizemos que $\mathbb{M} \vDash\exists x A$ quando existe um elemento $a$ no domínio de $\mathbb{M}$ , tal que quando interpretamos $x$ como $a$, temos $\mathbb{M} \vDash \exists x A$. Usando o exemplo anterior temos $\mathbb{M} \vDash \exists x (maiorDoQue(x,b))$, uma vez que podemos interpretar $x$ como $10$ e assim $\mathbb{M} \vDash maiorDoQue(x,b)$.
+    Finalmente, para o quantificador universal, vimos que $\forall x A$, significa que $A$ é verdadeira para toda variável do domínio. Sendo mais preciso, dizemos $\mathbb{M} \vDash \forall x A$ quando para todo elemento do domínio  de $\mathbb{M}$, se interpretarmos x como $a$ então $\mathbb{M} \vDash A$.
+    
+    Lembre-se que uma sentença é uma fórmula sem variáveis livres. Assim, as regras apresentadas determina o valor verdade de qualquer sentença de um modelo.
+    
+      \subsection{Exemplos}
+  Devemos ficar atentos com as diferenças entre os quantificadores universal e existencial.
+  
+  Consideremos uma linguagem com:
+  \begin{itemize}
+      \item um símbolo de relação $\leq$;
+      \item  uma função binária $+$.
+  \end{itemize}
+  
+   Nosso modelo $\mathbb{M}$ terá como domínio os $\mathbb{N}$ e os símbolos  serão interpretados como a relação \textit{menor ou igual do que} e a função \textit{adição}.
+   
+  Sendo assim, tente responder:
+  
+  \begin{enumerate}
       
-      \end{tabular}
-      \end{table}
+      \item É verdade que $\mathbb{M} \vDash \exists x (x \leq x)$? E quanto à $\mathbb{M} \leq \forall x (x \leq x)$?
+      
+      Para o primeiro, podemos interpretar $x$ como o número natural $0$, e então $\mathbb{M} \vDash x \leq x$, e é verdadiro para o existencial.
+      Para o segundo, se escolhermos um número natural arbitrário $n$, se interpretarmos $x$ como $n$, $\mathbb{M} \vDash x \leq x.$
+      
+      \item É verdade que $\mathbb{M} \vDash \exists x+x \leq x$? E $\mathbb{M} \vDash \forall x+x \leq x$?
+      
+      Uma vez que podemos interpretar $x$ como $0$, o primeiro é verdadeiro. No entanto o segundo é falso uma vez que se interpretarmos $x$ como $1$, podemos ver que $\mathbb{M} \neg \vDash x+x \leq x$.
+      
+      \item A sentença $\exists x \forall y (x \leq y)$ e $\forall x \exists y (x \leq y)$ dizem a mesma coisa? São verdadeiras ou falsas?
+      
+      Estas sentenças não dizem a mesma coisa, apesar de ambas serem verdadeiras no modelo. A primeira nos diz que algum número natural é menor ou igual do que qualquer número natural. O que é verdade, sendo este número o $0$.
+      A segunda sentença afirma que para todo número natural, existe um outro número natural que é igual ou maior. Isto é verdade, uma vez que todo número natural $a$ é menor ou igual a $a$. Se o domínio fosse $\mathbb{Z}$, a primeira sentença seria falsa.
+      
+      \item Consegue pensar em uma fórmula $A$ nesta linguagem, tal que com uma variável livre $x$, $\mathbb{M} \vDash \forall x A$, mas $\mathbb{M} \neg \vDash \exists x A $?
+      
+      Se o domínio fosse vazio, poderia acontecer. Mas é uma situação impossível no nosso modelo. $\mathbb{M} \vDash \forall x A$, significa que $A$ é verdade para qualquer número natural, ou seja, dado um elementos do domínio, A é válido, o que implica $\mathbb{M} \vDash \exists x A$.
+ 
+ 
+  \end{enumerate}
+  
