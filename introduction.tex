@@ -50,24 +50,28 @@ Para motivação, considere o seguinte problema: \textit{Você acorda em uma sal
 Junto a cada porta há um guarda. Um dos guardas é sempre sincero, enquanto o outro é sempre mentirozo. Você tem direito a uma única pergunta para decidir qual porta tomar. O que você faz?}
 
 Esse é claramente um problema envolvendo um raciocínio complexo, e, se tratando da sua vida em jogo (ou fingindo), exige plena certeza da solução antes de uma resposta definitiva.
-De fato, seremos capazes de formalizar problemas desse tipo, e obter métodos de derivação para obter um prova para a resposta. Essa formalização se dará em dois níveis: o semântico e o sintático. O primeiro tem relação direta com nossa interpretação sobre os objetos que manipularemos, que serão definidos como \textit{"fórmulas bem formadas"} mais à frente. O segundo está relacionado com regras de derivação e inferência que operamos sobre esses objetos e (normalmente desejamos) que preserve relações da sua derivabilidade com a corretude a ser definida semânticamente. Esse conjunto de regras de inferência que operam sobre as fórmulas para provar teoremas é chamado de \textbf{sistema dedutivo}.
+De fato, seremos capazes de formalizar problemas desse tipo, e obter métodos de derivação para obter um prova para a resposta. Essa formalização se dará em dois níveis: o semântico e o sintático. O primeiro tem relação direta com nossa interpretação sobre os objetos que manipularemos, que serão definidos como \textit{"fórmulas bem formadas"} mais à frente. O segundo está relacionado com regras de derivação e inferência que operamos sobre esses objetos e (normalmente desejamos) que preserve relações da sua derivabilidade com a corretude a ser definida semânticamente. Esse conjunto de regras de inferência e axiomas que operam diretamente sobre as fórmulas para provar teoremas é chamado de \textbf{sistema dedutivo}.
 
-\subsection{Dedução Natural}
+Falaremos de três sistemas: a dedução natural, o cálculo de sequentes e o de resolução. A \textbf{dedução natural} aparecerá frequentemente ao longo do livro. É uma evolução de um sistema mais antigo (de Hilbert, que usava muitos axiomas e poucas regras de inferência; com a dedução natural vai ser o contrário) As provas terão formato de árvore (o que é de certo modo natural, se pensar na forma como se faz a prova é possível ver que há vários desenvolvimentos paralelos que chegam num ponto, o teorema a ser provado; isso inerentemente tem "cara" de uma árvore). Como o leitor poderá perceber mais à frente, as provas em dedução natural pode variar muito de tamanho dependendo das nossas premissas e do que nós queremos provar.
+O \textbf{cálculo de sequentes} é uma espécie de "dedução natural multidimensional". Foi criado pelo Gentzen também para aperfeiçoar a dedução natural e tratar melhor a diferença da expressão intuicionista da clássica na dedução natural (isso vai ser explicado à frente). 
+Por fim, \textbf{resolução} é basicamente um princípio dedutivo que possui uma regra de unificação de duas fórmulas e consegue assim pegar diversos axiomas e o teorema que voçê quer provar, reescrevê-los para que essas regras de unificação possam ser feitas e entrar em contradição com o que se deseja provar (bem estranho, mas faz sentido depois).
+
+%\subsection{Dedução Natural}
 % Com que nível de detalhe nós devemos abordar as regras??
 
-Uma das maneiras de formalizar e demonstrar problemas lógicos é utilizar sistemas dedutivos como a Dedução Natural, que consiste em um grupo de regras e axiomas que nos permitem manipular expressões formalizadas, ou seja, traduzidas da forma linguística para uma forma lógica matemática de notação, estabelecendo a validade dos argumentos, derivando a conclusão do argumento a partir das premissas usando esse sistema de regras em questão.
-Por meio dessas regras de inferência, podemos demonstrar a validade de uma infinidade de fórmulas e argumentos sem a necesidade de considerar os valores que cada fórmula ou subfórmula recebe, ou seja, não estamos mais lidando com a semântica, mas com a sintaxe.
+%Uma das maneiras de formalizar e demonstrar problemas lógicos é utilizar sistemas dedutivos como a Dedução Natural, que consiste em um grupo de regras e axiomas que nos permitem manipular expressões formalizadas, ou seja, traduzidas da forma linguística para uma forma lógica matemática de notação, estabelecendo a validade dos argumentos, derivando a conclusão do argumento a partir das premissas usando esse sistema de regras em questão.
+%Por meio dessas regras de inferência, podemos demonstrar a validade de uma infinidade de fórmulas e argumentos sem a necesidade de considerar os valores que cada fórmula ou subfórmula recebe, ou seja, não estamos mais lidando com a semântica, mas com a sintaxe.
 
 % Ver o que precisamos deixar aqui e o que colocar em cima
 
 
-Uma outra característica da Dedução Natural é que ela possui um certo formato para suas demonstrações, onde as provas são apresentadas de forma que cada linha corresponda a um passo da prova ou demonstração, as colunas correspondam as premissas e abaixo dessa linha teremos a nossa conclusão.
-Como o leitor poderá perceber mais à frente, as provas em Dedução Natural pode variar muito de tamanho dependendo das nossas premissas e do que nós queremos provar.
+%Uma outra característica da Dedução Natural é que ela possui um certo formato para suas demonstrações, onde as provas são apresentadas de forma que cada linha corresponda a um passo da prova ou demonstração, as colunas correspondam as premissas e abaixo dessa linha teremos a nossa conclusão.
+%Como o leitor poderá perceber mais à frente, as provas em Dedução Natural pode variar muito de tamanho dependendo das nossas premissas e do que nós queremos provar.
 
-\subsection{Cálculo de Sequentes}
+%\subsection{Cálculo de Sequentes}
 
-O Cálculo de Sequentes é um estilo de apresentação de provas que foi proposto por Gentzen, em 1934, com o objetivo de servir como uma ferramenta auxiliar para o estudo de dedução natural em lógica de primeira ordem.
-Assim como outros sistemas dedutivos, o Cálculo de Sequentes também possui suas regras e propriedades que funcionam de maneira harmônica e mantém o aspecto de árvore para as provas em si.
+%O Cálculo de Sequentes é um estilo de apresentação de provas que foi proposto por Gentzen, em 1934, com o objetivo de servir como uma ferramenta auxiliar para o estudo de dedução natural em lógica de primeira ordem.
+%Assim como outros sistemas dedutivos, o Cálculo de Sequentes também possui suas regras e propriedades que funcionam de maneira harmônica e mantém o aspecto de árvore para as provas em si.
 
 %Não acho que falar LK e LJ seja útil. LK se refere ao cálculo de sequentes para a lógica clássica e o LJ para a intuicionista.
 %Visto que isso foi pouco abordado na sala, entrar nesse nível de detalhe pode ser meio inadequado.
@@ -78,16 +82,16 @@ Assim como outros sistemas dedutivos, o Cálculo de Sequentes também possui sua
 %Colocaremos as regras de cálculo sequentes?
 
 
-\subsection{Resolução}
+%\subsection{Resolução}
 %CNF, regra da resolução
 %talvez explicar superficialmente e dar um exemplo no capitulo de lp (não vamos falar de resolução em primeira ordem; embora exista a gente não estudou né)
 
- O método da resolução foi introduzido por John Alan Robinson que foi um filósofo, matemático e cientista da computação que foi um dos pioneiros em lógica de programação e fez importantes descobertas e grandes contribuições para a área de fundamentos
-de provadores de teoremas automáticos, os ATPs (Automated theorem proving).
-O uso destes provadores automáticos será abordado na próxima seção.
+% O método da resolução foi introduzido por John Alan Robinson que foi um filósofo, matemático e cientista da computação que foi um dos pioneiros em lógica de programação e fez importantes descobertas e grandes contribuições para a área de fundamentos
+%de provadores de teoremas automáticos, os ATPs (Automated theorem proving).
+%O uso destes provadores automáticos será abordado na próxima seção.
 
- O sistema dedutivo de resolução faz uso de regras de inferência afim de demonstrar por refutação sentenças e inferências da lógica proposicional e da lógica de primeira ordem.
-Este sistema dedutivo usa a linguagem proposicional no formato CNF (Conjunctive Normal Form) e nâo possui axiomas, mas apenas uma regra de inferência que opera com cláusulas e origina uma nova implicada por elas.
+% O sistema dedutivo de resolução faz uso de regras de inferência afim de demonstrar por refutação sentenças e inferências da lógica proposicional e da lógica de primeira ordem.
+%Este sistema dedutivo usa a linguagem proposicional no formato CNF (Conjunctive Normal Form) e nâo possui axiomas, mas apenas uma regra de inferência que opera com cláusulas e origina uma nova implicada por elas.
 
 
 \section{Provadores, ATP e ITP}
@@ -120,10 +124,11 @@ Dessa forma, um \textit{ATP} pode tomar como entrada um teorema, e deveria ser c
 Note que nesse processo, a participação do ser humano está restrita apenas a aplicação da entrada, ou a descrição do problema para o computador.
 Isso expressa o sentido em que esses provadores são \textit{Automáticos}.
 
-De fato, algumas provadores implementam sistemas dedutivos que lidam internamente com o problema, desenvolvendo soluções pouco inteligíveis (resolução, p.ex.).
-Pode-se dizer que o processo de prova nesses casos é pouco acessível. Exemplos de sietmas, ou algoritmos populares são:
+De fato, algumas provadores implementam sistemas dedutivos que lidam internamente com o problema, desenvolvendo soluções pouco inteligíveis (resolução e variações algorítmicas da resolução para melhora de performance são as principais formas de implementar isso).
+Pode-se dizer que o processo de prova nesses casos é pouco acessível. Exemplos de sistmas, ou algoritmos populares são:
 
 \begin{itemize}
+	% E prover
     \item \textbf{Algoritmo de Presburguer} : permite concluir se uma assertiva na \textit{aritmética de presburguer} para números naturais é válida. Em 1954, um aluno da universidade de Princeton implementou o algoritmo de Presburguer em um computador JOHNNIAC que foi capaz de provar que o produto entre números pares é par.
     \item \textbf{Vampire\footnote{Vampire: www.vprover.org}}: é um poderoso provador automático implementado em \textit{C++}, para lógica de primeira ordem. Seu desenvolvimento se iniciou em 1994, e já venceu a \textit{copa mundial de provadores de teoremas}, além de diversas premiações menores.
 \end{itemize}
@@ -144,7 +149,7 @@ Problemas desse tipo abrem espaço para o paradigma que garante provas desenvolv
 
 Alguns \textit{ITPs} populares são:
 \begin{itemize}
-    \item \textbf{Coq Proof Assistant\footnote{Coq: coq.inria.fr}} : sistema de gestão de provas que permite exprimir assertivas matemáticas, checagem de provas, além de executa algumas provas automáticas. Embora Permita essa forte automação, é ainda considerado sistema de provas interativo, oferecendo um ambiente para provas checadas por máquina. Tem uma comunidade bem grande e adquiriu popularidade crescente após ser usado na prova do teorema das quatro cores.
+    \item \textbf{Coq Proof Assistant\footnote{Coq: coq.inria.fr}} : sistema de gestão de provas que permite exprimir assertivas matemáticas, checagem de provas, além de executa algumas provas automáticas. Embora Permita essa forte automação, é ainda considerado sistema de provas interativo, oferecendo um ambiente para provas checadas por máquina. Tem uma comunidade bem grande e adquiriu popularidade crescente após ser usado pra provar o teorema das quatro cores.
 
     \item \textbf{Isabelle\footnote{Isabelle: isabelle.in.tum.de}}: desenvolvido em parceria entre a Universidade de Cambridge e a Universidade Tecnica de Munique, Isabelle foi pensada para servir de assistente de provas geral, implementando lógica de alta ordem. Teve sua versão inicial lançada em 1986.
 \end{itemize}
