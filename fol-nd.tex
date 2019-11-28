@@ -199,7 +199,7 @@ No Lean a dedução ocorre de forma similar a dedução em primeira ordem, apena
 regras de exclusão e inclusão dos quantificadores. Os símbolos $\exists $ e $\forall $ são escritos no Lean como \textbackslash exist 
 e  \textbackslash all. Para a regra de exclusão do universal apenas passamos para uma proposição $\forall x A(x)$ uma letra,
 por exemplo $t$, para termos $A(t)$. Para a inclusão do universal, devemos assumir uma letra, por exemplo $t$, utilizando o
-"assume" e com esta letra livre de qualquer hipótese provamos $A(t)$, dessa forma o Lean é capaz de inferir $\forall x A(x)$.
+``assume" e com esta letra livre de qualquer hipótese provamos $A(t)$, dessa forma o Lean é capaz de inferir $\forall x A(x)$.
 \newline Vamos utilizando o Lean provar o nosso primeiro exemplo do quantificador universal, $\forall xP(x) \to \forall x Q(x) \to \forall x(P(x) \land Q(x))$:
 \begin{lstlisting}
  variable U : Type
@@ -233,9 +233,9 @@ show R t, from h$_4$ h$_3$.right
 \end{lstlisting}
 Note que neste simples exemplo, apesar de possuirmos fórmulas maiores, apenas realizamos simples regras de inclusão e exclusão
 do universal.
-\newline Para as regras do existencial, na exclusão utilizamos "exists.elim" seguida por uma proposição do tipo $\forall x A(x)$,
+\newline Para as regras do existencial, na exclusão utilizamos ``exists.elim" seguida por uma proposição do tipo $\forall x A(x)$,
 para provarmos $B$, devemos provar $ A y \to B$, ou seja, assumimos um $y$ e $A y$ e chegamos até $B$, concluindo assim a exclusão
-do existencial. Para a inclusão do existencial utilizamos "exists.intro", devemos passar uma letra, por exemplo $t$, e uma prova
+do existencial. Para a inclusão do existencial utilizamos ``exists.intro", devemos passar uma letra, por exemplo $t$, e uma prova
 de que $A(t)$ vale.
 \newline Vamos provar o nosso primeiro exemplo existencial com o Lean, $\exists x (A(x) \land B(x)) \to \exists x A(x)$:
 \begin{lstlisting}
@@ -619,3 +619,4 @@ and.intro n1 (and.intro n2 n3)
 
 end
 \end{lstlisting}
+

@@ -87,7 +87,7 @@ Seja $A$ e $B$ conjuntos quaisquers, $\mathcal{U}$ nosso universo e $\emptyset$ 
 \subsection{Axiomas}
 Agora iremos apresentar alguns axiomas que servirão como base para todo o desenvolvimento dos conteúdos aqui propostos. Quando utilizarmos a palavra elemento, estaremos utilizando-a com a ideia de que um conjunto que pertença a outro é um elemento do segundo, para evitar repetir o uso excessivo da palavra conjunto.
 
-\textbf{Axioma da Extensionalidade:} Dois conjuntos são iguais, se e somente se, todo elemento que pertence ao primeiro conjunto pertence ao segundo e todo elemento que pertence ao segundo também pertence ao primeiro, ou seja:
+\textbf{Axioma da Extensão:} Dois conjuntos são iguais, se e somente se, todo elemento que pertence ao primeiro conjunto pertence ao segundo e todo elemento que pertence ao segundo também pertence ao primeiro, ou seja:
 
 \[\forall A \hspace{1.5mm} \forall B \hspace{1.5mm} (A = B) \iff (\forall x \hspace{1.5mm} (x \in A \iff x \in B))\]
 
@@ -599,7 +599,15 @@ A seguir teremos algumas propriedades e a prova do porque estão corretas, utili
 \item{\textbf{Básicas}}
 \begin{itemize}
 \item $A \cap A = A$
+
+\qquad
+
 \item $A \cup A = A$
+
+\textbf{Prova:}
+
+\qquad
+
 \item $A \cap \mathcal U = A$
 \item $A \cup \mathcal U = \mathcal U$
 \item $A \cap \emptyset = \emptyset$
@@ -661,47 +669,76 @@ eq_of_subset_of_subset
 \begin{itemize}
 \item $\mathcal U ^c = \emptyset$
 \item $\emptyset ^c = \mathcal U$
-\item $A \cap A^c = \emptyset$
 
-$(i)$ Provaremos que $ \forall x (x \in A \cap \overline A) \rightarrow \forall x  (x \in \emptyset) $ :
+\qquad
 
-\begin{center}
-\AxiomC{}
-\RightLabel{\scriptsize $1$}
-\UnaryInfC{$ \forall x (x \in A \cap \overline A)$}
-\UnaryInfC{$t \in A \cap \overline A$}
-\UnaryInfC{$t \in A \land t \in \overline A $}
-\UnaryInfC{$t \in A $}
-\AxiomC{}
-\RightLabel{\scriptsize $1$}
-\UnaryInfC{$ \forall x (x \in A \cap \overline A)$}
-\UnaryInfC{$t \in A \cap \overline A$}
-\UnaryInfC{$t \in A \land t \in \overline A $}
-\UnaryInfC{$t \in \overline A $}
-\UnaryInfC{$t \in \mathbb{U} \land t \notin A $}
-\UnaryInfC{$t \notin A $}
-\BinaryInfC{$\perp$}
-\UnaryInfC{$t \in \emptyset$}
-\UnaryInfC{$\forall x  (x \in \emptyset)$}
-\RightLabel{\scriptsize $1$}
-\UnaryInfC{$ \forall x (x \in A \cap \overline A) \rightarrow \forall x  (x \in \emptyset) $}
-\DisplayProof
-\end{center}
+\item $A \cap \overline{A} = \emptyset$
 
-$(ii)$ Provaremos que $ \forall x  (x \in \emptyset) \rightarrow \forall x (x \in A \cap \overline A)$ :
-\begin{center}
-\AxiomC{}
-\RightLabel{\scriptsize $1$}
-\UnaryInfC{$\forall x  (x \in \emptyset)$}
-\UnaryInfC{$\perp$}
-\UnaryInfC{$t \in A \cap \overline A$}
-\UnaryInfC{$ \forall x (x \in A \cap \overline A)$}
-\RightLabel{\scriptsize $1$}
-\UnaryInfC{$\forall x  (x \in \emptyset) \rightarrow \forall x (x \in A \cap \overline A)$}
-\DisplayProof
-\end{center}
+\textbf{Prova:}
+    
+    Iremos utilizar, nesta prova, as definições de conjunto complementar, interseção e do conjunto vazio. Caso não se recorde, volte a seção de "Fundamentação", na parte "Definições".
+    
+    $(i)$ Provaremos que, para um $t$ arbitrário, $ t \in A \cap \overline A \rightarrow t \in \emptyset $ (como esta prova é muito extensa, para caber na página ,iremos modularizar ela) :
+    
+    \{$*$
+    \begin{center}
+        \AxiomC{}
+        \RightLabel{\scriptsize $1$}
+        \UnaryInfC{$t \in A \cap \overline A$}
+        \AxiomC{$\forall x (x \in A \cap \overline A \iff x \in A \wedge x \in \overline A)$}
+        \UnaryInfC{$t \in A \cap \overline A \iff t \in A \wedge t \in \overline A$}
+        \BinaryInfC{$t \in A \land t \in \overline A $}
+        \DisplayProof
+    \end{center}
+    $*$\}
+    
+    \qquad
+    
+    \begin{center}
+        \AxiomC{}
+        \RightLabel{\scriptsize $1$}
+        \UnaryInfC{$*$}
+        \UnaryInfC{$t \in A \land t \in \overline A $}
+        \UnaryInfC{$t \in A $}
+        \AxiomC{}
+        \RightLabel{\scriptsize $1$}
+        \UnaryInfC{$*$}
+        \UnaryInfC{$t \in A \land t \in \overline A $}
+        \UnaryInfC{$t \in \overline A $}
+        \AxiomC{$\forall x (x \in \overline {A} \iff x \notin A)$}
+        \UnaryInfC{$t \in \overline {A} \iff t \notin A$}
+        \BinaryInfC{$t \notin {A}$}
+        \BinaryInfC{$\bot$}
+        \UnaryInfC{$t \in \emptyset$}
+        \RightLabel{\scriptsize $1$}
+        \UnaryInfC{$t \in A \cap \overline A \rightarrow t \in \emptyset$}
+        \DisplayProof
+    \end{center}
+    
+    \qquad
+    
+    $(ii)$ Provaremos que, para $t$ arbitrário, vale $ t \in \emptyset \rightarrow t \in A \cap \overline A$ :
+    
+    \begin{center}
+        \AxiomC{}
+        \RightLabel{\scriptsize $1$}
+        \UnaryInfC{$t \in \emptyset$}
+        \AxiomC{$\forall x (x \in \emptyset \iff \bot)$}
+        \UnaryInfC{$t \in \emptyset \iff \bot$}
+        \BinaryInfC{$\perp$}
+        \UnaryInfC{$t \in A \cap \overline A$}
+        \RightLabel{\scriptsize $1$}
+        \UnaryInfC{$t \in \emptyset \rightarrow t \in A \cap \overline A$}
+        \DisplayProof
+    \end{center}
+    
+    De $(i)$ e $(ii)$, teremos  $ (t \in A \cap \overline A \rightarrow t \in \emptyset) \wedge (t \in \emptyset \rightarrow t \in A \cap \overline A)$, ou seja, $t \in A \cap \overline A \iff t \in \emptyset $.
+    
+    De $t$ arbitrário, $\forall x (x \in A \cap \overline A \iff x \in \emptyset)$
+    
+    Logo, utilizando o Axioma da Extensão, chegamos a $A \cap \overline{A} = \emptyset$.
 
-Portanto, de $(i)$ e $(ii)$, concluímos que $ \forall x (x \in A \cap \overline A) \iff \forall x  (x \in \emptyset) $, ou seja, $A \cap \overline A$.
+\qquad
 
 \item $A \cup A^c = \mathcal U$
 
@@ -709,7 +746,75 @@ Portanto, de $(i)$ e $(ii)$, concluímos que $ \forall x (x \in A \cap \overline
 \[x \in (A \cup \overline A)\]
 \[ \iff x \in A \vee x \in \overline A\]
 
-\item $(A^c)^c = A$
+\qquad
+
+\item $\overline {\overline {A}} = A$
+
+\textbf{Prova:}
+
+\qquad
+
+ Iremos utilizar, na prova a seguir, a definição de conjunto complementar. Caso não se recorde, volte a seção de "Fundamentação", na parte "Definições".
+ 
+ \qquad
+
+$(i)$ Provaremos que, para um $t$ qualquer, vale $ t \in \overline {\overline {A}} \rightarrow t \in A $ :
+   
+   
+    
+\begin{center}
+    \AxiomC{}
+    \RightLabel{\scriptsize $1$}
+    \UnaryInfC{$t \in \overline {\overline {A}}$}
+    \AxiomC{$\forall x (x \in \overline {\overline {A}} \iff x \notin \overline {A})$}
+    \UnaryInfC{$t \in \overline {\overline {A}} \iff t \notin \overline {A}$}
+    \BinaryInfC{$t \notin \overline {A}$}
+    \AxiomC{}
+    \RightLabel{\scriptsize $2$}
+    \UnaryInfC{$t \notin A$}
+    \AxiomC{$\forall x (x \in \overline {A} \iff x \notin A)$}
+    \UnaryInfC{$t \in \overline {A} \iff t \notin A$}
+    \BinaryInfC{$t \in \overline {A}$}
+    \BinaryInfC{$\bot$}
+    \RightLabel{\scriptsize $2$}
+    \UnaryInfC{$t \in A$}
+    \RightLabel{\scriptsize $1$}
+    \UnaryInfC{$  t \in \overline {\overline {A}} \rightarrow t \in A $}
+    \DisplayProof
+\end{center}
+        
+\qquad
+
+$(ii)$ Provaremos que $ t \in A \rightarrow t \in \overline {\overline {A}}$ :
+\begin{center}
+    \AxiomC{}
+    \RightLabel{\scriptsize $1$}
+    \UnaryInfC{$t \in A$}
+    \AxiomC{}
+    \RightLabel{\scriptsize $2$}
+    \UnaryInfC{$t \in \overline A$}
+    \AxiomC{$\forall x (x \in \overline{A} \iff x \notin A)$}
+    \UnaryInfC{$t \in \overline{A} \iff t \notin A$}
+    \BinaryInfC{$t \notin A$}
+    \BinaryInfC{$\bot$}
+    \RightLabel{\scriptsize $2$}
+    \UnaryInfC{$t \notin \overline A$}
+    \AxiomC{$\forall x (x \in \overline {\overline{A}} \iff x \notin \overline{A})$}
+    \UnaryInfC{$t \in \overline {\overline{A}} \iff t \notin \overline{A}$}
+    \BinaryInfC{$t \in \overline {\overline{A}}$}
+    \RightLabel{\scriptsize $1$}
+    \UnaryInfC{$  t \in {A} \rightarrow t \in \overline {\overline{A}}$}
+    \DisplayProof
+\end{center}
+
+Assim, de $(i)$ e $(ii)$,temos $  (t \in \overline {\overline {A}} \rightarrow t \in A) \wedge (t \in {A} \rightarrow t \in \overline {\overline{A}} )$, ou seja, $t \in \overline {\overline {A}} \iff \in A $.
+
+Como $t$ é arbitrário, chegamos em $\forall x (x \in \overline {\overline {A}} \iff x \in A) $.
+
+Portanto, pelo Axioma da Extensão, concluímos que $\overline {\overline {A}} = A$.
+
+\qquad
+
 \item $(A \cap B)^c = A^c \cup B^c$
 \item $(A \cup B)^c = A^c \cap B^c$
 \end{itemize}
