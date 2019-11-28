@@ -196,16 +196,27 @@ lemma lema_A_B (A B : Prop) (h1 : A) (h2 : A → B): A ∧ B :=
 -- prova para o teorema A e B
 theorem teorema_A_B (A B : Prop) (h1 : A) (h2 : A → B): A ∧ B :=
   and.intro h1 (h2 h1)
+-- prova para A ∧ B abstraindo a logica proposicional na teoria dos tipos
+def funcao_A_B (A B : Prop) (h1 : A) (h2 : A → B): A ∧ B :=
+  and.intro h1 (h2 h1)
+ 
+ #check funcao_A_B 
+ -- funcao_A_B : ∀ (A B : Prop), A → (A → B) → A ∧ B
+ #check lema_A_B 
+ -- lema_A_B: ∀ (A B : Prop), A → (A → B) → A ∧ B
+#check teorema_A_B 
+-- teorema_A_B: ∀ (A B : Prop), A → (A → B) → A ∧ B
 \end{lstlisting}
 \vspace{5mm}
 
 \noindent Para cada contexto, foram dados argumentos \textit{(h : entre prentesis)} considerados na prova; \textit{hipóteses}. Na linha 2, por exemplo, $A$ e $B$ são proposições, $h1$ e $h2$ são provas que deveriamos considerar no contexto. Esse é o contexto que devemos considerar para demonstrar o resultado desejado.
 
-Observe que as provas são identicas; a diferença está exatamente nos contextos. O \textit{theorem}, assim como \textit{lemma}, permite fazer a prova de uma assertiva, e esse resultado poderá ser utilizado eventualmente; naturalmente, isso exige um titulo para o lema ou teorema.
+Observe que as provas são identicas; a diferença está exatamente nos contextos. O \textit{theorem}, assim como \textit{lemma}, permite fazer a prova de uma assertiva, e esse resultado poderá ser utilizado eventualmente; naturalmente, isso exige um titulo para o lema ou teorema. 
+Por baixo dos panos, tanto o \textit{lemma} quanto o \textit{theorem} são tratados como funções, que são declarados com \textit{def}. A gente pode ver assim pois a gente trata proposições como tipos, e as funções no Lean são termos de certos tipos e o retorno é um tipo. De fato, a checagem de tipos mostra que tanto o lema, quanto o teorema quanto a função têm o mesmo tipo.
 Já \textit{example} funciona como contexto fechado, ou rascunho: podemos realizar a prova desejada, mas não nos referir a ela posteriormente.
 
 Veja no exemplo abaixo como podemos utilizar o resultado de um teorema que foi previamente demonstrado em Lean:
-
+\pagebreak
 \vspace{5mm}
 \begin{lstlisting}
 variables A B : Prop    -- A e B sao proposicoes
@@ -216,12 +227,17 @@ variable h2 : A → B     -- h2 uma prova para A → B
 theorem teorema_A_B : A ∧ B := and.intro h1 (h2 h1)
 -- reutilizando o teorema_A_B
 example : A ∧ B := (teorema_A_B A B h1 h2)
+
+-- prova para o teorema A e B omitindo o tipo da saida
+def func2_A_B := and.intro h1 (h2 h1)
+
 \end{lstlisting}
 \vspace{5mm}
 
-\noindent Basta fazer uma chamada ao teorema (ou lema) através do título dado, passando provas para os argumentos esperados. Ao fazermos uso do teorema, linha 8, passamos explicitamente (aplicamos) as proposições, e as provas que temos.
+\noindent Basta fazer uma chamada ao teorema (ou lema ou função) através do título dado, passando provas para os argumentos esperados. Ao fazermos uso do teorema, linha 8, passamos explicitamente (aplicamos) as proposições, e as provas que temos.
+Interpretando os dois como funções e proposições como tipos, isso passa a ser natural.
 
-Observe que dessa vez não explicitamos os argumentos que deveriam ser recebidos no \textit{theorem}, ou no \textit{example}. Lean identificou no arquivo quais hipoteses foram utilizadas, e os considerou como argumentos.
+Observe que dessa vez não explicitamos os argumentos que deveriam ser recebidos no \textit{theorem}, ou no \textit{example}. Lean identificou no arquivo quais hipóteses (variáveis) foram utilizadas, e os considerou como argumentos. Se for verificar o tipo desse novo teorema, vai ser o mesmo do anterior. No caso onde tratamos essas coisas como funções, o Lean consegue inferir o tipo da saída da sua função baseado no termo da prova da função; assim podemos omitir o tipo $A ∧ B$ da saída (repare que fazer isso deixa a leitura mais difícil, você não sabe tão imediatemente qual a saída da função). Se escrever como teorema ou lema, ele não permite omitir o tipo da saída. 
 
 Lean é inteligente o bastante para livrar o usuario de parte do trabalho repetitivo: se assinamos as proposições como argumentos implicitos no teorema, o programa será capaz de identificar a partir das hipoteses, quais as proposições:
 
@@ -247,7 +263,7 @@ example : A ∧ B := teo_U_e_V h1 h2
 Naturalmente, diferentes tipos de proposição podem demandar por uma construção distinta, e esse é um fato inerente ao que se deseja discutir. Nesse sentido, Lean disponibiliza diferentes modos de construção para prova. Esses modos serão abordados em uma gama de exemplos nos próximos capítulos; abordamos aqui, apenas existencia, aspectos e vantagens em cada uso:
 
 \subsection{Modo Termo}
-É o modo base ao iniciarmos uma contexto de prova com \textit{theorem}, por exemplo. Nesse modo, somos capazes de construir termos partindo de termos, explicitando cada passo tomado: ao assumir uma hipótese, eliminar uma conjunção, ou introduzir estruturas, exigimos a explicitação do passo. Aqui, as demonstrações são contruidas semelhantes a programação em uma linguagem.
+É o modo base ao iniciarmos uma contexto de prova com \textit{theorem}, por exemplo. Nesse modo, somos capazes de construir termos partindo de termos, explicitando cada passo tomado: ao assumir uma hipótese, eliminar uma conjunção, ou introduzir estruturas, exigimos a explicitação do passo. Aqui, as demonstrações são contruidas semelhantes à programação em uma linguagem.
 
 \vspace{5mm}
 \begin{lstlisting}
@@ -256,10 +272,10 @@ variables A B C D : Prop
 example (h : ¬ A ∧ ¬ B) : ¬ (A ∨ B) :=
   -- estamos no Modo Termo
   show ¬ (A ∨ B), from
-  assume s: A ∨ B,
-    show false, from or.elim s
-      (assume h1: A, show false, from h.left h1)
-      (assume h1: B, show false, from h.right h1)
+    assume s: A ∨ B,
+      show false, from or.elim s
+        (assume h1: A, show false, from h.left h1)
+        (assume h1: B, show false, from h.right h1)
 \end{lstlisting}
 \vspace{5mm}
 
@@ -281,7 +297,7 @@ example (h : ¬ A ∨ ¬ B) : ¬ (A ∧ B) :=
 \noindent A vantagem nesse modo está no controle direto da prova, e pouca automação, em que o usuário é plenamente consciente sobre o processo. Aqui, Lean atua fortemente na verificação da construção dos termos.
 
 \subsection{Modo Tática}
-No Modo Tática a linguagem utilizada na contrução da prova se aproxima da linguagem humana; e exatamente por isso, exige forte automação por parte do sistema. Esse modo é iniciado dentro de um bloco \textit{begin ... end}.
+No Modo Tática a linguagem utilizada na contrução da prova se aproxima da linguagem humana; e exatamente por isso, exige forte automação por parte do sistema. Esse modo é iniciado dentro de um bloco \textit{begin ... end} ou com \textit{by\{...\}}.
 
 \vspace{5mm}
 \begin{lstlisting}
@@ -297,20 +313,31 @@ begin
     apply h.right, -- A B : Prop, h : ¬A ∧ ¬B, a : B ⊢ B
       assumption   -- lean conclui que temos a prova "a" para B
 end
+
+example (h : ¬ A ∧ ¬ B) : ¬ (A ∨ B) :=
+by 
+  {intro,         -- A B : Prop, h : ¬A ∧ ¬B, a : A ∨ B ⊢ false
+    cases a,         -- 2 goals case or.inl
+	  apply h.left,  -- A B : Prop, h : ¬A ∧ ¬B, a : A ⊢ A
+        assumption,  -- lean conclui que temos a prova "a" para A
+      apply h.right, -- A B : Prop, h : ¬A ∧ ¬B, a : B ⊢ B
+        assumption}  -- lean conclui que temos a prova "a" para B 
+
 \end{lstlisting}
 \vspace{5mm}
 
-Quando abrimos táticas, Lean automatiza várias etapas; quando pousamos o cursor em uma linha, é impresso no console quais as variáveis temos, e quais objetivos, \textit{goals}, precisamos provar. Acima, essas saídas estão comentadas, mas o leitor é incentivado a abrir o console com o exemplo; o \textit{goal} é a proposição após o simbolo "⊢".
+Quando abrimos táticas, Lean automatiza várias etapas; quando pousamos o cursor em uma linha, é impresso no console quais as variáveis temos no contexto da prova, e quais objetivos, \textit{goals}, precisamos provar. Acima, essas saídas estão comentadas, mas o leitor é incentivado a abrir o console com o exemplo; o \textit{goal} é a proposição após o simbolo "⊢".
 
 Além disso, usamos uma série de palavras-reservadas, como \textit{intro}, \textit{cases}, \textit{assumption}, que indicam comandos para o Lean lidar com esse contexto. O que esses comandos realizam internamente, por exemplo, são:
 
 \begin{itemize}
     \item \textbf{intro/intros}: pede ao Lean que introduza as hipóteses razoáveis dado o problema; no exemplo, essa foi a hipótese do absurdo.
     \item \textbf{cases}: para cada caso \textit{A ou B}, vamos construir a prova desejada; pede ao Lean que introduza os objetivos.
-    \item \textbf{assumption}: se a solução já puder ser deduzida no contexto, pede ao Lean que conclua a prova.
+    \item \textbf{assumption}: se existir uma variável no contexto igual ao goal, conclui a prova do goal.
+    %\item \textbf{assumption}: se a solução já puder ser deduzida no contexto, pede ao Lean que conclua a prova.
 \end{itemize}
 
-\noindent Cada uma dessas tarefas exige que o provador resolva problemas de forma autonoma, retirando essa obrigação do usuário. Pequenas automações como essas agilizam grandemente a resolução, mas retiram parte da compreensão ao usuário sobre a demonstração dada.
+\noindent Cada uma dessas tarefas exige que o provador resolva problemas de forma autônoma, retirando essa obrigação do usuário. Pequenas automações como essas agilizam grandemente a resolução, mas podem comprometer compreensibilidade do usuário sobre a prova do teorema.
 
 \section{Cálculos em Lean}
 Não confunda com derivadas, integrais ou somatórios; o cálculo essencial desde a matemática básica, como uma sequência de operações para provar que certa relação entre duas expressões. Considere o seguinte exemplo, em que desejamos mostrar a validade de uma iguldade:
