@@ -14,15 +14,14 @@ Lean implementa o chamado \textit{calculus of constructions}, ou cálculo de con
 
 Um usuário iniciante pode se deparar com algumas dúvidas pertinentes: \textit{porque contruir um termo (o que é termo e o que não é?) é uma prova?}, \textit{consigo desenvolver provas pensando de trás pra frente e de frente pra trás?}, ou \textit{como conhecer bibliotecas e as função delas que o Lean já tenha implementadas?} Algumas dessas dúvidas são esclarecidas logo mais, enquanto outras serão deixadas para a pŕatica ao longo dos proximos capítulos.
 
-
-Os conectivos lógicos são renderizados em unicode. 
-A tabela a seguir mostra como digitar esses símbolos no editor e também fornece equivalentes ascii.
+Os conectivos lógicos são renderizados em Unicode. 
+A tabela a seguir mostra como digitar esses símbolos no editor e também fornece equivalentes ASCII.
 
 \begin{table}[ht]
 \centering
 \begin{tabular}{|c|c|c|}
 \hline
-Unicode & Ascii & Lean Input\\
+Unicode & ASCII & Lean Input\\
 \hline
 & true &\\
 \hline
@@ -53,18 +52,18 @@ $\ne$ &  & \textbackslash ne\\
 \section{Teoria dos tipos}
 % https://leanprover.github.io/theorem_proving_in_lean/dependent_type_theory.html
 % https://en.wikipedia.org/wiki/Type_theory
-\textit{Teoria dos Tipos} é uma classe de linguagens poderosa, que permite desenvolver assertivas bem definidas sobre definições matemáticas, ou exprimir conceitos desde os abstratos aos mais paupáveis.
-De fato, essa é uma linguagem bastante expressiva, e útil para definição de elementos formais; até certo ponto, se assemelha a noção comum de teoria dos conjuntos.
+\textit{Teoria dos Tipos} é uma teoria que surgiu para evitar o paradoxo de Russel presente na teoria dos conjuntos. Pode ser é uma classe de sistemas formais bem expressivos, que permitem formar linguagens poderosas e desenvolver assertivas bem definidas sobre definições matemáticas, ou exprimir conceitos desde os abstratos aos mais paupáveis.
+De fato, essa é uma linguagem bastante expressiva, e útil para definição de elementos formais; até certo ponto, assemelha-se à teoria dos conjuntos.
 
 No entanto, em muitos contextos, é razoável utilizar uma linguagem com ferramental teórico capaz de lidar com uma gama de elementos distitos, pertencentes a diversas classes, \textit{tipos distintos}.
-Isso ocorre frequentemente quando tratamos de objetos matemáticos, e formalismos: o elemento $1$ pode ter o tipo natural ou real, assim como $[1,2,3, ...]$ pode expressar o tipo de uma lista de inteiros, dependendo da interpretação e contexto dados.
+Isso ocorre frequentemente quando tratamos de objetos matemáticos, e formalismos: o elemento $1$ pode ter o tipo natural ou real (já interpretando conjuntos numéricos como tipo distintos), assim como $[1,2,3, ...]$ pode expressar o tipo de uma lista de inteiros, dependendo da interpretação e contexto dados.
 Claramente lidamos constantemente com elementos de \textit{tipos} distintos, objetos que se relacionam, e tipos que se relacionam.
-Pra isso, \textit{teoria dos tipos} se mostra extremamante útil embasando essas discussões.
+Nesse sentido, a \textit{teoria dos tipos} apresenta uma base bem sólida, com grande expressividade e aparentemente sem contradições.
 
-Lean, em especial, implementa uma versão da linguagem chamada \textit{Calculo das Construções}, ou \textit{Calculus of Constructions}. A partir dos próximos exemplos, o leitor é convidado a acompanhar fazendo a intelação da ferramenta, ou através do \textit{Lean Web Editor\footnote{leanprover.github.io/live/latest/}}.
+Lean, em especial, implementa um sistema baseado em tipos chamado \textit{Calculo das Construções}, ou \textit{Calculus of Constructions}. A partir dos próximos exemplos, o leitor é convidado a acompanhar fazendo a inteeação da ferramenta, ou através do \textit{Lean Web Editor\footnote{leanprover.github.io/live/latest/}} ou instalando localmente \footnote{Tem um modo pro Lean no Emacs e no VSCode. Precisa mudar o PATH para incluir a pasta do Lean para funcionar, além de baixar o modo no seu editor. Para instalar no windows é meio chato mas tem uma descrição \href{https://xenaproject.wordpress.com/a-cheap-hack-to-get-lean-and-mathlib-running-on-a-windows-10-machine/}{aqui}.}
 
 \subsection{Noções Fundamentais}
-Em teoria dos tipos, tudo tem um tipo definido. Essa é uma exigência razoável; de fato, somos capazes de \textit{tipar} qualquer elemento dentro de um contexto, em uma linguagem adequada. Vejamos alguns exemplos em Lean:
+Em teoria dos tipos, o nosso universo de coisas são os termos, que por suas vez tem tipos. Essa é uma exigência razoável; de fato, somos capazes de \textit{tipar} qualquer elemento dentro de um contexto, em uma linguagem adequada (não nos referindo a teoria dos tipos, e sim de linguagens de promação mesmo; um exemplo é o \textit{auto} no C++). Vejamos alguns exemplos em Lean:
 
 \vspace{5mm}
 \begin{lstlisting}
@@ -105,9 +104,9 @@ Um leitor curioso pode questionar \textit{se tudo tem um tipo, qual tipo dos tip
 \vspace{5mm}
 
 \noindent Essa pode ser uma resposta \textit{frustrante} ou \textit{brilhante}.
-Os tipos básicos em Lean tem o tipo \textit{Type} (o mesmo que \textit{Type 0}), enquanto o proprio tipo \textit{Type 0} tem tipo \textit{Type 1} que tem tipo \textit{Type 2} e assim por diante.
+Os tipos básicos em Lean tem o tipo \textit{Type} (sinônimo de \textit{Type 0}), enquanto o proprio tipo \textit{Type 0} tem tipo \textit{Type 1} que tem tipo \textit{Type 2} e assim por diante.
 
-Essa noção de hierarquia de tipos é uma solução proposta inicialmente por Russel, e posteriormente desenvolvida por Chwistek e Ramsey, em sua \textit{teoria simples dos tipos}, para evitar o conflito entre a teoria dos conjuntos de Frege, e o paradoxo de Russel.
+Essa noção de hierarquia de tipos é uma solução proposta inicialmente por Russel, e posteriormente desenvolvida por Chwistek e Ramsey, em sua \textit{teoria simples dos tipos}, para evitar o paradoxo da teoria dos conjuntos de Frege ao predicar um conjunto sobre todos os conjuntos autocontidos, o paradoxo de Russel.
 De forma simples, a hierarquia de tipos evita o autorreferenciamento, em que um elemento tem o próprio tipo.
 
 O que o Lean se propõe a fazer, portanto, é oferecer um ambiente completo e poderoso para tratar da álgebra de tipos, implementando conceitos como \textit{abstração} e \textit{aplicação}, ou \textit{tipos dependentes}.
@@ -135,15 +134,16 @@ example : B := h2 h1    -- h2 h1 prova para B
 
 \noindent Acima, introduzimos sem maiores explicações algumas noções sobre lógica proposicional em Lean que serão discutidas nos próximos capítulos. No contexto dado, fomos capazes de construir um termo \textit{h2 h1} que tem tipo \textit{B}, então costruimos uma prova para \textit{B}, na linha $6$; conferimos que tal aplicação tem o tipo desejado, em $7$.
 
-Observe ainda, na linha $4$: o elemento do tipo $A → B$, que anteriormente citamos como uma função que leva tipo $A$ em um tipo $B$.
-Aqui, introduzimos um exemplo do que será discutido como uma \textit{implicação lógica} no capítulo sobre lógica proposicional.
+Observe ainda, na linha $4$: o elemento do tipo $A → B$, que anteriormente citamos como uma função que leva tipo $A$ em um tipo $B$ (que é similar a uma proposição "se A então B").
+Aqui, introduzimos um exemplo do que será discutido como uma \textit{implicação lógica} no capítulo sobre lógica proposicional. Toda essa equivalência de provas com programas verificadores de tipo é respalda pelo que chamamos do isomorfismo de Curry-Howard, que é basicamente essa interpretação de proposições como tipos.
 
+%Não sei se esse título tá legal, mas não consigo pensar em algo melhor
 \subsection{Outras Proposições}
-Portanto, introduzimos a noção de proposição: uma assertiva. E essa será base para o conjunto de provas que se seguem o longo do livro; mesmo algumas que não parecem ser \textit{um assertiva do tipo Prop}.
+Portanto, introduzimos a noção de proposição: uma assertiva. E essa será base para o conjunto de provas que se seguem o longo do livro, mesmo algumas que não parecem ser \textit{um assertiva do tipo Prop}.
 
 Até aqui, usamos exemplos de proposições como simbolos abstratos, como $A$ e $B$ que reprentam afirmativas, que podem ser afirmaçẽs sobre o mundo. Esse uso faz sentido pela simplicidade; escrevemos $A$ no lugar de $EstaChovendo$ e $B$ ao invés de $SaposPulam$.
 
-No entanto, ao longo do livro nos deparamos com outras expressões, outras \textit{afirmativas/assertivas}; e um leitor pouco atento poderá ignorar o fato de que a noção de \textit{proposição como tipo}, e \textit{prova por obter um termo} ainda está presente. Alguns exemplos dessas proposições:
+No entanto, ao longo do livro, deparamo-nos com outras expressões, outras \textit{afirmativas/assertivas}; e um leitor pouco atento poderá ignorar o fato de que a noção de \textit{proposição como tipo}, e \textit{prova por obter um termo} ainda está presente. Alguns exemplos dessas proposições:
 
 \vspace{5mm}
 \begin{lstlisting}
@@ -164,7 +164,7 @@ variables f g : ℕ → ℕ
 \end{lstlisting}
 \vspace{5mm}
 
-\noindent Lean entende todas essas assertivas sobre Conjuntos, Inteiros, Booleanos, Desigualdades e Relacões como \textit{proposições}, portanto, do tipo $Prop$.
+\noindent Lean entende todas essas assertivas sobre Conjuntos, Inteiros, Booleanos, Desigualdades e Relacões como \textit{proposições}, portanto, do tipo $Prop$; de fato vamos ver operadores cujo tipo do retorno é o tipo $Prop$, e chamaremos esses de \textbf{predicados}.
 Nesse sentido podemos lidar com provas para o tipo daquela assertiva, e todo paradigma de \textit{Proposições Como Tipos}:
 
 \vspace{5mm}
