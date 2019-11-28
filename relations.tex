@@ -23,21 +23,6 @@ A imagem de uma relação $R$ de $A$ em $B$ é o conjunto de elementos de $B$ qu
 
 Considere, a partir disso, o universo de objetos $u = \{Ana, Bia, Cid\}$, e a relação \textit{conhece}, definida por $U\times U \supseteq A = \{(Ana, Bia), (Bia, Cid)\}$. Podemos dizer que \textit{Bia conhece Ana}?
 
-
-
-%\section{Definições}
-\theoremstyle{definition}
-\newtheorem{definition}{Definição}[section]
-
-%\theoremstyle{definition}
-%\newtheorem{example}{Exemplo}[section]
-
-\theoremstyle{plain}
-\newtheorem{theorem}{Proposição}[section]
-
-%\theoremstyle{plain}
-%\newtheorem{corollary}{Corolário}[section]
-
 Definimos uma série de tipos de relações importantes, frequentemente encontradas na literatura.
 Note que muitas das definições se aplicam a relações conhecidas como \textit{maior que}, nos naturais, ou \textit{pertence} para conjuntos.
 
@@ -59,6 +44,14 @@ $R = \{(1,2),(2,3),(3,2),(4,5)\}$
         
         $R = \{(1,1),(2,2),(3,3),(2,3),(1,3)\}$
         
+        \item Antirrelexiva ou Irreflexiva : Em uma relação irrelexiva, um elemento de $U$ não se relaciona com ele mesmo.
+        
+        $R$ é reflexiva $\Leftrightarrow (\forall x)(x  \in  U \rightarrow \neg(xRx))$ 
+        
+        \textit{Ex:} $\{1,2,3\} \rightarrow  \{1,2,3\}$
+        
+        $R = \{(2,3),(1,3)\}$
+        
         \item Simétrica : Em um relação simétrica, cada par de elementos de $U$ se relacionam mutuamente.
         
         $R$ é simétrica $\Leftrightarrow (\forall x)( \forall  y)(x \in U \wedge y \in U \wedge xRy  \rightarrow  yRx)$
@@ -76,6 +69,14 @@ $R = \{(1,2),(2,3),(3,2),(4,5)\}$
         
         $R = \{(1,2),(2,2),(3,1)\}$
         
+        \item Assimétrica : Em uma relação assimétrica, quando um elemento $x\in U$ de relaciona com  $y\in U$, $y$ não se relaciona com $x$.
+        
+        $R$ é Assimétrica $\Leftrightarrow (\forall x)( \forall  y)(x \in U \wedge y \in U \wedge (xRy) \rightarrow \neg yRx)$
+        
+        \textit{Ex:} $\{1,2,3\} \rightarrow  \{1,2,3\}$
+         
+        $R = \{(1,2),(3,1)\}$
+        
         \item Transitiva : Em uma relação transitiva, quando um elemento $x\in U$ de relaciona com  $y\in U$, e este $y$ se relaciona com $z \in U$, então $x$ se relaciona com $z$.
         
         $R$ é transitiva $\Leftrightarrow ( \forall x)( \forall  y)( \forall z)(x \in U \wedge y \in U \wedge z \in U \wedge   (xRy  \wedge yRz) \rightarrow xRz)$
@@ -88,78 +89,198 @@ $R = \{(1,2),(2,3),(3,2),(4,5)\}$
      \end{enumerate}
 
 \section{Relações de Ordem}
-Discutimos uma classe de relações binárias importantes: as chamadas relações de ordem, que é uma relação ao mesmo tempo, relexiva, antissimétrica e transitiva. Aqui, definimos relações \textit{parciais} ou \textit{estritas}.
+Discutimos uma classe de relações binárias importantes: as chamadas relações de ordem. Aqui, definimos relações \textit{parciais} ou \textit{estritas}.
 Usaremos os símbolos $\leq$ e $<$ para nos referir a relações quaisquer entre elementos de alguma estrutura $A$, e os usamos infixados: $x \leq y$ ou $x < y$.
 
-\begin{definition}
-    \label{partial_order}
-    Seja $\leq$ uma relação. Dizemos que $\leq$ é de \textit{ordem parcial} se respeita as seguintes propriedades:
+     \textbf{Definição 3.1:} Uma relação binária $R$ em um conjunto $A$ é dita uma relação de \textit{ordem parcial} se é reflexiva, transitiva, e antissimétrica:\\
+     
+     \textit{Ex:} A relação $\leq$ (menor ou igual) é de ordem parcial pois satisfaz as três propiedades:
 
     \begin{itemize}
         \item \textbf{reflexividade:} para todo $x \in A$, $x\leq x$.
         \item \textbf{transitividade:} para todo $x,y,z \in A$, se $x \leq y$, e $y \leq z$, então $x\leq z$.
         \item \textbf{antissimetria:} para todo $x,y \in A$, se $x\leq y$ e $y \leq x$, então $x=y$.
     \end{itemize}
-\end{definition}
 
-\noindent Note que se entendemos $\leq$ por um predicado binário, as definições acima são facilmente expressos em lógica de primeira ordem.
+\noindent Note que se entendemos $\leq$ por um predicado binário, as definições acima são facilmente expressos em lógica de primeira ordem, basta ver nas definições acima.
 Exemplos desse tipo são: $\leq$ em $\mathbb{N}$, $\mathbb{Z}$, $\mathbb{Q}$, e $\mathbb{R}$ ou a inclusão $\supseteq$ para a classe dos conjuntos.
 
-Há ainda uma classe especial de relações de ordem vistas a seguir:
+Há ainda uma classe especial de relações de ordem vistas a seguir:\\
 
-\begin{definition}
-    \label{partial_order_total}
-    Dizemos que a relação de \textit{ordem parcial} $\leq$ é \textit{total} se:
+    \textbf{Definição 3.2:} Uma relação binária $R$ em um conjunto $A$ de \textit{ordem parcial} é \textit{total} se é assimétrica .\\
+    
+    \textit{Ex:} A relação $\leq$ (menor ou igual) é total pois satisfaz a propiedade:
 
     \begin{itemize}
         \item para todo $x, y \in A$, $x\leq y$ ou $y\leq x$.
     \end{itemize}
-\end{definition}
 
-\noindent Vale observar que nos exemplos anteriores, apenas $\leq$ é total.
-De fato, tome $A = \mathcal{P}(\mathbb{N}) $, os conjuntos $x={3}$ e $y={5}$ subconjuntos de $A$; claramente não vale a completude de $\subseteq$ em $A$. % Ainda, as relações \textit{divide}, $x|y$, nos inteiros, e outras...
+
+\noindent Vale observar que nas relações citadas anteriormente, apenas $\leq$ é total.
+De fato, tome, por exemplo, $A = \mathcal{P}(\mathbb{N}) $, os conjuntos $x=\{3\}$ e $y=\{5\}$, subconjuntos de $A$; claramente não vale a completude de $\subseteq$ em $A$. % Ainda, as relações \textit{divide}, $x|y$, nos inteiros, e outras...
 
 O que dizer, no entanto, das relações \textit{menor} ou \textit{pertence}? De fato, essas pertencem a classe a seguir, as chamadas relações de \textit{ordem estrita}:
 
-\begin{definition}
-    \label{estrict_order}
-    Considere $<$ relação em um conjunto $A$. Dizemos que a relação é de \textit{ordem estrita} $\leq$ é \textit{total} se:
+
+    \textbf{Definição 3.3:} Uma relação binária $R$ em um conjunto $A$ é dita uma relação de \textit{ordem restrita} se é transitiva e irreflexiva:\\
+    
+    \textit{Ex:} Como dito anteriormente, a relação $<$ é de ordem restrita pois satisfaz as propiedades:
 
     \begin{itemize}
         \item \textbf{transitividade: } para todo $x,y,z \in A$, se $x<y$ e $y<z$ então $x<z$.
-        \item \textbf{irreflexividade: } para todo $x\in A$, $x \nless x$.
+        \item \textbf{irreflexividade: } para todo $x\in A$, $\neg(x< x)$.
     \end{itemize}
-    Dizemos, ainda, que essa relação estrita é total em $A$ se:
+ 
+
+  
+    \textbf{Definição 3.4:} Dizemos, ainda, que essa relação estrita é $total$ em $A$ se nela vale a tricotomia.\\
+    
+    \textit{Ex:} A relação $<$ é total pois satisfaz a propiedade:
+    
     \begin{itemize}
         \item \textbf{tricotomia:} para todo $x,y \in A$, vale $x<y$, $x>y$ ou $x=y$.
     \end{itemize}
-\end{definition}
 
-\noindent Novamente, é facil ver como formalizar essas noções utilizando proposições em lógica de primiera ordem.
+\noindent Novamente, é facil ver como formalizar essas noções utilizando proposições em lógica de primeira ordem.
 
 % uma relação estrita é assimétrica: prova.
 
 A seguir, discutimos um resultado intuitivo que estabelece uma ligação importante entre as relações de ordem \textit{parciais} e \textit{estritas}:
 
-\begin{theorem}
-    \label{estrict_by_partial}
-    Considere $\leq$ parcial em $A$. Podemos definir uma relação estrita $<$ em $A$, em que $x<y$ significa que $x\leq y$ e $x \neq y$. Ainda, se $\leq $ for total, então $<$ também será total.
-\end{theorem}
-\begin{theorem}
-    \label{partial_by_estrict}
-    Considere $<$ estrita em $A$. Podemos definir a relação de ordem parcial $\leq $ em $A$, em que $x\leq y$ significa que $x < y$ ou $x = y$. Ainda, se $<$ for total, então $\leq$ também será total.
-\end{theorem}
+Existe uma associação entre uma relação de ordem parcial (fraca) e uma relação estrita (forte). Em outras palavras sendo $R$ uma relação de ordem parcial e $R'$ um relação estrita em um conjunto $A$, se $R$ está associado a $R'$, $R'$ necessariamente estará associado a $R$ de forma que:\\
 
-\begin{proof}
-    Exercício para o leitor!
-\end{proof}
+Dados $x$ e $y$ $\in A$.
+\begin{itemize}
+    \item $xR'y \Leftrightarrow (xRy \wedge x \neq y)$
+    \item $xRy \Leftrightarrow (xR'y \vee  x = y)$
+\end{itemize}
+
+\textit{Ex:} É fácil de ver que $\leq$ e $<$ são relações que estão associados uma com a outra. Na seção de exercícios há teoremas sobre isso.
+
+
 
 \section{Relações de Equivalência}
 %Descrevemos as propriedades que definem esse tipo de relação, e damos exemplos. Mostramos as notações $a\sim b $, $a\equiv b$. Sugiro as relações de equivalencia "paralelo a", "modulo n", "mesma idade".
 
+\textbf{Definição 4.1:} Uma relação binária em um conjunto $A$ é dita uma relação de $equivalência$ se é relfexiva, simétrica e transitiva.\\
 
-\subsection{Equivalencia e Igualdade}
-Apenas discutimos brevemente como e porque Equivalencia e Igualdade são animais completamente diferentes. Toma os exemplos acima pra discutir.
+\textit{Ex:}(Congruência) A relação $\equiv$ é de equivalência pois satisfaz as três propiedades:
+
+\begin{itemize}
+        \item \textbf{reflexividade:} para todo $x \in A$, $x\equiv x$.
+        \item \textbf{transitividade:} para todo $x,y,z \in A$, se $x \equiv y$, e $y \equiv z$, então $x\equiv z$.
+        \item \textbf{simetria:} para todo $x,y \in A$, se $x\equiv y$ então $y \equiv x$.
+    \end{itemize}
+
+Assim como outros exemplos como, a relação "paralelo a", dado um conjunto $A$ formado por todas as retas ou a relação de "mesma idade", esta última bem simples de verificar.
+
+\textbf{Definição 4.2:} Seja $A$ um conjunto, $R$ uma relação de equivalência de $A$ em $A$. Define-se \textit{classe de equivalência} de um elemento $a \in A$ como o conjunto de elementos $b \in A$ tais que $bRa$, para esse conjunto se dá a nomenclatura de $[a]$.
+
+\textbf{Definição 4.3:} O $quociente$ $A/R$ é o conjunto formado por todas as classes de equivalência de $R$ em $U$.\\
+
+\textit{Ex:} Considere $\mathbb{N}$ o conjuntos dos números naturais, $\mathbb{N} = \{0,1,2,3,4,5,...\}$, e $R$ uma relação de $\mathbb{N}$ em $\mathbb{N}$,onde se $xRy$, $x \equiv y$(mod 3), temos que:\\
+
+$[0] = \{x \mid x \equiv 0$(mod 3)$\} = \{0,3,6,9,...\}$\\
+
+$[1] = \{x \mid x \equiv 1$(mod 3)$\} = \{1,4,7,10,...\}$\\
+
+$[2] = \{x \mid x \equiv 2$(mod 3)$\} = \{2,5,8,11,...\}$ e assim por diante...\\
+
+Nesse caso em particular perceba que $[0]=[3]=[6]=...$
+
+$[1]=[4]=[7]=...$
+
+$[2]=[5]=[8]=...$,
+
+Portanto o quociente $A/R = \{[0],[1],[2]\}$
+
+\section{Exercícios}
+
+\begin{enumerate}
+    \item Dado o conjunto $A = \{1,2,3,4\}$, classifique as relações em $A$.
+    
+    $R_{1} = \{(1,1),(2,2),(3,3),(4,4)\}$
+    
+    $R_{2} = \{(1,1),(2,2),(3,3),(4,4),(1,2),(2,1)\}$
+    
+    $R_{3} = \{(1,1),(2,2),(3,3),(1,2),(2,3),(3,1)\}$
+    
+    $R_{4} = \{(1,3),(2,4)\}$
+    
+    \textit{Resolução}: $R_{1}$ é reflexiva, simétrica, antissiétrica, e transitiva, ou seja é uma relação de ordem parcial e de equivalência.
+    
+    $R_{2}$ é simétrica, transitiva, e reflexiva, portanto é uma relação de equivalência.
+    
+    $R_{3}$ é apenas antissimétrica.
+    
+    $R_{4}$ é irreflexiva, assimétrica e transitiva.
+    
+    \item Seja n um inteiro fixo. Prove que "$aRb \Leftrightarrow a-b$ é múltilpo de $n$" é de equivalência.
+    
+    \textit{Resolução}: Precisamos demostrar as propiedades.
+    
+    Reflexividade: Vale $aRa$, pois $a-a=0$ que é múltiplo de $n$.
+    
+    Simetria: Se $a-b$ é múltiplo de $n$, então $b-a=-(a-b)$ é múltiplo de $n$
+    
+    Transitividade: Se $aRb$ e $bRc$, temos que $a-b$ e $b-c$ são múltiplos de $n$ e como $a-c = (a-b)+(b-c)$, que é uma soma de múltiplos de n, $a-c$ é múltiplo de $n$ também, portanto, $aRc$ 
+    
+    \item Seja $\mathbb{N}$ o conjunto dos naturais, e $a$ e $b$ $\in \mathbb{N}$. Mostre que a relação $R = \{(a, b)   \mid  mdc(a,b) = a\}$ é uma relação de ordem parcial.
+    
+    \textit{Resolução}: Precisamos demostrar as propiedades.
+    
+    Reflexividade: Vale $aRa$, pois claramente $mdc(a,a)=a$.
+    
+    Antissimetria: Se $mdc(a,b)=a$ e $mdc(a,b)=a$ tiramos que $a \mid b$ e $b \mid a$ respectivamente, porém isso só acontece se $a=b$ então tendo $aRb$ e $bRa$ necessariamente $a=b$.
+    
+    Transitividade: Se $mdc(a,b)=a$ e $mdc(b,c)=b$ tiramos que $a \mid b$ e $b \mid c$ então é simples de ver que $a \mid c$, logo vale que $mdc(a,c)=a$, ou seja $aRc$.
+    
+    \item Seja $A = \{1,2,3\}$.\\
+    
+    a) Determine uma relação de equivalência de R em A com cinco elementos.
+    
+    b) Determie as classes de equivalência e o conjunto quociente.
+    
+    \textit{Resolução}: $R = \{(1,1),(2,2),(3,3),(1,2),(2,1)\}$
+    
+    Classes: $[1] = \{1,2\}$,$[2] = \{2,1\}$,$[3] = \{3\}$
+    
+    $A/R=\{[1],[2],[3]\}$
+    
+    \item Prove que uma relação de ordem parcial estrita "<" é assimétrica: para todo a e b $a<b$ implica $\neg(b<a)$.
+    
+    \textit{Resolução}: Supondo $a<b$, tendo $a>b$, por transitivadade, $a<a$, aburdo pois a relação de ordem parcial é irreflexiva, logo temos que $\neg(b<a)$.
+    
+    \item (Teorema) Considere $\leq$ parcial em $A$. Podemos definir uma relação estrita $<$ em $A$, em que $x<y$ significa que $x\leq y$ e $x \neq y$. Ainda, se $\leq $ for total, então $<$ também será total.
+    
+    \textit{Resolução}: Vamos demonstrar as propiedades, dado $a$, $b$ e $c$ $\in A$.
+    
+    Irreflexividade: Supondo, $a<a$ necessariamente implica $a \neq a$ o que absurdo, logo um elemento não se relaciona com ele mesmo.
+    
+    Transitividade: Suponha $a<b$ e $b<c$ da definição dada no enunciado, temos que $(a\leq b \wedge a \neq b)$ e $(b\leq c \wedge b \neq c)$. Como $\leq$ é uma relação de ordem parcial, vale a transitividade, logo $a\leq c$, agora suponha $a=c$, então da hipótese, temos $c<b$ e $b<c$ o que é absurdo pois $<$ é uma relação estrita e deve ser assimétrica, logo $a\neq b$ e portanto, concluímos que $a<b$.
+    
+    Tricotomia: Se $a=b$ então está demonstrado. Se $a\neq b$, dado que $\leq$ é total, pela assimetria temos que $a\leq b$ ou $b \leq a$, e isso somado ao fato que $a\neq b$, nos da que $a<b$ ou $b<a$.
+    
+    \item (Teorema) Considere $<$ estrita em $A$. Podemos definir a relação de ordem parcial $\leq $ em $A$, em que $x\leq y$ significa que $x < y$ ou $x = y$. Ainda, se $<$ for total, então $\leq$ também será total.
+    
+    \textit{Resolução}: Vamos demonstrar as propiedades, dado $a$, $b$ e $c$ $\in A$.
+    
+    Reflexividade: Supondo $\neg(a \leq a)$ obteríamos que $a \neq a$, o que é absurso, então $a$ se relaciona com $a$.
+    
+    Transitividade: Suponha $a \leq b$ e $b \leq c$, então temos quatro casos:
+    
+    $a<b$ e $b<c$ : Como $<$ é estrita, ela respeita a transitividade, logo $a<c$.\\
+    $a<b$ e $b=c$ : Facilmente $a<c$.\\
+    $a=c$ e $b<c$ : Facilmente $a<c$.\\
+    $a=c$ e $b=c$ : Tiramos que $a=c$\\
+    Então obtemos que $a<c$ ou $a=c$ , ou seja, $a \leq c$.
+    
+    Antissimetria: Suponha $a \leq b$ e $b \leq a$, tirando o caso em que $a<b$ e $b<a$ é evidente que $a=b$, mas observe que este caso implica que $a<a$ o que viola a irreflexividade.
+    
+    Assimetria: Sendo $<$ total vale a tricotomia que diz que $a=b$, $a<b$ ou $b<a$, que implica direetamente que $a \leq b$ ou  $b \leq a$
+    
+    
+\end{enumerate}
 
 \section{Relações em Lean}
 
