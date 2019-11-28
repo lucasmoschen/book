@@ -14,6 +14,42 @@ Lean implementa o chamado \textit{calculus of constructions}, ou cálculo de con
 
 Um usuário iniciante pode se deparar com algumas dúvidas pertinentes: \textit{porque contruir um termo (o que é termo e o que não é?) é uma prova?}, \textit{consigo desenvolver provas pensando de trás pra frente e de frente pra trás?}, ou \textit{como conhecer bibliotecas e as função delas que o Lean já tenha implementadas?} Algumas dessas dúvidas são esclarecidas logo mais, enquanto outras serão deixadas para a pŕatica ao longo dos proximos capítulos.
 
+
+Os conectivos lógicos são renderizados em unicode. 
+A tabela a seguir mostra como digitar esses símbolos no editor e também fornece equivalentes ascii.
+
+\begin{table}[ht]
+\centering
+\begin{tabular}{|c|c|c|}
+\hline
+Unicode & Ascii & Lean Input\\
+\hline
+& true &\\
+\hline
+& false &\\
+\hline       
+\neg & not & \textbackslash neg, \textbackslash not\\
+\hline
+\wedge & /\textbackslash & \textbackslash and\\
+\hline
+\vee & \textbackslash/ & \textbackslash or\\
+\hline
+\rightarrow &  & \textbackslash to, \textbackslash r, \textbackslash imp\\
+\hline
+\leftrightarrow &  & \textbackslash iff, \textbackslash lr\\
+\hline
+\forall & forall & \textbackslash all\\
+\hline
+\exists & exist & \textbackslash ex\\
+\hline
+\lambda & fun & \textbackslash lam, \textbackslash fun\\
+\hline
+\ne &  & \textbackslash ne\\
+\hline
+\end{tabular}
+
+\end{table}
+
 \section{Teoria dos tipos}
 % https://leanprover.github.io/theorem_proving_in_lean/dependent_type_theory.html
 % https://en.wikipedia.org/wiki/Type_theory
