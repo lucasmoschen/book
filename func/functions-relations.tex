@@ -1,0 +1,118 @@
+Podemos ver que nem toda relação é uma função. Uma relação binária $R(x,y)$ em
+$A$ e $B$ é um \textit{funcional} se para todo $x$ em $A$, existe um valor
+único $y$ em $B$ tal que $R(x,y)$. Se $R$ é uma relação funcional, podemos
+definir $f_R: X \to B$ fazendo com que $f_R(x)$ seja igual ao valor de $y$
+único em $B$ em que a relação seja verdadeira. A contrapartida é verdadeira,
+basta definir, para $f: X \to B$, $R_f(x,y)$, uma relação funcional. Essa
+relação é conhecida como o \textit{grafo de f}. 
+
+Podemos extrair dessa ideia que existe uma dualidade entre uma relação
+funcional $R$ e uma função $f$. Inclusive, muitas vezes, as definições são
+intercambiáveis. Em fundamentos tipo-teóricos, como a que vemos em Lean,
+relações são frequentemente definidas como uma classe de funções, enquanto
+para fundamentos teóricos em conjuntos definem função como uma relação
+funcional. 
+
+Podemos considerar funções $f(x,y)$ ou $g(x,y,z)$ que tomam múltiplos
+argumentos. Por exemplo, $f(x,y) = x + y$. Em lean, podemos exemplificar da
+seguinte forma: 
+
+\begin{lstlisting}
+variables X Y : Type 
+variable f: X → X → X → Y 
+variables x₁ x₂ x₃  : X
+
+#check f x₁ x₂ x₃ -- tipo Y
+
+def g (x y : ℤ): ℤ := x + y
+
+example : g 1 1 = 2 := 
+calc 
+g 1 1 = 1 + 1 : by rw g 
+    ... = 2 :  rfl
+\end{lstlisting}
+
+O número de argumentos de uma função é chamado de \textit{aridade}, que em
+inglês é \textit{arity}. No exemplo acima $f$ tem aridade $3$, enquanto $g$
+tem aridade $2$. Podemos pensar uma função com múltiplos argumentos como uma
+função unária definida em um produto cartesiano. Nesse sentido, quando estamos
+nos tratando de teoria dos tipos, é conveniente pensar que $f$ é uma função de
+$X$ que retorna uma função $X \to X \to Y$. Desta maneira, $f(x_1, x_2, x_3)$
+abrevia $((f(x_1))(x_2))(x_3)$.
+
+\begin{example}[Teorema de Cantor]
+    \label{cantor}
+    Seja $f$ uma função que mapeia elementos do conjunto $A$ para o seu
+    conjunto das partes $P(A)$. Então $f: A \to P(A)$ não é sobrejetiva. Esse
+    teorema é um teorema fundamental sobre conjuntos que foi apresentada nesse
+    capítulo devido às definições importantes de funções. A referência é no
+    capítulo sobre \hyperlink{chapter.5}{Conjuntos}. A demonstração se dá por
+    contradição e é realizada no Lean com o auxílio do 
+    \lstinline{namespace classical}. 
+
+    \begin{lstlisting}
+    import data.set
+
+    variables X Y: Type 
+    
+    def surjective {X: Type} {Y: Type} (f : X → Y) : Prop := ∀ y, ∃ x, f x = y
+    
+    theorem Cantor : ∀ (A: set X), ¬ ∃ (f: A → set A),  surjective f :=
+    
+        begin
+            intro A,
+            intro h,
+            -- Utiliza a regra eliminação existe.
+            cases h with f h1,
+            -- Como f é sobrejetiva e esse é um subconjunto de A            
+            have h2: ∃ x, f x = {t : A | ¬ (t ∈ f t)},  
+                from h1 {t : A | ¬ (t ∈ f t)},
+            -- Eliminação do existe, novamente. 
+            cases h2 with x h3,
+            -- classical.em A := A ∪ ¬A é uma tautologia. 
+            apply or.elim (classical.em 
+                          (x ∈ {t : A | ¬ (t ∈ f t)})),
+                intro h4,
+            -- Usa a proriedade do conjunto
+                    have h5: ¬ (x ∈ f x), from h4,
+                    rw (eq.symm h3) at h4, 
+                    apply h5 h4,
+                intro h4,
+                    rw (eq.symm h3) at h4,
+                    have h5: x ∈ {t : A | ¬ (t ∈ f t)}, from h4,
+                    rw (eq.symm h3) at h5,
+                    apply h4 h5,                     
+        end   
+    \end{lstlisting}
+\end{example}
+
+Note que uma relação binária $R$ de $X$ em $Y$ é um funcional se satisfaz a
+seguinte proposição:
+\begin{math}
+    \forall x, \exists! y R(x,y) 
+\end{math}
+Um lógico poderia usar a notação \textit{iota}, descrita como $f(x) = \iota y
+R(x,y)$. Se $y$ não ser necessariamente único, um lógico utiliza a notação de
+\textit{Helbert epsilon} $f(x) = \epsilon y R(x,y)$ para escolher um valor de
+$y$ que satisfaça $R(x,y)$.
+
+\subsection{Representação de Funções}
+
+Apesar de não ser o objetivo nesse capítulo, considere a seguinte definição: 
+
+\begin{definition}
+    \label{represent}
+    A grosso modo, uma função total $f(x_1, ..., x_k)$ é dita
+    \textit{representável}, se existe uma expressão na linguagem formal,
+    digamos $A$, que usa variáveis $x_1, ..., x_k, x_{k+1}$ tal que para
+    quaisquer números $m_1,...,m_k$ e $n$, temos $f(m_1,...,m_k) = n$ se, e
+    somente se, podemos provar em nosso sistema formal $A(m_1,...,m_k,n)$ e
+    não podemos provar $A(m_1,...,m_k,j)$ para qualquer outro número $j$.
+\end{definition}
+
+Essa definição é encontrada no livro \cite{functionsComputaveis}. Apesar de
+estar em termos um pouco diferentes dos que propomos nesse livro, essa
+definição permite, em um sistema consistente, afirmar que toda função
+representável é computável. Isso responde parcialmente nossa questão da
+primeira sessão. Entretanto, em livros mais avançados de lógica, esse conceito
+é mais discutido. 

@@ -1,0 +1,82 @@
+Até agora, formalmente, definimos lógica de primeira ordem, onde iniciamos com
+um estoque fixo de símbolos de funções e relações. Nos últimos tópicos que
+consideramos, existe a motivação de extender a linguagem para funções e
+relações. Por exemplo, ao afirmar que $f: X \to Y$ possui inversa à esquerda
+pode ser dito como: $$\exists g, \forall x, g(f(x)) = x.$$ Outro exemplo é o
+seguinte teorema, descrito em linguagem lógica 
+$$\forall x_1, x_2, (f(x_1) = f(x_2) \to x_1 = x_2) \to \exists g, \forall x,
+g(f(x)) = x.$$ Isto é, se $f: X \to Y$ é injetiva, então existe inversa à sua
+esquerda.
+
+Nesse sentido, existe uma quantificação sobre as funções e relações, o que se
+distancia do que a lógica de primeira ordem cobre. Como forma de resolver esse
+impasse, podemos desenvolver uma teoria na linguagem de lógica de primeira
+ordem no qual o universo contém funções e relações como objetos ou extender
+essa linguagem para envolver novos tipos de quantificadores e variáveis, que é
+o caso descrito nessa sessão. Isto é o que Lógica de Ordem mais Alta faz. 
+
+Alonzo Church (1903 - 1995) foi um matemático e lógico estadunidense,
+conhecido pelo cálculo lambda, e foi o responsável por formular a ideia de
+ordens  mais altas na lógica. Isso é algumas vezes descrito como Teoria
+Simples dos Tipos ou Teoria dos Tipos de Chunch's. Sejam $X, Y, Z,...$ tipos
+básicos e $Prop$ um tipo especial das proposições. Temos, então:
+\begin{itemize}
+    \item Se $X$ e $Y$ são tipos, então $X \times Y$ também será.Isto denota
+    que o par ordenado $(x,y)$, com $x \in X$ e $y \in Y$, é tipado. 
+    \item Se $X$ e $Y$ são tipos, então $X \to Y$ também será.
+\end{itemize}
+
+Para formar expressões, a teoria de Church aficiona os seguintes caminhos: 
+\begin{enumerate}
+    \item Se $x$ é do tipo $X$ e $y$ é do tipo $Y$, $(x,y)$ é do tipo $X
+    \times Y$. 
+    \item Se $z$ é do tipo $X \times Y$, então $(p)_1$ é do tipo $X$ e $(p)_2$
+    é do tipo $Y$, que denotam o primeiro e segundo elemento do par $z$,
+    respectivamente. 
+    \item Se $x$ é uma variável do tipo $X$ e $y$ é uma expressão do tipo $Y$,
+    então $\lambda x y$ é do tipo $X \to Y$. Para lembrar o significado dessa
+    expressão, voltar em \ref{concept}.
+    \item Se $f$ é do tipo $X \to Y$ e $x$ é do tipo $X$, $f(x)$ é do tipo
+    $Y$. 
+\end{enumerate}
+
+Além desses meios, a teoria simples dos tipos possui conetivos booleanos,
+quantificadores e a igualdade, oriunda da lógica de primeira ordem, para
+construir proposições. 
+
+A função $f(x,y)$ que toma elementos de $X$ e $Y$ para o tipo $Z$ é vista como
+um objeto do tipo $X \times Y \to Z$. Note que, nesse sentido, uma relação
+binária $R(x,y)$ definida em $X$ e $Y$ é vista como um objeto $X \times Y \to
+Prop$. O que torma essa lógica ser de ordem mais alta é que podemos iterar o
+tipo função indefinidamente. Por exemplo, se $\mathbb{N}$ é o tipo dos números
+naturais, $\mathbb{N} \to \mathbb{N}$ denota o tipo das funções dos números
+naturais aos números naturais, e $(\mathbb{N} \to \mathbb{N}) \to \mathbb{N}$
+denota o tipo de funções $F(f)$ que tomam uma função como argumento e retornam
+um número natural. Vamos ver em Lean:
+
+\begin{lstlisting}
+open nat 
+
+#check ℕ                -- ℕ : Type
+#check ℕ → ℕ            -- ℕ → ℕ : Type
+#check (ℕ → ℕ) → ℕ      -- (ℕ → ℕ) → ℕ : Type 
+
+variable F: (ℕ → ℕ) → ℕ 
+variable f: ℕ → ℕ
+variable n: ℕ 
+
+#check f n              -- f n : ℕ 
+#check F f              -- F f : ℕ 
+#check F n              -- error
+\end{lstlisting}
+
+A variavél $F$ espera uma função, por isso retorna erro no último
+\lstinline{#check}. Se retirarmos o parênteses, Lean entenderá que
+\lstinline{F : ℕ → (ℕ → ℕ)}. 
+
+As especificações de síntaxe e regras da lógica de ordem mais alta são
+descritas mais cuidadosamente em livros-texto mais avançados. Para considerar
+os tipos de funções e relações, basta o conhecimento de lógica de segunda
+ordem. É importante ter em mente que já lidamos desde os primeiros capítulos
+com os tipos e lógica de segunda ordem, em Lean, que é um sistema de lógica
+ainda mais elaborado e expressivo. 

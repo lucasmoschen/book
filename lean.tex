@@ -2,119 +2,426 @@
 % https://leanprover.github.io/theorem_proving_in_lean/introduction.html
 
 Ao final do último capítulo, definimos duas classes fundamentais de ferramentas de auxílio a prova de teoremas, os \textit{ATPs} e \textit{ITPs}.
-Esses grupos de ferramentas em geral são muito bem definidos, e distanciados, mantendo um espaço vazio entre si, o que pode parecer desvantajoso:o  matemático pode desejar algo entre a prova automática e interativa, ou o acesso a ambos os recursos numa mesma ferramenta.
 
-O provador de teoremas Lean\footnote{documentação, ambiente e tutoriais estão disponiveis em: leanprover.github.io} busca preencher essa lacuna: uma única ferramenta contendo o melhor de ambos os mundos acessíveis.
-Nesse sentido, age como uma \textit{ponte entre os dois mundos}.
+Essas familias de ferramentas, em geral, são muito bem definidos, distantes; isso gera um espaço entre os métodos automáticos e interativos que pode ser desvantajoso: um  matemático pode desejar algo entre uma prova automatizada ou verificada, ou o acesso a ambos os recursos em uma mesma ferramenta.
 
-O ambiente do Lean suporta interação, construção de termos, e verificação passo-a-passo das expressões desenvolvidas.
-Lean implementa o chamado \textit{calculus of constructions}, ou cálculo de contruções, um sistema dedutivo bastante poderoso, que contém os demais sistemas a serem discutidos ao longo do livro, tais como Lógica de Proposições, ou Lógica de Primeira Ordem.
+O provador de teoremas Lean\footnote{documentação, ambiente e tutoriais estão disponiveis em: leanprover.github.io} busca preencher essa lacuna: uma única ferramenta contendo o melhor de ambos os mundos acessível.
+Nesse sentido, age como uma \textit{ponte entre os dois paradigmas}.
 
-Um usuário inicial pode se deparar com algumas dúvidas pertinentes: \textit{porque contruir um termo é uma prova?}, \textit{consigo desenvolver provas top-down e botton-up?}, ou \textit{como conhecer as bibliotecas que o Lean já tem implementadas?}Algumas dessas dúvidas são esclarecidas logo mais, enquanto outras serão deixadas para pŕatica ao longo dos proximos capítulos.
+
+O ambiente de Lean suporta interação, construção de termos, e verificação passo-a-passo de expressões.
+Lean implementa o chamado \textit{calculus of constructions}, ou cálculo de contruções, um sistema dedutivo bastante poderoso, que \textit{contém} demais sistemas a serem discutidos ao longo do livro, tais como Lógica de Proposições, ou Lógica de Primeira Ordem.
+
+Um usuário iniciante pode se deparar com algumas dúvidas pertinentes: \textit{porque contruir um termo (o que é termo e o que não é?) é uma prova?}, \textit{consigo desenvolver provas pensando de trás pra frente e de frente pra trás?}, ou \textit{como conhecer bibliotecas e as função delas que o Lean já tenha implementadas?} Algumas dessas dúvidas são esclarecidas logo mais, enquanto outras serão deixadas para a pŕatica ao longo dos proximos capítulos.
+
+
+Os conectivos lógicos são renderizados em unicode. 
+A tabela a seguir mostra como digitar esses símbolos no editor e também fornece equivalentes ascii.
+
+\begin{table}[ht]
+\centering
+\begin{tabular}{|c|c|c|}
+\hline
+Unicode & Ascii & Lean Input\\
+\hline
+& true &\\
+\hline
+& false &\\
+\hline       
+$\neg$ & not & \textbackslash neg, \textbackslash not\\
+\hline
+$\wedge$ & /\textbackslash & \textbackslash and\\
+\hline
+$\vee$ & \textbackslash/ & \textbackslash or\\
+\hline
+$\rightarrow$ &  & \textbackslash to, \textbackslash r, \textbackslash imp\\
+\hline
+$\leftrightarrow$ &  & \textbackslash iff, \textbackslash lr\\
+\hline
+$\forall$ & forall & \textbackslash all\\
+\hline
+$\exists$ & exist & \textbackslash ex\\
+\hline
+$\lambda$ & fun & \textbackslash lam, \textbackslash fun\\
+\hline
+$\ne$ &  & \textbackslash ne\\
+\hline
+\end{tabular}
+
+\end{table}
 
 \section{Teoria dos tipos}
 % https://leanprover.github.io/theorem_proving_in_lean/dependent_type_theory.html
 % https://en.wikipedia.org/wiki/Type_theory
 \textit{Teoria dos Tipos} é uma classe de linguagens poderosa, que permite desenvolver assertivas bem definidas sobre definições matemáticas, ou exprimir conceitos desde os abstratos aos mais paupáveis.
-De fato, essa é uma linguagem bastante expressiva, e útil para definição de elementos formais; até certo ponto, é semelhante a noção de teoria dos conjuntos.
+De fato, essa é uma linguagem bastante expressiva, e útil para definição de elementos formais; até certo ponto, se assemelha a noção comum de teoria dos conjuntos.
 
 No entanto, em muitos contextos, é razoável utilizar uma linguagem com ferramental teórico capaz de lidar com uma gama de elementos distitos, pertencentes a diversas classes, \textit{tipos distintos}.
-Isso ocorre frequentemente quando tratamos de objetos matemáticos, e formalismos nesse sentido: o elemento $1$ pode ter o tipo natural ou real, assim como $[1,2,3, ...]$ pode expressar o tipo de uma lista de inteiros, dependendo da interpretação e contexto dados.
-Claramente lidamos constantemente com elementos de tipos distintos, objetos que se relacionam, e tipos que se relacionam.
-Pra isso, \textit{teoria dos tipos} se mostra extremamante útil.
+Isso ocorre frequentemente quando tratamos de objetos matemáticos, e formalismos: o elemento $1$ pode ter o tipo natural ou real, assim como $[1,2,3, ...]$ pode expressar o tipo de uma lista de inteiros, dependendo da interpretação e contexto dados.
+Claramente lidamos constantemente com elementos de \textit{tipos} distintos, objetos que se relacionam, e tipos que se relacionam.
+Pra isso, \textit{teoria dos tipos} se mostra extremamante útil embasando essas discussões.
 
 Lean, em especial, implementa uma versão da linguagem chamada \textit{Calculo das Construções}, ou \textit{Calculus of Constructions}. A partir dos próximos exemplos, o leitor é convidado a acompanhar fazendo a intelação da ferramenta, ou através do \textit{Lean Web Editor\footnote{leanprover.github.io/live/latest/}}.
 
 \subsection{Noções Fundamentais}
-Em teoria dos tipos, tudo tem um tipo definido. Essa é uma exigência razoável; de fato, somos capazes de \textit{tipar} qualquer elemento dentro de um contexto definido, em uma linguagem adequada. Vejamos alguns exemplos em Lean:
+Em teoria dos tipos, tudo tem um tipo definido. Essa é uma exigência razoável; de fato, somos capazes de \textit{tipar} qualquer elemento dentro de um contexto, em uma linguagem adequada. Vejamos alguns exemplos em Lean:
 
 \vspace{5mm}
 \begin{lstlisting}
-    -- abaixo declaramos algumas variaveis e usamos o
-    -- comando #check para checar o tipo do elemento
-    variable b : bool
-    variable n : ℕ
-    variable f : ℕ → ℕ
-    variable g : ℕ × ℕ → ℕ
+-- abaixo declaramos algumas variaveis e usamos o
+-- comando #check para imprimir o tipo do elemento
+variable b : bool
+variable n : ℕ
+variable f : ℕ → ℕ
+variable g : ℕ × ℕ → ℕ
 
-    #check b            -- b : bool
-    #check 1            -- 1 : ℕ
-    #check n + 1        -- n + 1 : ℕ
+#check b            -- b : bool
+#check 1            -- 1 : ℕ
+#check n + 1        -- n + 1 : ℕ
 
-    #check f n          -- f n : ℕ
-    #check g (1,n)      -- g (1, n) : ℕ
+#check f n          -- f n : ℕ
+#check g (1,n)      -- g (1, n) : ℕ
 \end{lstlisting}
 \vspace{5mm}
 
 \noindent O comando \textit{variable} declara uma nova variável no contexto.
 A partir disso, somos capazes de checar os tipo.
 
-Note nas linhas $5$ e $6$ que $f$ e $g$ podem ser interpretadas como funções de naturais em naturais, então pudemos fazer a aplicação em $12$ e $13$, recebendo $f n$ e $g (1,n)$ como naturais.
-Essa saída faz sentido em termos de tipo: sabemos que a aplicação tem tipo natural, embora não saibamos \textit{qual} natural.
+Note nas linhas $5$ e $6$ que $f$ e $g$ podem ser interpretadas como funções de naturais em naturais, então pudemos fazer as aplicações em $12$ e $13$, recebendo $f n$ e $g (1,n)$ como naturais.
+Essa saída faz sentido quanto a de tipagem: sabemos que a aplicação tem tipo natural, embora não saibamos \textit{qual} natural.
 
 Um leitor curioso pode questionar \textit{se tudo tem um tipo, qual tipo dos tipos?} ou ainda ir além, e \textit{qual o tipo do tipo dos tipos?} E essas perguntas podem ser respondidas novamente através do Lean:
 
 \vspace{5mm}
 \begin{lstlisting}
-    #check ℕ            -- ℕ : Type
-    #check bool         -- bool : Type
+#check ℕ            -- ℕ : Type
+#check bool         -- bool : Type
 
-    -- considere Type = Type 0
-    #check Type 0       -- Type : Type 1
-    #check Type 1       -- Type : Type 2
-    #check Type 2       -- Type : Type 3
+-- considere Type = Type 0
+#check Type 0       -- Type : Type 1
+#check Type 1       -- Type : Type 2
+#check Type 2       -- Type : Type 3
 \end{lstlisting}
 \vspace{5mm}
 
 \noindent Essa pode ser uma resposta \textit{frustrante} ou \textit{brilhante}.
-Os tipos básicos em Lean tem o tipo \textit{Type}, ou \textit{Type 0}, enquanto o proprio tipo \textit{Type 0} tem tipo \textit{Type 1} quem tem tipo \textit{Type 2} e assim por diante.
+Os tipos básicos em Lean tem o tipo \textit{Type} (o mesmo que \textit{Type 0}), enquanto o proprio tipo \textit{Type 0} tem tipo \textit{Type 1} que tem tipo \textit{Type 2} e assim por diante.
 
 Essa noção de hierarquia de tipos é uma solução proposta inicialmente por Russel, e posteriormente desenvolvida por Chwistek e Ramsey, em sua \textit{teoria simples dos tipos}, para evitar o conflito entre a teoria dos conjuntos de Frege, e o paradoxo de Russel.
 De forma simples, a hierarquia de tipos evita o autorreferenciamento, em que um elemento tem o próprio tipo.
 
-O que o Lean se propõe a fazer, portanto, é oferencer um ambiente para tratar da álgebra de tipos, implementando conceitos como \textit{abstração} e \textit{aplicação}, ou \textit{tipos dependentes}.
+O que o Lean se propõe a fazer, portanto, é oferecer um ambiente completo e poderoso para tratar da álgebra de tipos, implementando conceitos como \textit{abstração} e \textit{aplicação}, ou \textit{tipos dependentes}.
+Exemplos utilizando essas construções são frequentes ao longo do livro em noções como \textit{implicação lógica}, \textit{aplicação de implicações} ou \textit{famílias de conjuntos indexadas}.
 
 \subsection{Proposições como Tipos}
 % leanprover.github.io/theorem_proving_in_lean/propositions_and_proofs.html
-Entramos em uma das discussões mais fundamentais sobre o \textit{como Lean provas um teorema}, e para isso, introduzimos a noção de \textit{Proposições como Tipos}, através do tipo \textit{Prop}.
+Entramos em uma das discussões mais fundamentais sobre o \textit{como Lean prova coisas}, e para isso, introduzimos a discussão sobre \textit{Proposições como Tipos}, através do tipo \textit{Prop}.
 
-Considere um tipo \textit{Prop} cujos habitantes (elementos daquele tipo) representam uma \textit{prova daquela proposição}.
-Em outras palavras, dada uma proposição que se deseje provar, basta construirmos um termo \textit{habitante daquela proposição} através de aplicações, abstrações ou outras ténicas formais para lidar com os tipos.
-Vejamoas um exemplo:
+Considere um tipo \textit{Prop} cujos habitantes (elementos daquele tipo) representam uma \textit{prova para essa proposição}.
+Em outras palavras, dada uma proposição, basta construirmos um termo \textit{habitante daquela proposição} através de aplicações, abstrações ou outras ténicas formais para lidar com os tipos disponibilizadas na teoria, e pelo Lean.
+Vejamos um exemplo:
 
 \vspace{5mm}
 \begin{lstlisting}
-    variables A B : Prop    -- A e B sao proposicoes
+variables A B : Prop    -- A e B sao proposicoes
 
-    variable h1 : A         -- h1 uma prova para A
-    variable h2 : A → B     -- h2 uma prova para A → B
+variable h1 : A         -- h1 uma prova para A
+variable h2 : A → B     -- h2 uma prova para A → B
 
-    example : B := h2 h1    -- h2 h1 prova para B
-    #check h2 h1            -- h2 h1 : B
+example : B := h2 h1    -- h2 h1 prova para B
+#check h2 h1            -- h2 h1 : B
 \end{lstlisting}
 \vspace{5mm}
 
-Acima, introduzimos sem maiores explicações algumas noções profundas sobre Lean, e lógica proposicional, que serão discutidas nos próximos capítulos.
-No entanto, note que no contexto dado, fomos capazes de construir um termo \textit{h2 h1} que tem tipo \textit{B}, então costruimos uma prova para \textit{B}, na linha $6$; ainda podemos checar se esse termo tem o tipo desejado, em $7$.
+\noindent Acima, introduzimos sem maiores explicações algumas noções sobre lógica proposicional em Lean que serão discutidas nos próximos capítulos. No contexto dado, fomos capazes de construir um termo \textit{h2 h1} que tem tipo \textit{B}, então costruimos uma prova para \textit{B}, na linha $6$; conferimos que tal aplicação tem o tipo desejado, em $7$.
 
-Observe ainda, na linha $4$, em que criamos um elemento do tipo $A → B$, que anteriormente citamos como a noção de uma função que leva tipo $A$ em um tipo $B$.
-Aqui, essa noção será extendida para a de \textit{implicação lógica}, tambem discutida no capítulo sobre lógica proposicional.
+Observe ainda, na linha $4$: o elemento do tipo $A → B$, que anteriormente citamos como uma função que leva tipo $A$ em um tipo $B$.
+Aqui, introduzimos um exemplo do que será discutido como uma \textit{implicação lógica} no capítulo sobre lógica proposicional.
 
-\section{Provas usando LEAN}
-\begin{itemize}
-    \item Exemplos (avancados) de provas utilizado LEAN.
-    \item Podemos falar sobre o que é o tal "example" do item anterior.
-    \item Talvez tambem falar sobre "theorem", e "lemma".
-    \item Acho que "sections e namespaçes", não.
-\end{itemize}
+\subsection{Outras Proposições}
+Portanto, introduzimos a noção de proposição: uma assertiva. E essa será base para o conjunto de provas que se seguem o longo do livro; mesmo algumas que não parecem ser \textit{um assertiva do tipo Prop}.
+
+Até aqui, usamos exemplos de proposições como simbolos abstratos, como $A$ e $B$ que reprentam afirmativas, que podem ser afirmaçẽs sobre o mundo. Esse uso faz sentido pela simplicidade; escrevemos $A$ no lugar de $EstaChovendo$ e $B$ ao invés de $SaposPulam$.
+
+No entanto, ao longo do livro nos deparamos com outras expressões, outras \textit{afirmativas/assertivas}; e um leitor pouco atento poderá ignorar o fato de que a noção de \textit{proposição como tipo}, e \textit{prova por obter um termo} ainda está presente. Alguns exemplos dessas proposições:
+
+\vspace{5mm}
+\begin{lstlisting}
+variables A B : set ℕ
+variables a b : bool
+variables m n : ℕ
+variables f g : ℕ → ℕ
+
+#check a ≠ b        -- a ≠ b : Prop
+#check m = 1        -- m = 1 : Prop
+#check m = n        -- m = n : Prop
+#check m = 2*n      -- m = 2 * n : Prop
+#check A ⊆ B        -- A ⊆ B : Prop
+#check A = B        -- A = B : Prop
+#check n ∈ A        -- n ∈ A : Prop
+#check f m = f n    -- f m = f n : Prop
+#check f m ≤ g m    -- f m ≤ g m : Prop
+\end{lstlisting}
+\vspace{5mm}
+
+\noindent Lean entende todas essas assertivas sobre Conjuntos, Inteiros, Booleanos, Desigualdades e Relacões como \textit{proposições}, portanto, do tipo $Prop$.
+Nesse sentido podemos lidar com provas para o tipo daquela assertiva, e todo paradigma de \textit{Proposições Como Tipos}:
+
+\vspace{5mm}
+\begin{lstlisting}
+variables A B : set ℕ
+variables m n : ℕ
+
+variable h1 : m = n        -- h1 prova para m = n
+variable h2 : A ⊆ B        -- h2 prova para A ⊆ B
+variable h3 : n ∈ A        -- h3 prova para n ∈ A
+\end{lstlisting}
+\vspace{5mm}
+
+Exemplos como esses serão trabalhados posteriormente, e por isso essa discussão está presente ainda no inicio: o leitor está sendo impelido a obserservar como formalizamos todos os conceitos desejados através de um único paradigma.
+
+\section{Provas usando Lean}
+Abriremos discussão sobre o processo de prova utilizando Lean; não esperamos que o leitor a essa altura entenda amplamente as demonstrações dadas, e sim, compreenda como ocorre o processo de prova.
+
+Quando desejamos iniciar a prova explicita para um assertiva, podemos abrir contextos usando as palavras-reservadas \textit{example}, \textit{lemma} ou \textit{theorem}. Cada uma dessas tem sua utilidade distinta, embora semelhantes:
+
+\vspace{5mm}
+\begin{lstlisting}
+-- uma prova para A e B
+example (A B : Prop) (h1 : A) (h2 : A → B): A ∧ B :=
+  and.intro h1 (h2 h1)
+-- prova para o lemma A e B
+lemma lema_A_B (A B : Prop) (h1 : A) (h2 : A → B): A ∧ B :=
+  and.intro h1 (h2 h1)
+-- prova para o teorema A e B
+theorem teorema_A_B (A B : Prop) (h1 : A) (h2 : A → B): A ∧ B :=
+  and.intro h1 (h2 h1)
+\end{lstlisting}
+\vspace{5mm}
+
+\noindent Para cada contexto, foram dados argumentos \textit{(h : entre prentesis)} considerados na prova; \textit{hipóteses}. Na linha 2, por exemplo, $A$ e $B$ são proposições, $h1$ e $h2$ são provas que deveriamos considerar no contexto. Esse é o contexto que devemos considerar para demonstrar o resultado desejado.
+
+Observe que as provas são identicas; a diferença está exatamente nos contextos. O \textit{theorem}, assim como \textit{lemma}, permite fazer a prova de uma assertiva, e esse resultado poderá ser utilizado eventualmente; naturalmente, isso exige um titulo para o lema ou teorema.
+Já \textit{example} funciona como contexto fechado, ou rascunho: podemos realizar a prova desejada, mas não nos referir a ela posteriormente.
+
+Veja no exemplo abaixo como podemos utilizar o resultado de um teorema que foi previamente demonstrado em Lean:
+
+\vspace{5mm}
+\begin{lstlisting}
+variables A B : Prop    -- A e B sao proposicoes
+variable h1 : A         -- h1 uma prova para A
+variable h2 : A → B     -- h2 uma prova para A → B
+
+-- prova para o teorema A e B
+theorem teorema_A_B : A ∧ B := and.intro h1 (h2 h1)
+-- reutilizando o teorema_A_B
+example : A ∧ B := (teorema_A_B A B h1 h2)
+\end{lstlisting}
+\vspace{5mm}
+
+\noindent Basta fazer uma chamada ao teorema (ou lema) através do título dado, passando provas para os argumentos esperados. Ao fazermos uso do teorema, linha 8, passamos explicitamente (aplicamos) as proposições, e as provas que temos.
+
+Observe que dessa vez não explicitamos os argumentos que deveriam ser recebidos no \textit{theorem}, ou no \textit{example}. Lean identificou no arquivo quais hipoteses foram utilizadas, e os considerou como argumentos.
+
+Lean é inteligente o bastante para livrar o usuario de parte do trabalho repetitivo: se assinamos as proposições como argumentos implicitos no teorema, o programa será capaz de identificar a partir das hipoteses, quais as proposições:
+
+\vspace{5mm}
+\begin{lstlisting}
+-- prova para o teorema U e V, generico
+theorem teo_U_e_V {U V : Prop} (h1 : U) (h2 : U → V) : U ∧ V :=
+  and.intro h1 (h2 h1)
+
+variables A B : Prop    -- A e B sao proposicoes
+variable h1 : A         -- h1 prova para A
+variable h2 : A → B     -- h2 prova para A → B
+
+-- utilizando o terema_A_B
+example : A ∧ B := teo_U_e_V h1 h2
+\end{lstlisting}
+\vspace{5mm}
+
+\noindent Esse uso tambem permite a generalização do resultado obtido. De fato, o \textit{teorema\_U\_V} vale para quaisquer proposições $U$ e $V$ que se deseje. Quando pusemos chaves, \textit{\{U V : Prop\}} na declaração na linha 2, o próprio programa considerou esses como argumentos que poderiam ser compreendidos no contexto em que fosse utilizado.
+
+\vspace{5mm}
+
+Naturalmente, diferentes tipos de proposição podem demandar por uma construção distinta, e esse é um fato inerente ao que se deseja discutir. Nesse sentido, Lean disponibiliza diferentes modos de construção para prova. Esses modos serão abordados em uma gama de exemplos nos próximos capítulos; abordamos aqui, apenas existencia, aspectos e vantagens em cada uso:
 
 \subsection{Modo Termo}
-Apresentação e exemplos
+É o modo base ao iniciarmos uma contexto de prova com \textit{theorem}, por exemplo. Nesse modo, somos capazes de construir termos partindo de termos, explicitando cada passo tomado: ao assumir uma hipótese, eliminar uma conjunção, ou introduzir estruturas, exigimos a explicitação do passo. Aqui, as demonstrações são contruidas semelhantes a programação em uma linguagem.
+
+\vspace{5mm}
+\begin{lstlisting}
+variables A B C D : Prop
+
+example (h : ¬ A ∧ ¬ B) : ¬ (A ∨ B) :=
+  -- estamos no Modo Termo
+  show ¬ (A ∨ B), from
+  assume s: A ∨ B,
+    show false, from or.elim s
+      (assume h1: A, show false, from h.left h1)
+      (assume h1: B, show false, from h.right h1)
+\end{lstlisting}
+\vspace{5mm}
+
+\noindent Note que construimos passo-a-passo as várias etapas na prova acima, abrindo pouco esáço pra automação. Outro exemplo:
+
+\vspace{5mm}
+\begin{lstlisting}
+variables A B : Prop
+
+example (h : ¬ A ∨ ¬ B) : ¬ (A ∧ B) :=
+  show ¬ (A ∧ B), from or.elim h
+    (assume h1: ¬ A, show ¬ (A ∧ B), from
+      assume h2: (A ∧ B), show false, from (h1 h2.left))
+    (assume h1 : ¬ B, show ¬ (A ∧ B), from
+      assume h2 : (A ∧ B), show false, from (h1 h2.right))
+\end{lstlisting}
+\vspace{5mm}
+
+\noindent A vantagem nesse modo está no controle direto da prova, e pouca automação, em que o usuário é plenamente consciente sobre o processo. Aqui, Lean atua fortemente na verificação da construção dos termos.
 
 \subsection{Modo Tática}
-Apresentação e exemplos
+No Modo Tática a linguagem utilizada na contrução da prova se aproxima da linguagem humana; e exatamente por isso, exige forte automação por parte do sistema. Esse modo é iniciado dentro de um bloco \textit{begin ... end}.
 
-\subsection{Modo Cálculo}
-Apresentação e exemplos
+\vspace{5mm}
+\begin{lstlisting}
+variables A B C D : Prop
 
-% será que faz sentido falarmos em aspectos praticos sobreo Lean, como onde ele está disponivel online, ou como conhecer os teormas basicos dispoiveis...
+example (h : ¬ A ∧ ¬ B) : ¬ (A ∨ B) :=
+begin
+  intro,           -- A B : Prop, h : ¬A ∧ ¬B, a : A ∨ B ⊢ false
+  cases a,         -- 2 goals case or.inl
+    apply h.left,  -- A B : Prop, h : ¬A ∧ ¬B, a : A ⊢ A
+      assumption,  -- lean conclui que temos a prova "a" para A
+
+    apply h.right, -- A B : Prop, h : ¬A ∧ ¬B, a : B ⊢ B
+      assumption   -- lean conclui que temos a prova "a" para B
+end
+\end{lstlisting}
+\vspace{5mm}
+
+Quando abrimos táticas, Lean automatiza várias etapas; quando pousamos o cursor em uma linha, é impresso no console quais as variáveis temos, e quais objetivos, \textit{goals}, precisamos provar. Acima, essas saídas estão comentadas, mas o leitor é incentivado a abrir o console com o exemplo; o \textit{goal} é a proposição após o simbolo "⊢".
+
+Além disso, usamos uma série de palavras-reservadas, como \textit{intro}, \textit{cases}, \textit{assumption}, que indicam comandos para o Lean lidar com esse contexto. O que esses comandos realizam internamente, por exemplo, são:
+
+\begin{itemize}
+    \item \textbf{intro/intros}: pede ao Lean que introduza as hipóteses razoáveis dado o problema; no exemplo, essa foi a hipótese do absurdo.
+    \item \textbf{cases}: para cada caso \textit{A ou B}, vamos construir a prova desejada; pede ao Lean que introduza os objetivos.
+    \item \textbf{assumption}: se a solução já puder ser deduzida no contexto, pede ao Lean que conclua a prova.
+\end{itemize}
+
+\noindent Cada uma dessas tarefas exige que o provador resolva problemas de forma autonoma, retirando essa obrigação do usuário. Pequenas automações como essas agilizam grandemente a resolução, mas retiram parte da compreensão ao usuário sobre a demonstração dada.
+
+\section{Cálculos em Lean}
+Não confunda com derivadas, integrais ou somatórios; o cálculo essencial desde a matemática básica, como uma sequência de operações para provar que certa relação entre duas expressões. Considere o seguinte exemplo, em que desejamos mostrar a validade de uma iguldade:
+
+\begin{equation*}
+    \begin{aligned}
+      \dfrac{(a+b)^2+(a-b)^2}{2}-2b^2 &=^? (a-b)(a+b)\\
+      \dfrac{a^2+2ab+b^2+a^2-2ab+b^2}{2}-2b^2 &=^? a^2+ab-ab-b^2\\
+      \dfrac{2a^2+2b^2}{2}-2b^2 &=^? a^2-b^2\\
+      a^2+b^2-2b^2 &=^? a^2-b^2\\
+      a^2-b^2 &= a^2-b^2
+    \end{aligned}
+\end{equation*}
+
+\noindent A impressão é a de que começamos com uma identidade complexa, e conseguimos provar que $x=x$. O melhor a se fazer é justamente partir de uma igualdade válida $x=x$ e construir a igualdade desejada.
+
+%  \begin{equation*}
+%    \begin{aligned}
+%      a^2-b^2 &= a^2-b^2\\
+%      a^2+b^2-2b^2 &= a^2-b^2\\
+%     \dfrac{a^2+2ab+b^2+a^2-2ab+b^2}{2}-2b^2 &= a^2+ab-ab-b^2\\
+%      \dfrac{(a+b)^2+(a-b)^2}{2}-2b^2 &= (a-b)(a+b)
+%    \end{aligned}
+%  \end{equation*}
+
+%\noindent Isso é um tanto estranho: saimos de uma igualdade arbitraria, e conseguimos provar a identidade desejada.
+
+A ideia que tentamos transmitir é a de que cada equação é equivalente a seguinte. A primeira equação é verdadeira se, e só se, a próxima for verdadeira. Logo, podemos utilizar o símbolo $\iff$ entre cada uma delas.
+
+  \begin{equation*}
+    \begin{aligned}
+      \dfrac{(a+b)^2+(a-b)^2}{2}-2b^2 &= (a-b)(a+b) &\hspace{25mm}\iff \\
+      &***&\\
+      %\dfrac{a^2+2ab+b^2+a^2-2ab+b^2}{2}-2b^2 &= a^2+ab-ab-b^2 & \iff & \\
+      %\dfrac{2a^2+2b^2}{2}-2b^2 &= a^2-b^2 & \iff &\\
+      a^2+b^2-2b^2 &= a^2-b^2 &\hspace{25mm}\iff \\
+      a^2-b^2 &= a^2-b^2 & \hspace{25mm}\square
+    \end{aligned}
+  \end{equation*}
+
+Ou ainda, frases como \textit{basta provar} entre uma igualdade e outra, destacando a passagem de uma prova como equivalente a próxima prova.
+
+  \begin{equation*}
+    \begin{aligned}
+      \dfrac{(a+b)^2+(a-b)^2}{2}-2b^2 &= (a-b)(a+b) & \textit{para isso, basta que} \\
+      &***&\\
+      %\dfrac{a^2+2ab+b^2+a^2-2ab+b^2}{2}-2b^2 &= a^2+ab-ab-b^2 & \textit{o que é equivalente a} \\
+      %\dfrac{2a^2+2b^2}{2}-2b^2 &= a^2-b^2 & \textit{de onde basta mostrar} \\
+      a^2+b^2-2b^2 &= a^2-b^2 & \textit{para isso, mostro que} \\
+      a^2-b^2 &= a^2-b^2 & \textit{o que é verdadeiro. } \square
+    \end{aligned}
+  \end{equation*}
+
+\noindent Ambas as provas são válidas, apesar da última possuir uma narrativa repetitiva que nos obriga a encontrar sinônimos para \textit{basta provar}. Ainda assim, construções desse tipo são extremamente comuns.
+
+%Vamos denominar $LE$ e a expressão do lado direito por $LD$. Assim, o que a nossa demonstração está fazendo é transformar $LE$ numa expressão $E$ e, $LD$ na mesma expressão $E$.
+%Portanto, podemos reescrevê-la somente como um único cálculo direcionado para a frente, transformando $LE$ em $E$ e então, fazendo uma transformação inversa de $E$ para $LD$.
+
+%  \begin{equation*}
+%    \begin{aligned}
+%      \dfrac{(a+b)^2+(a-b)^2}{2}-2b^2 &= %\dfrac{a^2+2ab+b^2+a^2-2ab+b^2}{2}-2b^2\\
+%      &= \dfrac{2a^2+2b^2}{2}-2b^2\\
+%      &= a^2+b^2-2b^2\\
+%      &= a^2-b^2\\
+%      &= a^2+ab-ab-b^2\\
+%      &= (a-b)(a+b)
+%    \end{aligned}
+%  \end{equation*}
+
+%Obtivemos uma prova clara, compacta e legível. Esse é o modelo mais utilizado pelos matemáticos em geral, e também é o qual utilizaremos nessa seção.
+
+\subsection{O modo Calc}
+Lean disponibiliza um ambiente para cálculos desse tipo, através do identificador \textit{calc}, seguido por um cadeia de passagens, separadas por ``$:$'', conforme abaixo:
+
+\vspace{5mm}
+\begin{lstlisting}
+-- exemplo de extrutura --
+show expressaoX < expressaoY, from
+calc
+  expressaoX = expressao1 : justificativa1
+         ... = expressao2 : justificativa2
+         ... < expressaoY : justificativa3
+\end{lstlisting}
+\vspace{5mm}
+
+\noindent A cadeia pode se extender quanto quisermos, até chegar na expressão desejada. E cada justificativa é composta por afirmações ou lemas/teoremas. Um exemplo do uso do {\fontencoding{U}\fontfamily{cmtt}\selectfont calc} em conjuntos é o seguinte:
+
+\vspace{5mm}
+\begin{lstlisting}
+variables a b : bool
+
+example (h : a = b) : b = a :=
+  calc
+    b = a : eq.symm h
+\end{lstlisting}
+\vspace{5mm}
+
+\noindent Esse ambiente representa uma grande utilidade quando desejamos provas procedurais desse tipo.
+
+\section{Lean na prática}
+Apresentamos alguns fatos sobre uso do Lean relevantes, que não puderam ser apresentados ao longo do capítulo.
+
+\begin{itemize}
+    \item Lean está disponível no \textit{GitHub}, onde está publicada a sua página\footnote{Lean Theorem Prover: leanprover.github.io}, contendo tutoriais completos para \textit{download}, documentação, tutoriais sobre \textit{Theorem Proving}, além do histórico de colaboradores.
+
+    % https://leanprover.github.io/talks/vu2019.pdf
+    \item Atualmente, a quarta geração da plataforma está sendo desenvolvida, já em fase final; breve estará sendo disponibilizado Lean 4, que pretende servir como uma linguagem de propósito geral.
+
+    \item Existe uma comunidade extremamente ativa mantendo o desenvolvimento de um repositório de teoremas matemáticos fundamentais em Lean, na \textit{mathlib\footnote{mathlib: github.com/leanprover-community/mathlib}}. Os próprios usuários desenvolvem provas para os teoremas disponibilizados.
+
+    \item Existe um fórum\footnote{Forum: leanprover.zulipchat.com/login/} ativo sobre Lean, onde dúvidas ou discussões são frequentes. Há ainda uma página para novos membros.
+\end{itemize}
+
+\noindent No futuro, alguns desses fatos podem ser alterados, mas vale abrir a discussão sobre esses tópicos, em especial incentivamos o contato de novos usuários de Lean com a ampla comunidade de desenvolvedores.
