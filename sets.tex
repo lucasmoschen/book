@@ -44,6 +44,14 @@ $\qquad$
 
 \textbf{Diferença de Conjuntos:} Quando temos dois conjuntos e nosso objetivo são os conjuntos/elementos que pertencem a um destes conjuntos, mas não do outro, dizemos que estamos interessados na diferença destes conjuntos. No caso, se queremos os conjuntos/elementos de $B$, mas não desejamos pegar os que também pertencem a $A$, queremos os elementos/conjuntos que pertencem a diferença de $B$ com $A$ (denotamos como $B-A$ ou $B \backslash A$).
 
+$\qquad$
+
+\textbf{Conjuntos Disjuntos:} Dois conjuntos são ditos disjuntos quando todos os elemento (diferente do elemento vazio) do conjunto $A$ não pertencem ao conjuntunto $B$. Ou seja, a interseção de $A$ e $B$ é vazia, isto é, o único elemento que a $A$ e $B$ "possuem" em comum é o elemento vazio.
+
+$\qquad$
+
+\textbf{Diferença Simétrica:} é igual a união das diferenças entre dois conjuntos, que também é equivalente a diferença entre a união (desses conjuntos) e a interseção (dos dois conjuntos). Ela é representada por $\bigtriangleup$. A diferença simétrica entre dois conjuntos $A$ e $B$ é expressa como $A \bigtriangleup B$. Ou seja, estamos dizendo que, $A \bigtriangleup B = (A \backslash B) \cup (B\backslash A) = (A \cup B) \backslash (A \cap B)$.
+
 \subsection{Definições}
 
 Seja $A$ e $B$ conjuntos quaisquers, $\mathcal{U}$ nosso universo e $\emptyset$ o conjunto vazio. Assim, temos formalmente (e em Linguagem de Primeira Ordem):
@@ -140,7 +148,7 @@ Vale ressaltar que se $A=B$, teremos $\{A,B\}=\{A,A\}=\{A\}$. A aplicação suce
 
 Não pretendemos nos aprofundar mais nos axiomas de conjuntos, dado que eles utilizarão conceitos abordados futuramente, nos capítulos de Relações, Funções e Indução.
 
-Mas como se pode ver em Lean - Logic and Proof, podemos reduzir uma grande gama de coisas a conjuntos, assim podemos tratá-las na Teoria dos Conjuntos. Para saber mais sobre Teoria dos Conjuntos, consulte Teoria dos Conjuntos - USP.
+Mas como se pode ver em Lean - Logic and Proof, podemos reduzir uma grande gama de coisas a conjuntos, assim podemos tratá-las na Teoria dos Conjuntos. Para saber mais sobre Teoria dos Conjuntos, consulte \href{https://www.ime.usp.br/~fajardo/Conjuntos.pdf}{Teoria dos Conjuntos - USP}.
 
 \section{Diagrama de Venn}
 A maneira mais simples de entender a Teoria de Conjuntos, talvez seja o Diagrama de Venn. Criado por John Venn em 1880, esse sistema de representar graficamente conjuntos auxilia imensamente quem está começando a aprender esse assunto, principalmente para entender sobre a parte inicial de notações e definições. Basicamente, ele consiste em representar num plano, o universo $\mathcal U$ como sendo um retângulo e cada conjunto $A,B,...$ como uma curva fechada simples (geralmente, círculo).
@@ -367,15 +375,155 @@ Como $21$ gostam de matemática, logo $31-21=10$ gostam somente de português (r
 Apesar do estudo de conjuntos com Diagrama de Venn ser fácil, simples e útil, como já comentado anteriormente, é difícil para trabalhar com muitos conjuntos, além das provas utilizando esse recurso não terem um grau de formalidade muitas vezes requerido pelos matemáticos. Devido a esse fato, iremos estudar nas próximas seções outras maneiras de lidar com Teoria dos Conjuntos, como provas matemáticas formais, dedução natural, cálculo em conjuntos e é claro, utilizando o Lean.
 
 \section{Prova de Teoremas}
+
 Nesta seção iremos tratar de formalizar definições e Teoremas. Ao contrário da seção $5.2$, onde o foco era transmitir a notação e uma ideia geral dos conceitos.
 
-Aqui serão apresentadas algumas provas em Lean para o conteúdo apresentado. Não se preocupe, caso não entenda sobre o que o código quer dizer ignore ele por enquanto e após ler as próximas duas seções (que falam de conjuntos em Lean), volte e tente compreender o que foi feito. Já que o foco principal nesta parte são as provas matemáticas tradicionais e as definições mais precisas.
+\subsection{Prova Matemática Tradicional}
 
-\subsection{Prova Matemática Formal}
-Ainda vai ter algo escrito aqui
+As provas matemáticas usuais, geralmente, mesclam a linguagem ``escrita'' comum com algumas notações da área. Assim, para um leitor pode ficar mais fácil de entender a prova do Teorema, já que não haverá apenas termos técnicos, no entanto, se o autor não tomar cuidado ele poderá abrir espaço para gerar conflitos, isto é, dupla interpretação, esquecer de provar algo, omitir passagens ``triviais'' (para o autor, mas para os leitores, mesmo que sejam matemáticos fica difícil de entender). Assim, tome muito cuidado ao fazer uma prova deste tipo, mas nunca a ignore, pois quando dominá-la, poderá ser mais fácil transmitir seu conhecimento a leigos ou iniciantes na matenática, do que provas que utilizam apenas termos técnicos.
+
+Procure, sempre que necessário, usar conectivos como: ``logo'', ``então'', ``assim'', ``portanto'', mas nunca se esqueça, nunca use apenas um, procure variar o máximo possível entre os conectivos, pois isto deixa o texto mais atraente para o leitor.
+
+\qquad
+
+\textbf{Exemplo 1:} $A \cap B = B \cap A$
+
+Suponha que tenhamos um $t$ arbitrário e, $t \ in A \cap B$, que é a mesma coisa que $t \in A \wedge t\in B$, que equivale a $t \in B \and t \in A$. Logo, $t \in B \cap A$. Portanto, $A \cap B = B \cap A$.
+
+\qquad
 
 \subsection{Dedução Natural}
-Ainda vai ter algo escrito aqui
+
+Utilizar Dedução Natural para provar um Teorema é melhor, pois nos dá mais confiança e controle para vermos cada passo que estamos executando na prova, no entanto, é necesário que o leitor tenha alguma familiaridade com este tipo de demonstração e  que conheça algumas definições sobre conjuntos em FOL.
+
+\qquad
+
+\textbf{Exemplo 1:} $A \cap B = B \cap A$
+
+Como nossa prova é muito extensa para caber em um papel iremos modularizar ela.
+
+Abaixo segue a prova de $ t \in A \cap B \rightarrow t \in B \cap A $, para um $t$ arbitrário. Estaremos usando a definição de interseção em FOL, coso não se recorde dela, releia a parte ``Definições''', da seção ``Fundamentos''.
+    
+    $(i)$    
+    \begin{center}
+        \AxiomC{}
+        \RightLabel{\scriptsize $1$}
+        \UnaryInfC{$t \in A \cap B$}
+        \AxiomC{$\forall x (x \in A \cap B \iff x \in A \wedge x \in B)$}
+        \UnaryInfC{$t \in A \cap B \iff t \in A \wedge t \in B$}
+        \BinaryInfC{$t \in A \wedge t \in B$}
+        \UnaryInfC{$ t \in A$}
+        \DisplayProof
+    \end{center}
+    
+    \qquad
+    
+    $(ii)$
+    \begin{center}
+        \AxiomC{}
+        \RightLabel{\scriptsize $1$}
+        \UnaryInfC{$t \in A \cap B$}
+        \AxiomC{$\forall x (x \in A \cap B \iff x \in A \wedge x \in B)$}
+        \UnaryInfC{$t \in A \cap B \iff t \in A \wedge t \in B$}
+        \BinaryInfC{$t \in A \wedge t \in B$}
+        \UnaryInfC{$ t \in B$}
+        \DisplayProof
+    \end{center}
+    
+    \qquad
+ 
+De $(i)$ e $(ii)$, podemos obter $t \in A \cap B \rightarrow t \in B \cap A$:
+
+$(iii)$
+    \begin{center}
+        \AxiomC{}
+        \RightLabel{\scriptsize $1$}
+        \UnaryInfC{$t \in A \cap B$}
+        \AxiomC{$(ii)$}
+        \BinaryInfC{$t \in B$}
+        \AxiomC{}
+        \RightLabel{\scriptsize $1$}
+        \UnaryInfC{$t \in A \cap B$}
+        \AxiomC{$(i)$}
+        \BinaryInfC{$t \in A$}
+        \BinaryInfC{$t \in B \wedge t \in A$}
+        \AxiomC{$\forall x (x \in B \cap A \iff x \in B \wedge x \in A)$}
+        \UnaryInfC{$t \in B \cap A \iff t \in B \wedge t \in A$}
+        \BinaryInfC{$t \in B \cap t \in A$}
+        \RightLabel{\scriptsize $1$}
+        \UnaryInfC{$t \in A \cap B \rightarrow t \in B \cap A$}
+        \DisplayProof
+    \end{center}
+
+
+Agora iremos provar que $ t \in B \cap A \rightarrow t \in A \cap B $, $t$ arbitrário.
+    
+    $(iv)$    
+    \begin{center}
+        \AxiomC{}
+        \RightLabel{\scriptsize $1$}
+        \UnaryInfC{$t \in B \cap A$}
+        \AxiomC{$\forall x (x \in B \cap A \iff x \in B \wedge x \in A)$}
+        \UnaryInfC{$t \in B \cap A \iff t \in B \wedge t \in A$}
+        \BinaryInfC{$t \in B \wedge t \in A$}
+        \UnaryInfC{$ t \in B$}
+        \DisplayProof
+    \end{center}
+    
+    \qquad
+    
+    $(v)$
+    \begin{center}
+        \AxiomC{}
+        \RightLabel{\scriptsize $1$}
+        \UnaryInfC{$t \in B \cap A$}
+        \AxiomC{$\forall x (x \in B \cap A \iff x \in B \wedge x \in A)$}
+        \UnaryInfC{$t \in B \cap A \iff t \in B \wedge t \in A$}
+        \BinaryInfC{$t \in B \wedge t \in A$}
+        \UnaryInfC{$ t \in A$}
+        \DisplayProof
+    \end{center}
+    
+    \qquad
+ 
+De $(iv)$ e $(v)$, podemos obter $t \in B \cap A \rightarrow t \in A \cap B$:
+
+$(vi)$
+    \begin{center}
+        \AxiomC{}
+        \RightLabel{\scriptsize $1$}
+        \UnaryInfC{$t \in B \cap A$}
+        \AxiomC{$(v)$}
+        \BinaryInfC{$t \in A$}
+        \AxiomC{}
+        \RightLabel{\scriptsize $1$}
+        \UnaryInfC{$t \in B \cap A$}
+        \AxiomC{$(iv)$}
+        \BinaryInfC{$t \in B$}
+        \BinaryInfC{$t \in A \wedge t \in B$}
+        \AxiomC{$\forall x (x \in A \cap B \iff x \in A \wedge x \in B)$}
+        \UnaryInfC{$t \in A \cap B \iff t \in A \wedge t \in B$}
+        \BinaryInfC{$t \in A \cap t \in B$}
+        \RightLabel{\scriptsize $1$}
+        \UnaryInfC{$t \in B \cap A \rightarrow t \in A \cap B$}
+        \DisplayProof
+    \end{center}
+    
+    De $(iii)$ e $(v)$, aplicando a regra do ``e'' introdução, teremos $ (t \in A \cap B \rightarrow t \in B \cap A) \wedge (t \in B \cap A \rightarrow t \in A \cap B) $, que é equivalente a , $t \in A \cap B \iff t \in B \cap A $.
+ 
+ \qquad
+ 
+   Dado que $t$ é arbitrário, podemos aplicar a regra do ``para todo introdução'', $\forall x (x \in A \cap B \iff x \in B \cap A)$.
+ 
+ \qquad
+ 
+   Portanto, aplicando o Axioma da Extensão teremos $A \cap B = B \cap A$.
+   
+  \qquad
+  
+    Resolvemos não explicitar em Dedução Natural o final da prova, pois seria apenas reescrever o que os axiomas e regras definidas em capítulos anteriores falavam, e como uma página é menor que um quadro e o Latex tem certas limitações (que papel e canta não possuem), seria inviável explicitar a última parte.
+
+\qquad
 
 \section{Conjuntos em Lean}
 Embora na teoria axiomática dos conjuntos se considere conjuntos de objetos distintos, em matemática é mais comum considerar subconjuntos de algum domínio fixo ($\mathcal U $). É assim que os conjuntos são tratados em Lean. Para qualquer dado do tipo {\fontencoding{U}\fontfamily{cmtt}\selectfont U}, Lean nos retorna um novo dado tipo {\fontencoding{U}\fontfamily{cmtt}\selectfont set U}, que consiste no conjunto dos elementos de {\fontencoding{U}\fontfamily{cmtt}\selectfont U}. Assim, por exemplo, podemos raciocinar sobre conjuntos de números naturais, conjuntos de números inteiro ou conjuntos de pares de números naturais.
@@ -593,7 +741,8 @@ have h₂ : x ∈ B, from and.right h,
 show x ∈ B ∩ A, from and.intro h₂ h₁ \end{lstlisting}
 
 \section{Propriedades}
-A seguir teremos algumas propriedades e a prova do porque estão corretas, utilizando várias maneiras vistas anteriormente neste capítulo.
+
+A seguir teremos algumas propriedades e provas, utilizando várias maneiras vistas anteriormente neste capítulo.
 
 \begin{enumerate}
 \item{\textbf{Básicas}}
@@ -640,7 +789,7 @@ A seguir teremos algumas propriedades e a prova do porque estão corretas, utili
    
    Dado que $t$ é arbitrário, obtemos $\forall x (x \in A \cap A \iff x \in A)$.
    
-   Assim, aplicando o Axioma da Extensão temos $A \cap A = A$
+   Assim, aplicando o Axioma da Extensão temos $A \cap A = A$.
 
 \qquad
 
@@ -1056,10 +1205,6 @@ eq_of_subset_of_subset
 \qquad
 
 \item $A \cup A^c = \mathcal U$
-
-\textbf{Prova:}  Seja $x$ um elemento de $A \cup \overline A$, assim temos que
-\[x \in (A \cup \overline A)\]
-\[ \iff x \in A \vee x \in \overline A\]
 
 \qquad
 
@@ -1994,6 +2139,7 @@ show A ⊆ B, from h3 (subset.refl A)
 end \end{lstlisting}
 
 $\qquad$
+
 
 \item Prove que $A \cup \overline A = \mathcal U$. (Fornecendo uma prova tradicional e uma em Lean.)
 
