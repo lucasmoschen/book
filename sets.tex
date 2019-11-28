@@ -600,18 +600,334 @@ A seguir teremos algumas propriedades e a prova do porque estão corretas, utili
 \begin{itemize}
 \item $A \cap A = A$
 
+\textbf{Prova:}
+    
+    Se não se lembra da definição de interceção em FOL dada na seção "Fundamentação", sugerimos fortemente que releia a parte "Definições"que se encontra na seção mencionada.
+    
+    $(i)$ Abaixo segue uma prova de $ t \in A \cap A \rightarrow t \in A $, onde $t$ é arbitrário.
+    
+    \begin{center}
+        \AxiomC{}
+        \RightLabel{\scriptsize $1$}
+        \UnaryInfC{$t \in A \cap A$}
+        \AxiomC{$\forall x (x \in A \cap A \iff x \in A \wedge x \in A)$}
+        \UnaryInfC{$t \in A \cap A \iff t \in A \wedge t \in A$}
+        \BinaryInfC{$t \in A \wedge t \in A$}
+        \UnaryInfC{$ t \in A$}
+        \RightLabel{\scriptsize $1$}
+        \UnaryInfC{$t \in A \cap A \rightarrow t \in A $}
+        \DisplayProof
+    \end{center}
+        
+    $(ii)$ Provaremos que $t \in A \rightarrow t \in A \cap A$ :
+    
+    \begin{center}
+        \AxiomC{}
+        \RightLabel{\scriptsize $1$}
+        \UnaryInfC{$ t \in A$}
+        \AxiomC{}
+        \RightLabel{\scriptsize $1$}
+        \UnaryInfC{$ t \in A$}
+        \BinaryInfC{$t \in A \wedge t \in A$}
+        \AxiomC{$\forall x (x \in A \cap A \iff x \in A \wedge x \in A)$}
+        \UnaryInfC{$t \in A \cap A \iff t \in A \wedge t \in A$}
+        \BinaryInfC{$t \in A \cap A$}
+        \RightLabel{\scriptsize $1$}
+        \UnaryInfC{$t \in A \rightarrow t \in A \cap A$}
+        \DisplayProof
+    \end{center}
+    
+   De $(i)$ e $(ii)$, construímos, com a regra do "e" introdução, $ (t \in A \cap A \rightarrow t \in A) \wedge (t \in A \rightarrow t \in A \cap A) $, que é equivalente a , $t \in A \cap A \iff t \in A $.
+   
+   Dado que $t$ é arbitrário, obtemos $\forall x (x \in A \cap A \iff x \in A)$.
+   
+   Assim, aplicando o Axioma da Extensão temos $A \cap A = A$
+
 \qquad
 
 \item $A \cup A = A$
 
 \textbf{Prova:}
+    
+$(i)$ Abaixo há a prova de $ t \in A \cup A \rightarrow t \in A $, para um $t$ arbitrário.
+    
+\begin{center}
+    \AxiomC{}
+    \RightLabel{\scriptsize $1$}
+    \UnaryInfC{$t \in A \cup A$}
+    \AxiomC{$\forall x (x \in A \cup A \iff x \in A \vee t \in A)$}
+    \UnaryInfC{$t \in A \cup A \iff t \in A \vee t \in A$}
+    \BinaryInfC{$t \in A \vee t \in A$}
+    \AxiomC{}
+    \RightLabel{\scriptsize $2$}
+    \UnaryInfC{$ t \in A$}
+    \AxiomC{}
+    \RightLabel{\scriptsize $2$}
+    \UnaryInfC{$ t \in A$}
+    \RightLabel{\scriptsize $2$}
+    \TrinaryInfC{$t \in A$}
+    \RightLabel{\scriptsize $1$}
+    \UnaryInfC{$t \in A \cup A \rightarrow t \in A $}
+    \DisplayProof
+\end{center}
+        
+$(ii)$ Seja $t$ arbitrário, iremos construir uma prova para $ t \in A \rightarrow t \in A \cup A$ :
 
+\begin{center}
+    \AxiomC{}
+    \RightLabel{\scriptsize $1$}
+    \UnaryInfC{$ t \in A$}
+    \UnaryInfC{$ t \in A \vee t \in A$}
+    \AxiomC{$\forall x (x \in A \cup A \iff x \in A \vee t \in A)$}
+    \UnaryInfC{$t \in A \cup A \iff t \in A \vee t \in A$}
+    \BinaryInfC{$t \in A \cup A$}
+    \RightLabel{\scriptsize $1$}
+    \UnaryInfC{$t \in A \rightarrow t \in A \cup A$}
+    \DisplayProof
+\end{center}
+    
+De $(i)$ e $(ii)$, concluímos que $ (t \in A \cup A \rightarrow t \in A ) \wedge (t \in A \rightarrow t \in A \cup A) $, ou seja, $t \in A \cup A \iff t \in A $.
+
+Como $t$ é arbitrário, é permitido dizer que temos $\forall x (x \in A \cup A \iff x \in A) $.
+
+Portanto, temos $A \cup A = A$, se aplicarmos o Axioma da Extensão no resultado obtido no parágrafo acima.
+    
 \qquad
 
 \item $A \cap \mathcal U = A$
+
+$(i)$ Abaixo segue uma prova de $ t \in A \cap \mathcal U \rightarrow t \in A $, onde $t$ é arbitrário.
+    
+    \begin{center}
+        \AxiomC{}
+        \RightLabel{\scriptsize $1$}
+        \UnaryInfC{$t \in A \cap \mathcal U$}
+        \AxiomC{$\forall x (x \in A \cap \mathcal U \iff x \in A \wedge x \in \mathcal U)$}
+        \UnaryInfC{$t \in A \cap \mathcal U \iff t \in A \wedge t \in \mathcal U$}
+        \BinaryInfC{$t \in A \wedge t \in \mathcal U$}
+        \UnaryInfC{$ t \in A$}
+        \RightLabel{\scriptsize $1$}
+        \UnaryInfC{$t \in A \cap \mathcal U \rightarrow t \in A $}
+        \DisplayProof
+    \end{center}
+        
+    $(ii)$ Provaremos que $t \in A \rightarrow t \in A \cap \mathcal U$ :
+    
+    \begin{center}
+        \AxiomC{}
+        \RightLabel{\scriptsize $1$}
+        \UnaryInfC{$ t \in A$}
+        \AxiomC{}
+        \UnaryInfC{$\top$}
+        \AxiomC{$\forall x (x \in \mathcal U \iff \top)$}
+        \UnaryInfC{$t \in \mathcal U \iff \top$}
+        \BinaryInfC{$t \in \mathcal U$}
+        \BinaryInfC{$t \in A \wedge t \in \mathcal U$}
+        \AxiomC{$\forall x (x \in A \cap \mathcal U \iff x \in A \wedge x \in \mathcal U)$}
+        \UnaryInfC{$t \in A \cap \mathcal U \iff t \in A \wedge t \in \mathcal U$}
+        \BinaryInfC{$t \in A \cap \mathcal U$}
+        \RightLabel{\scriptsize $1$}
+        \UnaryInfC{$t \in A \rightarrow t \in A \cap \mathcal U$}
+        \DisplayProof
+    \end{center}
+    
+   De $(i)$ e $(ii)$, construímos, com a regra do ``e'' introdução, $ (t \in A \cap \mathcal U \rightarrow t \in A) \wedge (t \in A \rightarrow t \in A \cap \mathcal U) $, que é equivalente a , $t \in A \cap \mathcal U \iff t \in A$.
+   
+   Dado que $t$ é arbitrário, obtemos $\forall x (x \in A \cap \mathcal U \iff x \in A)$.
+   
+   Assim, aplicando o Axioma da Extensão temos $A \cap \mathcal U = A$.
+
+\qquad
+
 \item $A \cup \mathcal U = \mathcal U$
+
+\textbf{Prova:}
+    
+$(i)$ Abaixo há a prova de $ t \in A \cup \mathcal U \rightarrow t \in \mathcal U $, para um $t$ arbitrário.
+
+Como a prova é muito grande, para caber na página, iremos modularizá-la.    
+
+\begin{center}
+    \AxiomC{}
+    \RightLabel{\scriptsize $1$}
+    \UnaryInfC{$t \in A \cup \mathcal U$}
+    \AxiomC{$\forall x (x \in A \cup \mathcal U \iff x \in A \vee t \in \mathcal U)$}
+    \UnaryInfC{$t \in A \cup \mathcal U \iff t \in A \vee t \in \mathcal U$}
+    \BinaryInfC{$t \in A \vee t \in \mathcal U$}
+    \AxiomC{}
+    \RightLabel{\scriptsize $2$}
+    \UnaryInfC{$(*)$}
+    \UnaryInfC{$ t \in \mathcal U$}
+    \AxiomC{}
+    \RightLabel{\scriptsize $2$}
+    \UnaryInfC{$ t \in \mathcal U$}
+    \RightLabel{\scriptsize $2$}
+    \TrinaryInfC{$t \in \mathcal U$}
+    \RightLabel{\scriptsize $1$}
+    \UnaryInfC{$t \in A \cup \mathcal U \rightarrow t \in \mathcal U $}
+    \DisplayProof
+\end{center}
+
+(*        
+\begin{center}
+    \AxiomC{}
+    \RightLabel{\scriptsize $2$}
+    \UnaryInfC{$ t \in A$}
+    \AxiomC{}
+    \UnaryInfC{$\top$}
+    \AxiomC{$\forall x (x \in  \mathcal U \iff \top)$}
+    \UnaryInfC{$t \in  \mathcal U \iff \top$}
+    \BinaryInfC{$ t \in \mathcal U$}
+    \BinaryInfC{$t \in A \wedge  t \in \mathcal U$}
+    \UnaryInfC{$t \in \mathcal U$}
+    \DisplayProof
+\end{center}        
+*)
+
+\qquad
+
+$(ii)$ Seja $t$ arbitrário, iremos construir uma prova para $ t \in \mathcal U \rightarrow t \in A \cup \mathcal U$ :
+
+\begin{center}
+    \AxiomC{}
+    \RightLabel{\scriptsize $1$}
+    \UnaryInfC{$ t \in \mathcal U$}
+    \UnaryInfC{$ t \in A \vee t \in \mathcal U$}
+    \AxiomC{$\forall x (x \in A \cup \mathcal U \iff x \in A \vee t \in \mathcal U)$}
+    \UnaryInfC{$t \in A \cup \mathcal U \iff t \in A \vee t \in \mathcal U$}
+    \BinaryInfC{$t \in A \cup \mathcal U$}
+    \RightLabel{\scriptsize $1$}
+    \UnaryInfC{$t \in \mathcal U \rightarrow t \in A \cup \mathcal U$}
+    \DisplayProof
+\end{center}
+    
+De $(i)$ e $(ii)$, concluímos que $ (t \in A \cup \mathcal U \rightarrow t \in \mathcal U ) \wedge (t \in \mathcal U \rightarrow t \in A \cup \mathcal U) $, ou seja, $t \in A \cup \mathcal U \iff t \in \mathcal U $.
+
+Como $t$ é arbitrário, é permitido dizer que temos $\forall x (x \in A \cup \mathcal U \iff x \in \mathcal U) $.
+
+Portanto, temos $A \cup \mathcal U = \mathcal U$, se aplicarmos o Axioma da Extensão no resultado obtido no parágrafo acima.
+
+\qquad
+
+\qquad
+
 \item $A \cap \emptyset = \emptyset$
+
+\textbf{Prova:}
+
+$(i)$ Abaixo segue uma prova de $ t \in A \cap \emptyset \rightarrow t \in \emptyset $, onde $t$ é arbitrário.
+    
+    \begin{center}
+        \AxiomC{}
+        \RightLabel{\scriptsize $1$}
+        \UnaryInfC{$t \in A \cap \emptyset$}
+        \AxiomC{$\forall x (x \in A \cap \emptyset \iff x \in A \wedge x \in \emptyset)$}
+        \UnaryInfC{$t \in A \cap \emptyset \iff t \in A \wedge t \in \emptyset$}
+        \BinaryInfC{$t \in A \wedge t \in \emptyset$}
+        \UnaryInfC{$ t \in \emptyset$}
+        \RightLabel{\scriptsize $1$}
+        \UnaryInfC{$t \in A \cap \emptyset \rightarrow t \in \emptyset $}
+        \DisplayProof
+    \end{center}
+        
+    $(ii)$ Provaremos que $t \in \emptyset \rightarrow t \in A \cap \emptyset$ :
+    
+    \begin{center}
+        \AxiomC{}
+        \RightLabel{\scriptsize $1$}
+        \UnaryInfC{$ t \in \emptyset$}
+        \AxiomC{$\forall x (x \in \emptyset \iff \bot)$}
+        \RightLabel{\scriptsize $1$}
+        \UnaryInfC{$ t \in \emptyset \iff \bot$}
+        \BinaryInfC{$\bot$}
+        \UnaryInfC{$t \in A$}
+        \AxiomC{}
+        \RightLabel{\scriptsize $1$}
+        \UnaryInfC{$ t \in \emptyset$}
+        \BinaryInfC{$t \in A \wedge t \in A$}
+        \AxiomC{$\forall x (x \in A \cap \emptyset \iff x \in A \wedge x \in \emptyset)$}
+        \UnaryInfC{$t \in A \cap \emptyset \iff t \in A \wedge t \in \emptyset$}
+        \BinaryInfC{$t \in A \cap \emptyset$}
+        \RightLabel{\scriptsize $1$}
+        \UnaryInfC{$t \in \emptyset \rightarrow t \in A \cap \emptyset$}
+        \DisplayProof
+    \end{center}
+    
+   De $(i)$ e $(ii)$, construímos, com a regra do ``e'' introdução, $ (t \in A \cap \emptyset \rightarrow t \in \emptyset) \wedge (t \in \emptyset \rightarrow t \in A \cap \emptyset) $, que é equivalente a , $t \in A \cap \emptyset \iff t \in \emptyset$.
+   
+   Dado que $t$ é arbitrário, obtemos $\forall x (x \in A \cap \emptyset \iff x \in \emptyset)$.
+   
+   Assim, aplicando o Axioma da Extensão temos $A \cap \emptyset = \emptyset$.
+   
+\qquad
+
 \item $A \cup \emptyset = A$
+
+\textbf{Prova:}
+    
+$(i)$ Abaixo há a prova de $ t \in A \cup \emptyset \rightarrow t \in A $, para um $t$ arbitrário.
+
+Como a prova é muito grande, para caber na página, iremos modularizá-la.    
+
+\begin{center}
+    \AxiomC{}
+    \RightLabel{\scriptsize $1$}
+    \UnaryInfC{$t \in A \cup \emptyset$}
+    \AxiomC{$\forall x (x \in A \cup \emptyset \iff x \in A \vee t \in \emptyset)$}
+    \UnaryInfC{$t \in A \cup \emptyset \iff t \in A \vee t \in \emptyset$}
+    \BinaryInfC{$t \in A \vee t \in \emptyset$}
+    \AxiomC{}
+    \RightLabel{\scriptsize $2$}
+    \UnaryInfC{$ t \in A$}
+    \AxiomC{}
+    \RightLabel{\scriptsize $2$}
+    \UnaryInfC{$(*)$}
+    \UnaryInfC{$ t \in A$}
+    \RightLabel{\scriptsize $2$}
+    \TrinaryInfC{$t \in A$}
+    \RightLabel{\scriptsize $1$}
+    \UnaryInfC{$t \in A \cup \emptyset \rightarrow t \in A $}
+    \DisplayProof
+\end{center}
+
+(*        
+\begin{center}
+    \AxiomC{}
+    \RightLabel{\scriptsize $2$}
+    \UnaryInfC{$ t \in \emptyset$}
+    \AxiomC{$\forall x (x \in \emptyset \iff \bot)$}
+    \UnaryInfC{$t \in \emptyset \iff \bot$}
+    \BinaryInfC{$\bot$}
+    \UnaryInfC{$t \in A $}
+    \DisplayProof
+\end{center}        
+*)
+
+\qquad
+
+$(ii)$ Seja $t$ arbitrário, iremos construir uma prova para $ t \in A \rightarrow t \in A \cup \emptyset$ :
+
+\begin{center}
+    \AxiomC{}
+    \RightLabel{\scriptsize $1$}
+    \UnaryInfC{$ t \in A$}
+    \UnaryInfC{$ t \in A \vee t \in \emptyset$}
+    \AxiomC{$\forall x (x \in A \cup \emptyset \iff x \in A \vee t \in \emptyset)$}
+    \UnaryInfC{$t \in A \cup \emptyset \iff t \in A \vee t \in \emptyset$}
+    \BinaryInfC{$t \in A \cup \emptyset$}
+    \RightLabel{\scriptsize $1$}
+    \UnaryInfC{$t \in A \rightarrow t \in A \cup \emptyset$}
+    \DisplayProof
+\end{center}
+    
+De $(i)$ e $(ii)$, concluímos que $ (t \in A \cup \emptyset \rightarrow t \in A ) \wedge (t \in A \rightarrow t \in A \cup \emptyset) $, ou seja, $t \in A \cup \emptyset \iff t \in A $.
+
+Como $t$ é arbitrário, é permitido dizer que temos $\forall x (x \in A \cup \emptyset \iff x \in A) $.
+
+Portanto, temos $A \cup \emptyset = A$, se aplicarmos o Axioma da Extensão no resultado obtido no parágrafo acima.
+
+\qquad
+
 \end{itemize}
 
 \item{\textbf{Comutatividade}}
