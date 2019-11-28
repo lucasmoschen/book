@@ -131,13 +131,18 @@ Note que nesse processo, a participação do ser humano está restrita apenas a 
 Isso expressa o sentido em que esses provadores são \textit{Automáticos}.
 
 De fato, algumas provadores implementam sistemas dedutivos que lidam internamente com o problema, desenvolvendo soluções pouco inteligíveis (resolução e variações algorítmicas da resolução para melhora de performance são as principais formas de implementar isso).
-Pode-se dizer que o processo de prova nesses casos é pouco acessível. Exemplos de sistmas, ou algoritmos populares são:
+Pode-se dizer que o processo de prova nesses casos é pouco acessível. Exemplos de ATPs populares são:
 
 \begin{itemize}
 	% E prover
-    \item \textbf{Algoritmo de Presburguer} : permite concluir se uma assertiva na \textit{aritmética de presburguer} para números naturais é válida. Em 1954, um aluno da universidade de Princeton implementou o algoritmo de Presburguer em um computador JOHNNIAC que foi capaz de provar que o produto entre números pares é par.
-    \item \textbf{Vampire\footnote{Vampire: www.vprover.org}}: é um poderoso provador automático implementado em \textit{C++}, para lógica de primeira ordem. Seu desenvolvimento se iniciou em 1994, e já venceu a \textit{copa mundial de provadores de teoremas}, além de diversas premiações menores.
+    \item \textbf{E theorem prover\footnote{https://wwwlehre.dhbw-stuttgart.de/~sschulz/E/E.html}} : suporta lógica de primeira ordem com igualdade. Aplica transformação de fórmulas num forma normal e vai aplicando a regra da resolução e para se achar uma contradição (eles negam o que se quer provar e colocam como axioma; se chegar em falso é porque o teorema vale, se não, não vale).
+    \pagebreak
+    \item \textbf{Vampire\footnote{www.vprover.org}}: é um poderoso provador automático implementado em \textit{C++}, para lógica de primeira ordem. Seu desenvolvimento se iniciou em 1994, e já venceu a \textit{copa mundial de provadores de teoremas}, além de diversas premiações menores.
+    \item \textbf{SNARK\footnote{http://www.ai.sri.com/~stickel/snark.html}}: um provador automático implementado em Lisp desenvolvido pelo SRI. Já foi usado pela NASA e em alguns outros projetos grandes. A documentação está meio desatualizada, mas sua vantagem prática é que pode ser chamado num ambiente LISP e aceita uma escrita diferente.
+    %refiro-me ao foto de não ser obrigado entrarem as fórmula nas linguagens tptp
 \end{itemize}
+
+Esses dois provadores implementam mecanismos similares de resolução. Além disso, os provadores automáticos (quase) todos suportam um formato de escrita de fórmulas numa sintaxe baseada em Prolog, que são as famílias de linguagens TPTP\footnote{http://www.tptp.org/}. Uma vantagem do SNARK é que ele permite uma escrita mais simples que essa, além de aceitar as TPTP.
 
 Em 1976, o computador IBM360 participou da prova dada por Apel e Haken para o \textit{Teorema das quatro cores}, mostrando que o uso de computadores poderia ser relevante no desenvolvimento da matemática (a prova desse teorema é baseada em exaustão, mas são milhares de casos; certamente a automação vira uma mão na roda nesses casos).
 
@@ -155,12 +160,12 @@ Problemas desse tipo abrem espaço para o paradigma que garante provas desenvolv
 
 Alguns \textit{ITPs} populares são:
 \begin{itemize}
-    \item \textbf{Coq Proof Assistant\footnote{Coq: coq.inria.fr}} : sistema de gestão de provas que permite exprimir assertivas matemáticas, checagem de provas, além de executa algumas provas automáticas. Embora Permita essa forte automação, é ainda considerado sistema de provas interativo, oferecendo um ambiente para provas checadas por máquina. Tem uma comunidade bem grande e adquiriu popularidade crescente após ser usado pra provar o teorema das quatro cores.
+    \item \textbf{Coq Proof Assistant\footnote{Coq: coq.inria.fr}} : sistema de gestão de provas que permite exprimir assertivas matemáticas, checagem de provas, além de executa algumas provas automáticas. Embora permita essa forte automação, é ainda considerado sistema de provas interativo, oferecendo um ambiente para provas checadas por máquina. Tem uma comunidade bem grande e adquiriu popularidade crescente após ser usado pra provar o teorema das quatro cores.
 
     \item \textbf{Isabelle\footnote{Isabelle: isabelle.in.tum.de}}: desenvolvido em parceria entre a Universidade de Cambridge e a Universidade Tecnica de Munique, Isabelle foi pensada para servir de assistente de provas geral, implementando lógica de alta ordem. Teve sua versão inicial lançada em 1986.
 \end{itemize}
 
-Mais a frente discutioms como o Lean implementa um plataforma entre os dois paradigmas: permite o desenvolvimento de provas interativas, sem abrir mão da automação.
+Tem outros que valem a pena ser lembrados, como o Agda e o ACL2, sendo este bem estabelecido para própositos de verificação de hardware. Mais a frente discutioms como o Lean implementa um plataforma entre os dois paradigmas: permite o desenvolvimento de provas interativas, sem abrir mão da automação.
 Podemos discutir \textit{em que ponto o sistema deixa de agir como assistente, e passa a ser considerado autônomo}, ou ainda, \textit{o que é automação}.
 
 %\subsection{O que é Automacão}
