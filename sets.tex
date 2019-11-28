@@ -601,8 +601,7 @@ A seguir teremos algumas propriedades e a prova do porque estão corretas, utili
 \item $A \cap A = A$
 
 \textbf{Prova:}
-    
-    Se não se lembra da definição de interceção em FOL dada na seção "Fundamentação", sugerimos fortemente que releia a parte "Definições"que se encontra na seção mencionada.
+    Se não se lembra da definição de intersecção em FOL dada na seção "Fundamentação", sugerimos fortemente que releia a parte "Definições" que se encontra na seção mencionada.
     
     $(i)$ Abaixo segue uma prova de $ t \in A \cap A \rightarrow t \in A $, onde $t$ é arbitrário.
     
@@ -1160,7 +1159,7 @@ eq_of_subset_of_subset
 \end{enumerate}
 
 \section{Cálculo em Conjuntos}
-Podemos provar que dois conjuntos são iguais argumentando sobre seus elementos, ou podemos ser mais eficientes e utilizar o cálculo juntamente com as propriedades vistas na seção $5.6$. Veja alguns exemplos:
+Podemos provar que dois conjuntos são iguais argumentando sobre seus elementos, ou podemos ser mais eficientes e utilizar o cálculo (comentado no capítulo de introdução) juntamente com as propriedades vistas na seção $5.6$. Veja alguns exemplos:
 
 \textbf{Exemplo 1:} Demonstre que $(A \setminus B)^c = A^c \cup B$
 
@@ -1193,9 +1192,11 @@ Relembrando um dos exemplos da seção $5.3$:
 \end{aligned}
 \end{equation*}
 
-COLOCAR ALGO AQUI
+É incrível como somente utilizando as propriedades vistas anteriormente, conseguimos provar essa igualdade que inicialmente para ser bem complicada, de uma forma tranquila e fácil de entender. O cálculo em conjuntos facilita muitas coisas do nosso estudo.
 
-Nos próximos exemplos, omitimos as quatro primeiras linhas, no entanto, lembre-se que elas existem, e devem ser incluídas no uso do provador.
+\subsection{Calc em Conjuntos}
+
+Como já visto em capítulos anteriores, existe uma forma de fazer cálculos matemáticos em lean: utilizando o identificador {\fontencoding{U}\fontfamily{cmtt}\selectfont calc}. Um exemplo super simples do uso desse método em conjuntos é o seguinte:
 
 \begin{lstlisting}
     import data.set
@@ -1207,6 +1208,8 @@ Nos próximos exemplos, omitimos as quatro primeiras linhas, no entanto, lembre-
       calc
         B = A : eq.symm h
 \end{lstlisting}
+
+OBS: Nos próximos exemplos, omitimos as quatro primeiras linhas, no entanto, lembre-se que elas existem e devem ser incluídas no uso do provador.
 
 Nesse caso, utilizamos {\fontencoding{U}\fontfamily{cmtt}\selectfont eq.symm h}, que já nos deu a igualdade {\fontencoding{U}\fontfamily{cmtt}\selectfont B = A} direto. Mas tem outro jeito. Podemos querer somente baseado em {\fontencoding{U}\fontfamily{cmtt}\selectfont h}, reescrever {\fontencoding{U}\fontfamily{cmtt}\selectfont B}, e para isso utilizamos a tática {\fontencoding{U}\fontfamily{cmtt}\selectfont rewrite}.
 
@@ -1307,13 +1310,182 @@ Esse é um ótimo exemplo de especificação de parâmetros no lema, entretanto,
 
 Antes de finalizarmos a seção, saiba que os lemas que usamos dentro do {\fontencoding{U}\fontfamily{cmtt}\selectfont calc}, não precisam ser já criados dentro do Lean. Você pode criar um lema, prová-lo e depois utilizá-lo para provar outros lemas, o que se torna muito divertido!
 \section{Famílias Indexadas}
-
 \subsection{Definição}
-Ainda vai ter algo escrito aqui
+Dado um conjunto $I$, podemos estar interessados em trabalhar com todos os subconjuntos com elementos de $I$ que carreguem certa propriedade $P$, o que denominamos como sendo uma família $(A_i)_{i\in I}$ de conjuntos indexados por elementos de $I$.
+A definição fica mais clara com alguns exemplos:
+
+\begin{itemize}
+  \item Sendo $I=\mathbb{N}$ e $P$ a propriedade do elemento ser menor ou igual que $i$, temos por exemplo, $A_{9}={0,1,2,3,4,5,6,7,8,9}$.
+  \item Sendo $I$ o conjunto de todas as palavras da língua portuguesa e $P$ a propriedade da palavra começar com a letra representada pela variável $i$, temos então como exemplo, $B_j=\{$janela, jejum, jibóia, junto, $\dots\}$
+\end{itemize}
+
+E semelhante as definições de união e intersecção para conjuntos, também podemos definir esses termos para família indexadas:
+
+\begin{itemize}
+  \item \textbf{Intersecção:} Um elemento $x$ pertence a intersecção da família indexada se e somente se, pertence a todos os conjuntos da família.
+  \[\bigcap_{i\in I} A_i = \{x \mid x \in A_i\ para\ todo\ i\in I\}\]
+  \[ou\ \forall x\ (x \in \bigcap_{i \in I} A_i \leftrightarrow \forall i \in I\ (x \in A_i))\]
+  \item \textbf{União:} Um elemento $x$ pertence a união da família indexada se e somente se, pertence a pelo menos um dos conjuntos da família.
+  \[\bigcup_{i\in I} A_i = \{x \mid x \in A_i\ para\ algum\ i\in I\}\]
+  \[ou\ \forall x\ (x \in \bigcup_{i \in I} A_i \leftrightarrow \exists i \in I\ (x \in A_i))\]
+\end{itemize}
+
+Aplicando isso nos exemplos anteriores, temos no primeiro $\bigcap_{i \in I} A_i = {0}$ e $\bigcup_{i \in I} A_i = \mathbb{N}$. Já no segundo, temos $\bigcap_{i \in I} A_i = \emptyset$, pois não existe nenhuma palavra que comece com duas letras ao mesmo tempo, e $\bigcup_{i \in I} A_i = I$, ou seja, o conjunto de todas as palavras.
+
+Dentro desse assunto, também temos algumas propriedades para a união e a intersecção, e iremos provar uma delas formalmente, veja:
+
+\begin{itemize}
+  \item $A \cup \bigcap_{i \in I} B_i = \bigcap_{i \in I} (A \cup B_i)$
+  \item $A \cap \bigcup_{i \in I} B_i = \bigcup_{i \in I} (A \cap B_i)$
+  
+  \textbf{Prova:} Suponha que $x \in A \cap \bigcup_{i \in I} B_i$, então pela definição de intersecção de conjuntos, $x \in A$ e $x \in \bigcup_{i \in I} B_i$, ou seja, $x \in B_i$ para algum $i \in I$. Logo, $x \in A \cap B_i$ e consequentemente pertence a $\bigcup_{i \in I}(A \cap B_i)$.
+  
+  Para a volta, suponha $x \in \bigcup_{i \in I} (A \cap B_i)$, assim, para algum $i \in I$, $x \in (A \cap B_i)$. Pela definição de intersecção, $x \in A$ e $x \in B_i$ e como consequência, $x \in \bigcup_{i \in I} B_i$. Por fim, $x \in A \cap \bigcup_{i \in I} B_i$.
+    
+  \item $\overline{\bigcap_{i \in I} A_i} = \bigcup_{i \in I} \overline{A_i}$
+  \item $\overline{\bigcup_{i \in I} A_i} = \bigcap_{i \in I} \overline{A_i}$
+  \item $\bigcap_{i \in I} \bigcap_{j \in J} A_{i,j} = \bigcap_{j \in J} \bigcap_{i \in I} A_{i,j}$
+  \item $\bigcup_{i \in I} \bigcup_{j \in J} A_{i,j} = \bigcup_{j \in J} \bigcup_{i \in I} A_{i,j}$
+\end{itemize}
+
+Como já deve ter notado, nas últimas duas propriedades $A_{i,j}$ é indexado por dois conjuntos $I$ e $J$, o que significa que $\forall i$ e $\forall j$, nós temos um conjunto $A_{i,j}$.
+
+Um caso interessante de se tratar, é quando $I$ possui somente dois elentos, por exemplo $I=\{r,s\}$, e os conjuntos indexados são $A_i={i}$. Logo, a família indexada $(A_i)_{i \in I}$ só possui dois conjuntos $A_r={r}$ e $A_s={s}$. Desse modo, a intersecção e a união para essa família é justamente a intersecção e a união de dois conjuntos:
+
+\[\bigcap_{i \in I} A_i = A_r \cap A_s\]
+\[\bigcup_{i \in I} A_i = A_r \cup A_s\]
+
+O que nos faz refletir que na verdade, a intersecção e a união para $2$ conjuntos é somente um caso particular dessas definições para famílias indexadas.
 
 \subsection{Em Lean}
-Ainda vai ter algo escrito aqui
+Sendo {\fontencoding{U}\fontfamily{cmtt}\selectfont I U : Type}, nós podemos especificar que {\fontencoding{U}\fontfamily{cmtt}\selectfont A} é uma família de conjuntos indexados escrevendo {\fontencoding{U}\fontfamily{cmtt}\selectfont A : I → set U}. Ou seja, {\fontencoding{U}\fontfamily{cmtt}\selectfont A} é uma função tal que para cada elemento {\fontencoding{U}\fontfamily{cmtt}\selectfont i} do tipo {\fontencoding{U}\fontfamily{cmtt}\selectfont I}, ela retorna um conjunto {\fontencoding{U}\fontfamily{cmtt}\selectfont A i}. Acerca da notação em lean, ainda temos:
 
+\begin{itemize}
+  \item $x \in \bigcap_{i \in I} A_i \rightarrow$ {\fontencoding{U}\fontfamily{cmtt}\selectfont x ∈ Union A} ou {\fontencoding{U}\fontfamily{cmtt}\selectfont x ∈ ⋃ i, A i}
+  
+  Ambas as formas possuem uma interpretação de {\fontencoding{U}\fontfamily{cmtt}\selectfont ∀ i, x ∈ A i}
+
+  \item $\bigcap \rightarrow$ {\fontencoding{U}\fontfamily{cmtt}\selectfont $\backslash$I} ou {\fontencoding{U}\fontfamily{cmtt}\selectfont $\backslash$bigcap}
+  \item $x \in \bigcup_{i \in I} A_i \rightarrow$ {\fontencoding{U}\fontfamily{cmtt}\selectfont x ∈ Inter A} ou {\fontencoding{U}\fontfamily{cmtt}\selectfont x ∈ ⋂ i, A i}
+  
+  Ambas as formas possuem uma interpretação de {\fontencoding{U}\fontfamily{cmtt}\selectfont ∃ i, x ∈ A i}
+
+  \item $\bigcup \rightarrow$ {\fontencoding{U}\fontfamily{cmtt}\selectfont $\backslash$Un} ou {\fontencoding{U}\fontfamily{cmtt}\selectfont $\backslash$bigcup}
+\end{itemize}
+
+Uma maneira de trabalhar com as famílias indexadas e suas interpretações, é descrita no código a seguir:
+
+\begin{lstlisting}
+  import data.set
+  open set
+  variables {I U : Type}
+  variable {A : I → set U}
+
+  theorem exists_of_mem_Union {x : U} (h : x ∈ ⋃ i, A i) :
+    ∃ i, x ∈ A i :=
+  by simp * at *
+
+  theorem mem_Union_of_exists {x : U} (h : ∃ i, x ∈ A i) :
+    x ∈ ⋃ i, A i :=
+  by simp * at *
+
+  theorem forall_of_mem_Inter {x : U} (h : x ∈ ⋂ i, A i) :
+    ∀ i, x ∈ A i :=
+  by simp * at *
+
+  theorem mem_Inter_of_forall {x : U} (h : ∀ i, x ∈ A i) :
+    x ∈ ⋂ i, A i :=
+  by simp * at *
+\end{lstlisting}
+
+Não se preocupe em entender as provas dos teoremas, o importante é saber como utilizá-los. Além desses, podemos querer provar também as regras de introdução e eliminação:
+
+\begin{lstlisting}
+  theorem Inter.intro {x : U} (h : ∀ i, x ∈ A i) : x ∈ ⋂ i, A i :=
+  by simp; assumption
+
+  theorem Inter.elim {x : U} (h : x ∈ ⋂ i, A i) (i : I) : x ∈ A i :=
+  by simp at h; apply h
+
+  theorem Union.intro {x : U} (i : I) (h : x ∈ A i) :
+    x ∈ ⋃ i, A i :=
+  by {simp, existsi i, exact h}
+
+  theorem Union.elim {b : Prop} {x : U}
+    (h₁ : x ∈ ⋃ i, A i) (h₂ : ∀ (i : I), x ∈ A i → b) : b :=
+  by {simp at h₁, cases h₁ with i h, exact h₂ i h}
+\end{lstlisting}
+
+Novamente, se preocupe somente em entender o que cada teorema faz para poder utilizá-lo. Algumas aplicações seguem o padrão ilustrado a seguir:
+
+\begin{lstlisting}
+  example (x : U) : x ∈ ⋂ i, A i :=
+  Inter.intro
+    (assume i,
+    show x ∈ A i, from sorry)
+
+  example (x : U) (i : I) (h : x ∈ ⋂ i, A i) : x ∈ A i :=
+  Inter.elim h i
+
+  example (x : U) (i : I) (h : x ∈ A i) : x ∈ ⋃ i, A i :=
+  Union.intro i h
+
+  example (P : Prop) (x : U) (h : x ∈ ⋃ i, A i) : P :=
+  Union.elim h
+    (assume i,
+    assume h : x ∈ A i,
+    show P, from sorry)
+\end{lstlisting}
+
+Agora já possuímos elementos o suficiente para provar propriedades acerca das famílias indexadas. Voltando a segunda propriedade da seção anterior, a única a qual fizemos uma prova de matemática formal, vamos agora tentar prová-la no lean:
+
+\begin{lstlisting}
+  variables {I U : Type}
+  variables (A : I → set U) (B : set U)
+
+  example : ( ⋃ i, B ∩ A i) = B ∩ ( ⋃ i, A i) :=
+  eq_of_subset_of_subset
+  (assume x,
+  assume h : x ∈ ⋃ i, B ∩ A i,
+  Union.elim h
+    (assume i,
+    assume h1 : x ∈ B ∩ A i,
+    have h2 : x ∈ B, from and.left h1,
+    have h3 : x ∈ A i, from and.right h1,
+    have h4 : x ∈ ⋃ i, A i, from Union.intro i h3,
+    show x ∈ B ∩ ⋃ i, A i, from and.intro h2 h4))
+  (assume x,
+    assume h : x ∈ B ∩ ( ⋃ i, A i),
+    have h1 : x ∈ ⋃ i, A i, from h.right,
+    Union.elim h1
+      (assume i : I,
+      assume h2 : x ∈ A i,
+      have h3 : x ∈ B ∩ A i, from and.intro h.left h2,
+      show x ∈ ⋃ i, B ∩ A i, from Union.intro i h3))
+\end{lstlisting}
+
+É válido lembrar que às vezes queremos trabalhar com famílias $(A_{i,j})_{i \in I, j \in J}$ indexadas por duas variáveis. Isso continua fácil de se trabalhar no lean, só precisamos definir {\fontencoding{U}\fontfamily{cmtt}\selectfont A : I → J → set U}, significando que dado {\fontencoding{U}\fontfamily{cmtt}\selectfont i : I} e {\fontencoding{U}\fontfamily{cmtt}\selectfont j : J}, obtemos um conjunto {\fontencoding{U}\fontfamily{cmtt}\selectfont A i j : set U}. Aqui está um exemplo de uma prova envolvendo família indexada por duas variáveis:
+
+\begin{lstlisting}
+  variables {I J U : Type}
+  variables (A : I → J → set U)
+
+  example : ( ⋃ i, ⋂ j, A i j) ⊆ ( ⋂ j, ⋃ i, A i j) :=
+  assume x,
+  assume h : x ∈ ⋃ i, ⋂ j, A i j,
+  Union.elim h
+  (assume i,
+  assume h1 : x ∈ ⋂ j, A i j,
+  show x ∈ ⋂ j, ⋃ i, A i j, from
+    Inter.intro
+    (assume j,
+    have h2 : x ∈ A i j, from Inter.elim h1 j,
+    Union.intro i h2))
+\end{lstlisting}
+
+\textbf{OBS:} Você pode encontrar um problema quando reproduzir esses códigos no lean, e para evitar isso, lembre-se que todos os arquivos precisam ter as duas primeiras linhas (para importar e abrir as bibliotecas). Mas além disso, outro conflito possível é sobre as definições de variáveis, pois na parte de teoremas definimos a variável {\fontencoding{U}\fontfamily{cmtt}\selectfont A}, e depois nos exemplos definimos ela novamente, o que causa um conflito. Para evitar isso, você pode simplesmente não utilizar o mesmo nome de variável duas vezes, ou então definir um escopo local para elas, utilizando {\fontencoding{U}\fontfamily{cmtt}\selectfont section} e {\fontencoding{U}\fontfamily{cmtt}\selectfont end}, respectivamente antes e depois dos seus exemplos/teoremas.
+
+{\fontencoding{U}\fontfamily{cmtt}\selectfont }
 \section{Conjunto das Partes}
 
 \subsection{Definição}
@@ -1332,7 +1504,7 @@ De fato, no \textbf{Exemplo 1}, o conjunto das partes $\wp(A)$ possui 8 elemento
 
 Agora, iremos provar no caso de $A$ ter $k$ elementos: ($k \in  \mathbb{N}$) 
 
-A demonstração para esse caso é bastante simples, vamos utilizar o \textbf{Princípio Fundamental da Contagem} para contar quantos subconjuntos o conjunto $A$ possui.
+A demonstração para esse caso é bastante simples, vamos contar quantos subconjuntos o conjunto $A$ possui.
 
 Vamos criar um subconjunto qualquer $B$. Para cada um dos $k$ elementos de A, existem somente duas possibilidades:
 
@@ -1344,14 +1516,14 @@ Vamos criar um subconjunto qualquer $B$. Para cada um dos $k$ elementos de A, ex
   
 \end{itemize}
 
-Assim, pelo \textbf{PFC}, nós podemos montar o conjunto $B$ de
+Assim, nós podemos montar o conjunto $B$ de
 \begin{center}
     $\underbrace{\begin{matrix} 2\cdot2\cdot2\cdot(\cdots)\cdot2\end{matrix}}_{k} = 2^k$ maneiras.
 \end{center}
 E, portanto, há todos os $2^k$ subconjuntos de $A$ em $\wp(A)$.
 
 \subsection{Conjuntos das Partes em Lean}
-Em lean, trataremos ``Conjuntos das Partes" como {\fontencoding{U}\fontfamily{cmtt}\selectfont powerset}, e pode ser definido da seguinte forma:
+Em lean, trataremos ``Conjuntos das Partes"  como {\fontencoding{U}\fontfamily{cmtt}\selectfont powerset}, e pode ser definido da seguinte forma:
 \begin{lstlisting}
 variable {U : Type}
 
