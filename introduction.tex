@@ -49,8 +49,8 @@ Vale a discussão de se \textit{um ser humano sem linguagem enlouqueceria}.
 Para motivação, considere o seguinte problema: \textit{Você acorda em uma sala com duas portas. Uma dá para a liberdade, e a outra leva a morte, mas você não sabe qual é cada uma.
 Junto a cada porta há um guarda. Um dos guardas é sempre sincero, enquanto o outro é sempre mentirozo. Você tem direito a uma única pergunta para decidir qual porta tomar. O que você faz?}
 
-Esse é claramente um problema envolvendo um raciocínio complexo, e, se tratando da sua vida em jogo, exige plena certeza da solução antes de uma resposta definitiva.
-De fato, seremos capazes de formalizar problemas desse tipo, e obter métodos de derivação para obter um prova para a resposta.
+Esse é claramente um problema envolvendo um raciocínio complexo, e, se tratando da sua vida em jogo (ou fingindo), exige plena certeza da solução antes de uma resposta definitiva.
+De fato, seremos capazes de formalizar problemas desse tipo, e obter métodos de derivação para obter um prova para a resposta. Essa formalização se dará em dois níveis: o semântico e o sintático. O primeiro tem relação direta com nossa interpretação sobre os objetos que manipularemos, que serão definidos como \textit{"fórmulas bem formadas"} mais à frente. O segundo está relacionado com regras de derivação e inferência que operamos sobre esses objetos e (normalmente desejamos) que preserve relações da sua derivabilidade com a corretude a ser definida semânticamente. Esse conjunto de regras de inferência que operam sobre as fórmulas para provar teoremas é chamado de \textbf{sistema dedutivo}.
 
 \subsection{Dedução Natural}
 % Com que nível de detalhe nós devemos abordar as regras??
@@ -113,7 +113,7 @@ A compactação do conjunto de regras de demonstração viabilizaria computadore
 % falamos sobre os ATPs, alguns exemplos... Descrevemos características.
 % https://en.wikipedia.org/wiki/Automated_theorem_proving
 % https://www.cs.cmu.edu/~fp/courses/atp/handouts/atp.pdf
-Os provadores automáticos (\textit{Automated theorem proving}) são uma primeira classe de provadores assistentes, e visam a obtenção ou verificação de um teorema.
+Os provadores automáticos (\textit{Automated theorem proving}) são uma classe de provadores assistentes e visam a obtenção ou verificação de um teorema.
 Portanto, pertencem a uma classe voltada a obtenção de um termo que representa uma prova, ou a verificação de um teorema, que igualmente se reduz a tarefa de obtenção de uma prova.
 
 Dessa forma, um \textit{ATP} pode tomar como entrada um teorema, e deveria ser capaz de dar um retorno do tipo \textit{verdadeiro} ou \textit{falso}, uma prova ou contraexemplo para a assertiva.
@@ -128,7 +128,7 @@ Pode-se dizer que o processo de prova nesses casos é pouco acessível. Exemplos
     \item \textbf{Vampire\footnote{Vampire: www.vprover.org}}: é um poderoso provador automático implementado em \textit{C++}, para lógica de primeira ordem. Seu desenvolvimento se iniciou em 1994, e já venceu a \textit{copa mundial de provadores de teoremas}, além de diversas premiações menores.
 \end{itemize}
 
-Em 1976, o computador IBM360 participou da prova dada por Apel e Haken para o \textit{Teorema das quatro cores}, mostrando que o uso de computadores poderia ser relevante no desenvolvimento da matemática.
+Em 1976, o computador IBM360 participou da prova dada por Apel e Haken para o \textit{Teorema das quatro cores}, mostrando que o uso de computadores poderia ser relevante no desenvolvimento da matemática (a prova desse teorema é baseada em exaustão, mas são milhares de casos; certamente a automação vira uma mão na roda nesses casos).
 
 \subsection{Provadores de Teorema Interativos}
 % Damos características desse paradigma, exemplos...
