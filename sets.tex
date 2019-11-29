@@ -742,7 +742,7 @@ show x ∈ B ∩ A, from and.intro h₂ h₁ \end{lstlisting}
 
 \section{Propriedades}
 
-A seguir teremos algumas propriedades e provas, utilizando várias maneiras vistas anteriormente neste capítulo.
+A seguir teremos algumas propriedades e provas, utilizando várias maneiras vistas anteriormente neste capítulo. Não estranhe o fato de algumas não terem provas, pois foram deixadas como exercício no final do capítulo.
 
 \begin{enumerate}
 \item{\textbf{Básicas}}
@@ -955,9 +955,7 @@ Como $t$ é arbitrário, é permitido dizer que temos $\forall x (x \in A \cup \
 
 Portanto, temos $A \cup \mathcal U = \mathcal U$, se aplicarmos o Axioma da Extensão no resultado obtido no parágrafo acima.
 
-\qquad
-
-\qquad
+$\qquad$
 
 \item $A \cap \emptyset = \emptyset$
 
@@ -1007,7 +1005,7 @@ $(i)$ Abaixo segue uma prova de $ t \in A \cap \emptyset \rightarrow t \in \empt
    
    Assim, aplicando o Axioma da Extensão temos $A \cap \emptyset = \emptyset$.
    
-\qquad
+$\qquad$
 
 \item $A \cup \emptyset = A$
 
@@ -1051,7 +1049,7 @@ Como a prova é muito grande, para caber na página, iremos modularizá-la.
 \end{center}        
 *)
 
-\qquad
+$\qquad$
 
 $(ii)$ Seja $t$ arbitrário, iremos construir uma prova para $ t \in A \rightarrow t \in A \cup \emptyset$ :
 
@@ -1073,73 +1071,130 @@ De $(i)$ e $(ii)$, concluímos que $ (t \in A \cup \emptyset \rightarrow t \in A
 Como $t$ é arbitrário, é permitido dizer que temos $\forall x (x \in A \cup \emptyset \iff x \in A) $.
 
 Portanto, temos $A \cup \emptyset = A$, se aplicarmos o Axioma da Extensão no resultado obtido no parágrafo acima.
-
-\qquad
-
 \end{itemize}
+
+$\qquad$
 
 \item{\textbf{Comutatividade}}
 \begin{itemize}
-\item $A \cap B = B \cap A$ (a prova desta identidade escontra-se na seção de Provas de Teoremas)
+\item $A \cap B = B \cap A$ 
+
+A prova desta identidade formal e por Dedução Natural escontra-se na seção de Provas de Teoremas. Veja abaixo a prova em Lean:
+
+\begin{lstlisting}
+  example : A ∩ B = B ∩ A :=
+  eq_of_subset_of_subset
+    (assume x,
+    assume h : x ∈ A ∩ B,
+    have h₁ : x ∈ A, from h.left,
+    have h₂ : x ∈ B, from h.right,
+    show x ∈ B ∩ A, from and.intro h₂ h₁)
+    (assume x,
+    assume h : x ∈ B ∩ A,
+    have h₁ : x ∈ B, from h.left,
+    have h₂ : x ∈ A, from h.right,
+    show x ∈ A ∩ B, from and.intro h₂ h₁)
+\end{lstlisting}
+
+$\qquad$
+
 \item $A \cup B = B \cup A$
 \end{itemize}
+
+$\qquad$
 
 \item{\textbf{Associatividade}}
 \begin{itemize}
 \item $(A \cap B) \cap C = A \cap (B \cap C)$
+
+$\qquad$
+
 \item $(A \cup B) \cup C = A \cup (B \cup C)$
+
+\textbf{Prova em Lean:}
+
+\begin{lstlisting}
+  example : (A ∪ B) ∪ C = A ∪ (B ∪ C) :=
+  eq_of_subset_of_subset
+  (assume x,
+  assume h : x ∈ (A ∪ B) ∪ C,
+  or.elim h
+    (assume h₁ : x ∈ A ∪ B,
+    or.elim h₁
+      (assume h₂ : x ∈ A,
+      show x ∈ A ∪ (B ∪ C), from or.inl h₂)
+      (assume h₂ : x ∈ B,
+      have h₃ : x ∈ B ∪ C, from or.inl h₂,
+      show x ∈ A ∪ (B ∪ C), from or.inr h₃))
+    (assume h₁ : x ∈ C,
+    have h₂ : x ∈ B ∪ C, from or.inr h₁,
+    show x ∈ A ∪ (B ∪ C), from or.inr h₂))
+  (assume x,
+  assume h : x ∈ A ∪ (B ∪ C),
+  or.elim h
+    (assume h₁ : x ∈ A,
+    have h₂ : x ∈ A ∪ B, from or.inl h₁,
+    show x ∈ (A ∪ B) ∪ C, from or.inl h₂)
+    (assume h₁ : x ∈ B ∪ C,
+    or.elim h₁
+      (assume h₂ : x ∈ B,
+      have h₃ : x ∈ A ∪ B, from or.inr h₂,
+      show x ∈ (A ∪ B) ∪ C, from or.inl h₃)
+      (assume h₂ : x ∈ C,
+      show x ∈ (A ∪ B) ∪ C, from or.inr h₂))) \end{lstlisting}
 \end{itemize}
+
+$\qquad$
 
 \item{\textbf{Distributividade}}
 \begin{itemize}
 \item $A \cap (B \cup C) = (A \cap B) \cup (A \cap C)$
-\item $A \cup (B \cap C) = (A \cup B) \cap (A \cup C)$
 
 \textbf{Prova em Lean:}
 \begin{lstlisting}
-example : A ∪ (B ∩ C) = (A ∪ B) ∩ (A ∪ C) :=
-eq_of_subset_of_subset
-    (assume x,
-    assume h : x ∈ A ∪ (B ∩ C),
-    or.elim h
-        (assume h₁ : x ∈ A,
-        have h₂ : x ∈ A ∪ B, from or.inl h₁,
-        have h₃ : x ∈ A ∪ C, from or.inl h₁,
-        show x ∈ (A ∪ B) ∩ (A ∪ C), from and.intro h₂ h₃)
-        (assume h₁ : x ∈ B ∩ C,
-        have h₂ : x ∈ B, from and.left h₁,
-        have h₃ : x ∈ C, from and.right h₁,
-        have h₄ : x ∈ A ∪ B, from or.inr h₂,
-        have h₅ : x ∈ A ∪ C, from or.inr h₃,
-        show x ∈ (A ∪ B) ∩ (A ∪ C), from and.intro h₄ h₅))
-    (assume x,
-    assume h : x ∈ (A ∪ B) ∩ (A ∪ C),
-    have h₁ : x ∈ A ∪ B, from and.left h,
-    have h₂ : x ∈ A ∪ C, from and.right h,
-    or.elim h₁
-        (assume h₃ : x ∈ A,
-        show x ∈ A ∪ (B ∩ C), from or.inl h₃)
-        (assume h₃ : x ∈ B,
-        or.elim h₂
-            (assume h₄ : x ∈ A,
-            show x ∈ A ∪ (B ∩ C), from or.inl h₄)
-            (assume h₄ : x ∈ C,
-            have h₅ : x ∈ B ∩ C, from and.intro h₃ h₄,
-            show x ∈ A ∪ (B ∩ C), from or.inr h₅))) \end{lstlisting}
+  example : A ∩ (B ∪ C) = (A ∩ B) ∪ (A ∩ C) :=
+  eq_of_subset_of_subset
+  (assume x,
+  assume h : x ∈ A ∩ (B ∪ C),
+  have h.r : x ∈ B ∪ C, from h.right,
+  or.elim h.r
+    (assume h₁ : x ∈ B,
+    have h₂ : x ∈ A ∩ B, from and.intro h.left h₁,
+    show x ∈ (A ∩ B) ∪ (A ∩ C), from or.inl h₂)
+    (assume h₁ : x ∈ C,
+    have h₂ : x ∈ A ∩ C, from and.intro h.left h₁,
+    show x ∈ (A ∩ B) ∪ (A ∩ C), from or.inr h₂))
+  (assume x,
+  assume h : x ∈ (A ∩ B) ∪ (A ∩ C),
+  or.elim h
+    (assume h₁ : x ∈ A ∩ B,
+    have h₂ : x ∈ B ∪ C, from or.inl h₁.right,
+    show x ∈ A ∩ (B ∪ C), from and.intro h₁.left h₂)
+    (assume h₁ : x ∈ A ∩ C,
+    have h₂ : x ∈ B ∪ C, from or.inr h₁.right,
+    have h₃ : x ∈ A, from h₁.left,
+    show x ∈ A ∩ (B ∪ C), from and.intro h₃ h₂))\end{lstlisting}
 
+$\qquad$
+
+\item $A \cup (B \cap C) = (A \cup B) \cap (A \cup C)$
 \end{itemize}
+
+$\qquad$
 
 \item{\textbf{Complementar/Lei de Demorgan}}
 \begin{itemize}
-\item $\mathcal U ^c = \emptyset$
-\item $\emptyset ^c = \mathcal U$
+\item $\mathcal \overline U= \emptyset$
 
-\qquad
+$\qquad$
+
+\item $\overline \emptyset = \mathcal U$
+
+$\qquad$
 
 \item $A \cap \overline{A} = \emptyset$
 
 \textbf{Prova:}
-    
     Iremos utilizar, nesta prova, as definições de conjunto complementar, interseção e do conjunto vazio. Caso não se recorde, volte a seção de "Fundamentação", na parte "Definições".
     
     $(i)$ Provaremos que, para um $t$ arbitrário, $ t \in A \cap \overline A \rightarrow t \in \emptyset $ (como esta prova é muito extensa, para caber na página ,iremos modularizar ela) :
@@ -1156,7 +1211,7 @@ eq_of_subset_of_subset
     \end{center}
     $*$\}
     
-    \qquad
+    $\qquad$
     
     \begin{center}
         \AxiomC{}
@@ -1179,7 +1234,7 @@ eq_of_subset_of_subset
         \DisplayProof
     \end{center}
     
-    \qquad
+    $\qquad$
     
     $(ii)$ Provaremos que, para $t$ arbitrário, vale $ t \in \emptyset \rightarrow t \in A \cap \overline A$ :
     
@@ -1202,23 +1257,20 @@ eq_of_subset_of_subset
     
     Logo, utilizando o Axioma da Extensão, chegamos a $A \cap \overline{A} = \emptyset$.
 
-\qquad
+$\qquad$
 
-\item $A \cup A^c = \mathcal U$
+\item $A \cup \overline A = \mathcal U$
 
-\qquad
+$\qquad$
 
 \item $\overline {\overline {A}} = A$
 
 \textbf{Prova:}
-
-\qquad
-
- Iremos utilizar, na prova a seguir, a definição de conjunto complementar. Caso não se recorde, volte a seção de "Fundamentação", na parte "Definições".
+Iremos utilizar, na prova a seguir, a definição de conjunto complementar. Caso não se recorde, volte a seção de "Fundamentação", na parte "Definições".
  
- \qquad
+$\qquad$
 
-$(i)$ Provaremos que, para um $t$ qualquer, vale $ t \in \overline {\overline {A}} \rightarrow t \in A $ :
+$(i)$ Provaremos que para um $t$ qualquer, vale $ t \in \overline {\overline {A}} \rightarrow t \in A $ :
    
    
     
@@ -1273,11 +1325,16 @@ Como $t$ é arbitrário, chegamos em $\forall x (x \in \overline {\overline {A}}
 
 Portanto, pelo Axioma da Extensão, concluímos que $\overline {\overline {A}} = A$.
 
-\qquad
+$\qquad$
 
-\item $(A \cap B)^c = A^c \cup B^c$
-\item $(A \cup B)^c = A^c \cap B^c$
+\item $\overline{(A \cap B)} = \overline A \cup \overline B$
+
+$\qquad$
+
+\item $\overline{(A \cup B)} = \overline A \cap \overline B$
 \end{itemize}
+
+$\qquad$
 
 \item{\textbf{Lei da Absorção}}
 \begin{itemize}
@@ -1294,26 +1351,30 @@ eq_of_subset_of_subset
     have h₁ : x ∈ P ∪ Q, from or.inl h,
     show x ∈ P ∩ (P ∪ Q), from and.intro h h₁)\end{lstlisting}
 
+$\qquad$
+
 \item $A \cup (A \cap B) = A$
 \end{itemize}
 
+$\qquad$
+
 \item{\textbf{Extras}}
 \begin{itemize}
-\item $A \setminus B = A \cap B^c$
+\item $A \setminus B = A \cap \overline B$
 \end{itemize}
 \end{enumerate}
 
 \section{Cálculo em Conjuntos}
 Podemos provar que dois conjuntos são iguais argumentando sobre seus elementos, ou podemos ser mais eficientes e utilizar o cálculo (comentado no capítulo de introdução) juntamente com as propriedades vistas na seção $5.6$. Veja alguns exemplos:
 
-\textbf{Exemplo 1:} Demonstre que $(A \setminus B)^c = A^c \cup B$
+\textbf{Exemplo 1:} Demonstre que $\overline{(A \setminus B)} = \overline A \cup B$
 
 \textbf{Prova:} Utilizando cálculo:
 \begin{equation*}
 \begin{aligned}
-  (A \setminus B)^c &= (A \cap B^c)^c)\\
-  &= A^c \cup (B^c)^c\\
-  & = A^c \cup B
+  \overline{(A \setminus B)} &= \overline{(A \cap \overline B)}\\
+  &= \overline A \cup \overline{\overline B}\\
+  & = \overline A \cup B
 \end{aligned}
 \end{equation*}
 
@@ -1326,13 +1387,13 @@ Relembrando um dos exemplos da seção $5.3$:
 \textbf{Prova:} Utilizando cálculo:
 \begin{equation*}
 \begin{aligned}
-  (A \setminus B) \cup (B \setminus A) &= (A \cap B^c) \cup (B \cap A^c)\\
-  &= ((A \cap B^c) \cup B) \cap ((A \cap B^c) \cup A^c)\\
-  &= ((A \cup B) \cap (B^c \cup B)) \cap ((A \cup A^c) \cap (B^c \cup A^c))\\
-  &= ((A \cup B) \cap \mathcal U) \cap (\mathcal U \cap (B^c \cup A^c))\\
-  &= (A \cup B) \cap (B^c \cup A^c)\\
-  &= (A \cup B) \cap (A^c \cup B^c)\\
-  &= (A \cup B) \cap (A \cap B)^c\\
+  (A \setminus B) \cup (B \setminus A) &= (A \cap \overline B) \cup (B \cap \overline A)\\
+  &= ((A \cap \overline B) \cup B) \cap ((A \cap \overline B) \cup \overline A)\\
+  &= ((A \cup B) \cap (\overline B \cup B)) \cap ((A \cup \overline A) \cap (\overline B \cup \overline A))\\
+  &= ((A \cup B) \cap \mathcal U) \cap (\mathcal U \cap (\overline B \cup \overline A))\\
+  &= (A \cup B) \cap (\overline B \cup \overline A)\\
+  &= (A \cup B) \cap (\overline A \cup \overline B)\\
+  &= (A \cup B) \cap \overline{(A \cap B)}\\
   &= (A \cup B) \setminus (A \cap B)
 \end{aligned}
 \end{equation*}
@@ -1373,7 +1434,7 @@ calc
 
 É evidente que o nosso objetivo não é utilizar {\fontencoding{U}\fontfamily{cmtt}\selectfont calc} somente para coisas tão simples. Queremos usar diversas propriedades sobre conjuntos que já estão a nossa disposição, para provar cada vez mais novas propriedades, como o exemplo a seguir:
 
-\textbf{Exemplo 1:} Demonstre que $(A \setminus B)^c = A^c \cup B$.
+\textbf{Exemplo 1:} Demonstre que $\overline{(A \setminus B)} = \overline A \cup B$.
 \begin{lstlisting}
 example : -(A \ B) = -A ∪ B :=
 calc
@@ -1400,20 +1461,20 @@ Todavia, não é factível esperar que todo mundo adivinhe o nome dos lemas que 
 \item $A \cup \mathcal U = \mathcal U$ : não existe
 \item $A \cap \emptyset = \emptyset$ : {\fontencoding{U}\fontfamily{cmtt}\selectfont inter\_empty} ({\fontencoding{U}\fontfamily{cmtt}\selectfont empty\_inter})
 \item $A \cup \emptyset = A$ : {\fontencoding{U}\fontfamily{cmtt}\selectfont union\_empty} ({\fontencoding{U}\fontfamily{cmtt}\selectfont empty\_union})
-\item $\mathcal U ^c = \emptyset$ : {\fontencoding{U}\fontfamily{cmtt}\selectfont compl\_univ}
-\item $\emptyset ^c = \mathcal U$ : {\fontencoding{U}\fontfamily{cmtt}\selectfont compl\_empty}
-\item $A \cap A^c = \emptyset$ : {\fontencoding{U}\fontfamily{cmtt}\selectfont inter\_compl\_self} ({\fontencoding{U}\fontfamily{cmtt}\selectfont compl\_inter\_self})
-\item $A \cup A^c = \mathcal U$ : {\fontencoding{U}\fontfamily{cmtt}\selectfont union\_compl\_self} ({\fontencoding{U}\fontfamily{cmtt}\selectfont compl\_union\_self})
-\item $(A^c)^c = A$ : {\fontencoding{U}\fontfamily{cmtt}\selectfont compl\_compl}
+\item $\overline {\mathcal U} = \emptyset$ : {\fontencoding{U}\fontfamily{cmtt}\selectfont compl\_univ}
+\item $\overline {\emptyset} = \mathcal U$ : {\fontencoding{U}\fontfamily{cmtt}\selectfont compl\_empty}
+\item $A \cap \overline A = \emptyset$ : {\fontencoding{U}\fontfamily{cmtt}\selectfont inter\_compl\_self} ({\fontencoding{U}\fontfamily{cmtt}\selectfont compl\_inter\_self})
+\item $A \cup \overline A = \mathcal U$ : {\fontencoding{U}\fontfamily{cmtt}\selectfont union\_compl\_self} ({\fontencoding{U}\fontfamily{cmtt}\selectfont compl\_union\_self})
+\item $\overline{\overline A} = A$ : {\fontencoding{U}\fontfamily{cmtt}\selectfont compl\_compl}
 \item $A \cap B = B \cap A$ : {\fontencoding{U}\fontfamily{cmtt}\selectfont inter\_comm}
 \item $A \cup B = B \cup A$ : {\fontencoding{U}\fontfamily{cmtt}\selectfont union\_comm}
 \item $(A \cap B) \cap C = A \cap (B \cap C)$ : {\fontencoding{U}\fontfamily{cmtt}\selectfont inter\_assoc}
 \item $(A \cup B) \cup C = A \cup (B \cup C)$ : {\fontencoding{U}\fontfamily{cmtt}\selectfont union\_assoc}
 \item $A \cap (B \cup C) = (A \cap B) \cup (A \cap C)$ : {\fontencoding{U}\fontfamily{cmtt}\selectfont inter\_distrib\_left} ({\fontencoding{U}\fontfamily{cmtt}\selectfont inter\_distrib\_right})
 \item $A \cup (B \cap C) = (A \cup B) \cap (A \cup C)$ : {\fontencoding{U}\fontfamily{cmtt}\selectfont union\_distrib\_left} ({\fontencoding{U}\fontfamily{cmtt}\selectfont union\_distrib\_right})
-\item $(A \cap B)^c = A^c \cup B^c$ : {\fontencoding{U}\fontfamily{cmtt}\selectfont compl\_inter}
-\item $(A \cup B)^c = A^c \cap B^c$ : {\fontencoding{U}\fontfamily{cmtt}\selectfont compl\_union}
-\item $A \setminus B = A \cap B^c$ : {\fontencoding{U}\fontfamily{cmtt}\selectfont diff\_eq}
+\item $\overline{(A \cap B)} = \overline A \cup \overline B$ : {\fontencoding{U}\fontfamily{cmtt}\selectfont compl\_inter}
+\item $\overline{(A \cup B)} = \overline A \cap \overline B$ : {\fontencoding{U}\fontfamily{cmtt}\selectfont compl\_union}
+\item $A \setminus B = A \cap \overline B$ : {\fontencoding{U}\fontfamily{cmtt}\selectfont diff\_eq}
 \end{itemize}
 
 Com toda essa bagagem já somos capazes de fazer provas bem mais complexas e que envolvem diversos passos, como a seguir:
@@ -1441,7 +1502,7 @@ Outro caso de ambiguidade que também vemos nesse exemplo, está na linha $4$. A
 
 Em algumas vezes, é necessário colocar cada parâmetro entre parênteses. Por exemplo, se um parâmetro for parecido com {\fontencoding{U}\fontfamily{cmtt}\selectfont -(A ∩ B) ∩ C}, o que vamos escrever depois do lemma é {\fontencoding{U}\fontfamily{cmtt}\selectfont (-(A ∩ B) ∩ C)} e os outros parâmetros.
 
-\textbf{Exemplo 3:} Demonstre que $(A \cup B \cup C \cup D)^c = (A \cup B)^c \cap (C \cup D)^c$.
+\textbf{Exemplo 3:} Demonstre que $\overline{(A \cup B \cup C \cup D)} = \overline{(A \cup B)} \cap \overline{(C \cup D)}$.
 
 \begin{lstlisting}
 example : -(A ∪ B ∪ C ∪ D) = -(A ∪ B) ∩ -(C ∪ D) :=
@@ -1461,7 +1522,7 @@ A definição fica mais clara com alguns exemplos:
 
 \begin{itemize}
   \item Sendo $I=\mathbb{N}$ e $P$ a propriedade do elemento ser menor ou igual que $i$, temos por exemplo, $A_{9}={0,1,2,3,4,5,6,7,8,9}$.
-  \item Sendo $I$ o conjunto de todas as palavras da língua portuguesa e $P$ a propriedade da palavra começar com a letra representada pela variável $i$, temos então como exemplo, $B_j=\{$janela, jejum, jibóia, junto, $\dots\}$
+  \item Sendo $I$ o conjunto de todas as palavras da língua portuguesa e $P$ a propriedade da palavra começar com a letra representada pela variável $i$, temos então como exemplo, $B_j=\{$janela, jejum, jibóia, jogo, junto, $\dots\}$
 \end{itemize}
 
 E semelhante as definições de união e intersecção para conjuntos, também podemos definir esses termos para família indexadas:
@@ -1540,8 +1601,7 @@ Uma maneira de trabalhar com as famílias indexadas e suas interpretações, é 
 
   theorem mem_Inter_of_forall {x : U} (h : ∀ i, x ∈ A i) :
     x ∈ ⋂ i, A i :=
-  by simp * at *
-\end{lstlisting}
+  by simp * at *\end{lstlisting}
 
 Não se preocupe em entender as provas dos teoremas, o importante é saber como utilizá-los. Além desses, podemos querer provar também as regras de introdução e eliminação:
 
@@ -1558,8 +1618,7 @@ Não se preocupe em entender as provas dos teoremas, o importante é saber como 
 
   theorem Union.elim {b : Prop} {x : U}
     (h₁ : x ∈ ⋃ i, A i) (h₂ : ∀ (i : I), x ∈ A i → b) : b :=
-  by {simp at h₁, cases h₁ with i h, exact h₂ i h}
-\end{lstlisting}
+  by {simp at h₁, cases h₁ with i h, exact h₂ i h}\end{lstlisting}
 
 Novamente, se preocupe somente em entender o que cada teorema faz para poder utilizá-lo. Algumas aplicações seguem o padrão ilustrado a seguir:
 
@@ -1579,8 +1638,7 @@ Novamente, se preocupe somente em entender o que cada teorema faz para poder uti
   Union.elim h
     (assume i,
     assume h : x ∈ A i,
-    show P, from sorry)
-\end{lstlisting}
+    show P, from sorry)\end{lstlisting}
 
 Agora já possuímos elementos o suficiente para provar propriedades acerca das famílias indexadas. Voltando a segunda propriedade da seção anterior, a única a qual fizemos uma prova de matemática formal, vamos agora tentar prová-la no lean:
 
@@ -1606,8 +1664,7 @@ Agora já possuímos elementos o suficiente para provar propriedades acerca das 
       (assume i : I,
       assume h2 : x ∈ A i,
       have h3 : x ∈ B ∩ A i, from and.intro h.left h2,
-      show x ∈ ⋃ i, B ∩ A i, from Union.intro i h3))
-\end{lstlisting}
+      show x ∈ ⋃ i, B ∩ A i, from Union.intro i h3))\end{lstlisting}
 
 É válido lembrar que às vezes queremos trabalhar com famílias $(A_{i,j})_{i \in I, j \in J}$ indexadas por duas variáveis. Isso continua fácil de se trabalhar no lean, só precisamos definir {\fontencoding{U}\fontfamily{cmtt}\selectfont A : I → J → set U}, significando que dado {\fontencoding{U}\fontfamily{cmtt}\selectfont i : I} e {\fontencoding{U}\fontfamily{cmtt}\selectfont j : J}, obtemos um conjunto {\fontencoding{U}\fontfamily{cmtt}\selectfont A i j : set U}. Aqui está um exemplo de uma prova envolvendo família indexada por duas variáveis:
 
@@ -1625,8 +1682,7 @@ Agora já possuímos elementos o suficiente para provar propriedades acerca das 
     Inter.intro
     (assume j,
     have h2 : x ∈ A i j, from Inter.elim h1 j,
-    Union.intro i h2))
-\end{lstlisting}
+    Union.intro i h2))\end{lstlisting}
 
 \textbf{OBS:} Você pode encontrar um problema quando reproduzir esses códigos no lean, e para evitar isso, lembre-se que todos os arquivos precisam ter as duas primeiras linhas (para importar e abrir as bibliotecas). Mas além disso, outro conflito possível é sobre as definições de variáveis, pois na parte de teoremas definimos a variável {\fontencoding{U}\fontfamily{cmtt}\selectfont A}, e depois nos exemplos definimos ela novamente, o que causa um conflito. Para evitar isso, você pode simplesmente não utilizar o mesmo nome de variável duas vezes, ou então definir um escopo local para elas, utilizando {\fontencoding{U}\fontfamily{cmtt}\selectfont section} e {\fontencoding{U}\fontfamily{cmtt}\selectfont end}, respectivamente antes e depois dos seus exemplos/teoremas.
 
@@ -1697,11 +1753,26 @@ show x ∈ A ∪ B, from or.inl h
 \section{Exercícios}
 \begin{enumerate}
 
-\item Realize as provas das seguintes propriedades: (Fornecendo uma prova tradicional e uma em Lean.)
+\item Preencha os sorry's. (Logic and Proof, Seção 12, Questão 1)
+\begin{lstlisting}
+import data.set
+open set
+  
+variable U : Type
+variables A B C : set U
+  
+example : ∀ x, x ∈ A ∩ C → x ∈ A ∪ B :=
+sorry
+  
+example : ∀ x, x ∈ -(A ∪ B) → x ∈ -A :=
+sorry
+\end{lstlisting}
+
+\item Prove as seguintes propriedades, pelo modo tradicional e usando Lean. (Dica: Reveja as provas da seção Propriedades)
 
 \begin{enumerate}
 
-\item Comutatividade em ∩ e ∪
+\item Comutatividade em $\cup$
 \begin{lstlisting}
 import data.set
 open set
@@ -1709,38 +1780,12 @@ open set
 variable U : Type
 variables A B : set U
 
-example : A ∩ B = B ∩ A :=
-eq_of_subset_of_subset
-(assume x,
-    assume h : x ∈ A ∩ B,
-    have h₁ : x ∈ A, from h.left,
-    have h₂ : x ∈ B, from h.right,
-    show x ∈ B ∩ A, from and.intro h₂ h₁)
-(assume x,
-    assume h : x ∈ B ∩ A,
-    have h₁ : x ∈ B, from h.left,
-    have h₂ : x ∈ A, from h.right,
-    show x ∈ A ∩ B, from and.intro h₂ h₁)
-
 example : A ∪ B = B ∪ A:=
-eq_of_subset_of_subset
-(assume x,
-    assume h : x ∈ A ∪ B,
-    or.elim h
-    (assume h₁ : x ∈ A,
-    show x ∈ B ∪ A, from or.inr h₁)
-    (assume h₁ : x ∈ B,
-    show x ∈ B ∪ A, from or.inl h₁))
-(assume x,
-    assume h : x ∈ B ∪ A,
-    or.elim h
-    (assume h₁ : x ∈ B,
-    show x ∈ A ∪ B, from or.inr h₁)
-    (assume h₁ : x ∈ A,
-    show x ∈ A ∪ B, from or.inl h₁)) \end{lstlisting}
+sorry\end{lstlisting}
 
 $\qquad$
-\item Associatividade em ∩ e ∪
+
+\item Associatividade em $\cap$
 \begin{lstlisting}
 import data.set
 open set
@@ -1749,49 +1794,11 @@ variable U : Type
 variables A B C : set U
 
 example : (A ∩ B) ∩ C = A ∩ (B ∩ C) :=
-eq_of_subset_of_subset
-(assume x,
-    assume h : x ∈ (A ∩ B) ∩ C,
-    have h₁ : x ∈ A ∩ B, from h.left,
-    have h₂ : x ∈ B ∩ C, from and.intro h₁.right h.right,
-    show x ∈ A ∩ (B ∩ C), from and.intro h₁.left h₂) 
-(assume x,
-    assume h : x ∈ A ∩ (B ∩ C),
-    have h₁ : x ∈ B ∩ C, from h.right,
-    have h₂ : x ∈ A ∩ B, from and.intro h.left h₁.left,
-    show x ∈ (A ∩ B) ∩ C, from and.intro h₂ h₁.right) 
-
-example : (A ∪ B) ∪ C = A ∪ (B ∪ C) :=
-eq_of_subset_of_subset
-(assume x,
-    assume h : x ∈ (A ∪ B) ∪ C,
-    or.elim h
-        (assume h₁ : x ∈ A ∪ B,
-        or.elim h₁
-            (assume h₂ : x ∈ A,
-            show x ∈ A ∪ (B ∪ C), from or.inl h₂)
-            (assume h₂ : x ∈ B,
-            have h₃ : x ∈ B ∪ C, from or.inl h₂,
-            show x ∈ A ∪ (B ∪ C), from or.inr h₃))
-        (assume h₁ : x ∈ C,
-        have h₂ : x ∈ B ∪ C, from or.inr h₁,
-        show x ∈ A ∪ (B ∪ C), from or.inr h₂))
-(assume x,
-    assume h : x ∈ A ∪ (B ∪ C),
-    or.elim h
-        (assume h₁ : x ∈ A,
-        have h₂ : x ∈ A ∪ B, from or.inl h₁,
-        show x ∈ (A ∪ B) ∪ C, from or.inl h₂)
-        (assume h₁ : x ∈ B ∪ C,
-        or.elim h₁
-            (assume h₂ : x ∈ B,
-            have h₃ : x ∈ A ∪ B, from or.inr h₂,
-            show x ∈ (A ∪ B) ∪ C, from or.inl h₃)
-            (assume h₂ : x ∈ C,
-            show x ∈ (A ∪ B) ∪ C, from or.inr h₂))) \end{lstlisting}
+sorry\end{lstlisting}
 
 $\qquad$
-\item Distribuitividade (Dica: veja o exemplo utilizado na seção ``Propriedades")
+
+\item Distributividade
 \begin{lstlisting}
 import data.set
 open set
@@ -1799,31 +1806,12 @@ open set
 variable U : Type
 variables A B C : set U
 
-example : A ∩ (B ∪ C) = (A ∩ B) ∪ (A ∩ C) :=
-eq_of_subset_of_subset
-(assume x,
-    assume h : x ∈ A ∩ (B ∪ C),
-    have h.r : x ∈ B ∪ C, from h.right,
-    or.elim h.r
-        (assume h₁ : x ∈ B,
-        have h₂ : x ∈ A ∩ B, from and.intro h.left h₁,
-        show x ∈ (A ∩ B) ∪ (A ∩ C), from or.inl h₂)
-        (assume h₁ : x ∈ C,
-        have h₂ : x ∈ A ∩ C, from and.intro h.left h₁,
-        show x ∈ (A ∩ B) ∪ (A ∩ C), from or.inr h₂))
-(assume x,
-    assume h : x ∈ (A ∩ B) ∪ (A ∩ C),
-    or.elim h
-        (assume h₁ : x ∈ A ∩ B,
-        have h₂ : x ∈ B ∪ C, from or.inl h₁.right,
-        show x ∈ A ∩ (B ∪ C), from and.intro h₁.left h₂)
-        (assume h₁ : x ∈ A ∩ C,
-        have h₂ : x ∈ B ∪ C, from or.inr h₁.right,
-        have h₃ : x ∈ A, from h₁.left,
-        show x ∈ A ∩ (B ∪ C), from and.intro h₃ h₂)) \end{lstlisting}
+example : A ∪ (B ∩ C) = (A ∪ B) ∩ (A ∪ C) :=
+sorry\end{lstlisting}
 
 $\qquad$
-\item Lei da Absorção (Dica: veja o exemplo utilizado em ``Propriedades")
+
+\item Lei da Absorção
 \begin{lstlisting}
 import data.set
 open set
@@ -1832,16 +1820,10 @@ variable U : Type
 variables A B : set U
 
 example : A ∩ (A ∪ B) = A :=
-eq_of_subset_of_subset
-(assume x,
-    assume h : x ∈ A ∩ (A ∪ B),
-    show x ∈ A, from h.left)
-(assume x,
-    assume h : x ∈ A,
-    have h₁ : x ∈ A ∪ B, from or.inl h,
-    show x ∈ A ∩ (A ∪ B), from and.intro h h₁) \end{lstlisting}
+sorry\end{lstlisting}
 
 $\qquad$
+
 \item Lei de De Morgan
 \begin{lstlisting}
 import data.set
@@ -1852,68 +1834,20 @@ variable U : Type
 variables A B : set U
 
 example : -(A ∩ B) = -A ∪ -B :=
-ext (assume x, iff.intro
-(assume h₁ : x ∈ -(A ∩ B),
-    have g₁ : x ∈ (A ∪ -A), from em (x ∈ A),
-    have g₂ : x ∈ (B ∪ -B), from em (x ∈ B),
-    or.elim g₁
-        (assume h₂ : x ∈ A, or.elim g₂
-            (assume h₃ : x ∈ B, show x ∈ -A ∪ -B,
-                from false.elim (h₁ ⟨h₂,h₃⟩))
-            (assume h₃ : x ∈ -B, show x ∈ -A ∪ -B,
-                from or.inr h₃))
-        (assume h₂ : x ∈ -A, show x ∈ -A ∪ -B,
-            from or.inl h₂))
-(assume h₁ : x ∈ -A ∪ -B,
-    assume h₂ : x ∈ (A ∩ B), show false,
-    from or.elim h₁
-        (assume h₃ : x ∈ -A, h₃ h₂.left )
-        (assume h₃ : x ∈ -B, h₃ h₂.right)))
+sorry
 
 example : -(A ∪ B) = -A ∩ -B :=
-ext (assume x, iff.intro
-(assume h₁ : x ∈ -(A ∪ B),
-    have g₁ : x ∈ -A, from
-        assume h₂ : x ∈ A,
-        have h₃ : x ∈ A ∪ B, from or.inl h₂, (h₁ h₃),
-    have g₂ : x ∈ -B, from
-        assume h₂ : x ∈ B,
-        have h₃ : x ∈ A ∪ B, from or.inr h₂, (h₁ h₃),
-    show x ∈ -A ∩ -B, from ⟨g₁, g₂⟩)
-(assume h₁ : x ∈ -A ∩ -B,
-    show x ∈ -(A ∪ B), from
-        assume h₂ : x ∈ A ∪ B,
-        or.elim h₂
-            (assume h3 : x ∈ A, h₁.left h3)
-            (assume h3 : x ∈ B, h₁.right h3))) \end{lstlisting}
+sorry\end{lstlisting}
 
 \end{enumerate}
 
-$\qquad$
-
-\item Questões do capítulo 12 do livro Logic and Proof
+\item Aqui trazemos a definição de conjuntos disjuntos para o Lean. Prove os exemplos utilizando essa definição. (Logic and Proof, Seção 12, Questão 2)
 \begin{lstlisting}
 import data.set
 open set
 
---Item 1 - Complete os exemplos abaixo, alterando as partes onde foi colocado sorry
-section
-variable U : Type
-variables A B C : set U
-
-example : ∀ x, x ∈ A ∩ C → x ∈ A ∪ B :=
-sorry
-
-example : ∀ x, x ∈ -(A ∪ B) → x ∈ -A :=
-sorry
-end
-
-
---Item 2 - Complete o exemplo abaixo, alterando a parte onde foi colocado sorry
 section
 variable {U : Type}
-
---definindo "conjuntos disjuntos"
 def disj (A B : set U) : Prop := ∀ ⦃x⦄, x ∈ A → x ∈ B → false
 
 example (A B : set U) (h : ∀ x, ¬ (x ∈ A ∧ x ∈ B)) :
@@ -1927,8 +1861,7 @@ show false, from h x h3
 -- observe que é excessivo mencionar x ao aplicar
 -- h : disj A B
 example (A B : set U) (h1 : disj A B) (x : U)
-    (h2 : x ∈ A) (h3 : x ∈ B) :
-  false :=
+  (h2 : x ∈ A) (h3 : x ∈ B) : false :=
 h1 h2 h3
 
 -- o mesmo vale para ⊆
@@ -1937,48 +1870,60 @@ example (A B : set U) (x : U) (h : A ⊆ B) (h1 : x ∈ A) :
 h h1
 
 example (A B C D : set U) (h1 : disj A B) (h2 : C ⊆ A)
-    (h3 : D ⊆ B) :
-  disj C D :=
+  (h3 : D ⊆ B) : disj C D :=
 sorry
-end
+end \end{lstlisting}
 
---Item 3 - Prove os seguintes exemplos sobre unioes e intersecoes indexadas,
---usando os teoremas: Inter.intro; Inter.elim; Union.intro; e Union.elim listados abaixo:
+\item Prove o exemplo $2$ da seção $5.7.1$ em term mode no Lean.
+\begin{lstlisting}
+import data.set
+open set
+
+def demorgan {U : Type} {X Y: set U} {x:U} :
+  (x ∈ -(X ∩ Y)) ↔ (x ∈ -X ∪ -Y) := sorry
+  
+theorem term_mode {U : Type} {A B : set U} :
+  (A \ B) ∪ (B \ A) = (A ∪ B) \ (A ∩ B) :=
+sorry
+\end{lstlisting}
+
+\item Prove os seguintes exemplos sobre união e intersecção em famílias indexadas. (Logic and Proof, Seção 12, Questão 3)
+\begin{lstlisting}
+import data.set
+open set
+  
 section
 variables {I U : Type}
 variables {A B : I → set U}
-
+  
 theorem Inter.intro {x : U} (h : ∀ i, x ∈ A i) : x ∈ ⋂ i, A i :=
 by simp; assumption
-
-@[elab_simple]
+  
 theorem Inter.elim {x : U} (h : x ∈ ⋂ i, A i) (i : I) : x ∈ A i :=
 by simp at h; apply h
-
+  
 theorem Union.intro {x : U} (i : I) (h : x ∈ A i) : x ∈ ⋃ i, A i :=
 by {simp, existsi i, exact h}
-
+  
 theorem Union.elim {b : Prop} {x : U}
 (h₁ : x ∈ ⋃ i, A i) (h₂ : ∀ (i : I), x ∈ A i → b) : b :=
 by {simp at h₁, cases h₁ with i h, exact h₂ i h}
-
 end
-
--- Exemplos
-section
+  
 variables {I U : Type}
 variables (A : I → set U) (B : I → set U) (C : set U)
-
+  
 example : (⋂ i, A i) ∩ (⋂ i, B i) ⊆ (⋂ i, A i ∩ B i) :=
 sorry
 
-example : C ∩ (⋃i, A i) ⊆ ⋃i, C ∩ A i :=
-sorry
-end
+example : (⋂ i, A i ∩ B i) ⊆ (⋂ i, A i) ∩ (⋂ i, B i) :=
+sorry\end{lstlisting}
 
+\item Prove os seguintes exemplos sobre conjunto das partes. (Logic and Proof, Seção 12, Questão 4)
+\begin{lstlisting}
+import data.set
+open set
 
---Item 4 -Prove os seguintes exemplos sobre conjunto das partes.
-section
 variable  {U : Type}
 variables A B C : set U
 
@@ -1993,16 +1938,30 @@ example (h : A ⊆ B) : powerset A ⊆ powerset B :=
 sorry
 
 example (h : powerset A ⊆ powerset B) : A ⊆ B :=
-sorry
-end\end{lstlisting}
+sorry\end{lstlisting}
 
-%A seguir segue o gabarito dos itens dos execícios do capítulo 12 - Sets in Lean:
+\item Prove a seguinte equivalência utilizando calc.
+\begin{lstlisting}
+import data.set
+open set
+  
+variable  U : Type
+variables A B C : set U
+  
+example : (A ∩ -B) ∪ B = A ∪ B :=
+calc
+\end{lstlisting}
+
+\end{enumerate}
+
+\textbf{GABARITO:}
+
+\begin{enumerate}
+\item Resposta:
 \begin{lstlisting}
 import data.set
 open set
 
---Item 1 - Complete os exemplos abaixo, alterando as partes onde foi colocado sorry
-section
 variable U : Type
 variables A B C : set U
 
@@ -2017,36 +1976,175 @@ assume x,
 assume h1 : x ∈ -(A ∪ B),
 assume h2 : x ∈ A,
 have h3 : x ∈ A ∪ B, from or.inl h2,
-show false, from h1 h3
-end
+show false, from h1 h3\end{lstlisting}
 
+\item Respostas:
 
---Item 2 - Complete o exemplo abaixo, alterando a parte onde foi colocado sorry
+\begin{enumerate}
+\item Resposta:
+\begin{lstlisting}
+import data.set
+open set
+
+variable U : Type
+variables A B : set U
+
+example : A ∪ B = B ∪ A:=
+eq_of_subset_of_subset
+(assume x,
+assume h : x ∈ A ∪ B,
+or.elim h
+  (assume h₁ : x ∈ A,
+  show x ∈ B ∪ A, from or.inr h₁)
+  (assume h₁ : x ∈ B,
+  show x ∈ B ∪ A, from or.inl h₁))
+(assume x,
+assume h : x ∈ B ∪ A,
+or.elim h
+  (assume h₁ : x ∈ B,
+  show x ∈ A ∪ B, from or.inr h₁)
+  (assume h₁ : x ∈ A,
+  show x ∈ A ∪ B, from or.inl h₁)) \end{lstlisting}
+
+$\qquad$
+
+\item Resposta:
+\begin{lstlisting}
+import data.set
+open set
+
+variable U : Type
+variables A B C : set U
+
+example : (A ∩ B) ∩ C = A ∩ (B ∩ C) :=
+eq_of_subset_of_subset
+(assume x,
+  assume h : x ∈ (A ∩ B) ∩ C,
+  have h₁ : x ∈ A ∩ B, from h.left,
+  have h₂ : x ∈ B ∩ C, from and.intro h₁.right h.right,
+  show x ∈ A ∩ (B ∩ C), from and.intro h₁.left h₂) 
+(assume x,
+  assume h : x ∈ A ∩ (B ∩ C),
+  have h₁ : x ∈ B ∩ C, from h.right,
+  have h₂ : x ∈ A ∩ B, from and.intro h.left h₁.left,
+  show x ∈ (A ∩ B) ∩ C, from and.intro h₂ h₁.right)\end{lstlisting}
+    
+$\qquad$
+    
+\item Resposta:
+\begin{lstlisting}
+import data.set
+open set
+
+variable U : Type
+variables A B C : set U
+
+example : A ∪ (B ∩ C) = (A ∪ B) ∩ (A ∪ C) :=
+eq_of_subset_of_subset
+(assume x,
+assume h : x ∈ A ∪ (B ∩ C),
+or.elim h
+  (assume h₁ : x ∈ A,
+  have h₂ : x ∈ A ∪ B, from or.inl h₁,
+  have h₃ : x ∈ A ∪ C, from or.inl h₁,
+  show x ∈ (A ∪ B) ∩ (A ∪ C), from and.intro h₂ h₃)
+  (assume h₁ : x ∈ B ∩ C,
+  have h₂ : x ∈ B, from and.left h₁,
+  have h₃ : x ∈ C, from and.right h₁,
+  have h₄ : x ∈ A ∪ B, from or.inr h₂,
+  have h₅ : x ∈ A ∪ C, from or.inr h₃,
+  show x ∈ (A ∪ B) ∩ (A ∪ C), from and.intro h₄ h₅))
+(assume x,
+assume h : x ∈ (A ∪ B) ∩ (A ∪ C),
+have h₁ : x ∈ A ∪ B, from and.left h,
+have h₂ : x ∈ A ∪ C, from and.right h,
+or.elim h₁
+  (assume h₃ : x ∈ A,
+  show x ∈ A ∪ (B ∩ C), from or.inl h₃)
+  (assume h₃ : x ∈ B,
+  or.elim h₂
+    (assume h₄ : x ∈ A,
+    show x ∈ A ∪ (B ∩ C), from or.inl h₄)
+    (assume h₄ : x ∈ C,
+    have h₅ : x ∈ B ∩ C, from and.intro h₃ h₄,
+    show x ∈ A ∪ (B ∩ C), from or.inr h₅)))\end{lstlisting}
+
+$\qquad$
+
+\item Resposta:
+\begin{lstlisting}
+import data.set
+open set
+
+variable U : Type
+variables A B : set U
+
+example : A ∩ (A ∪ B) = A :=
+eq_of_subset_of_subset
+(assume x,
+  assume h : x ∈ A ∩ (A ∪ B),
+  show x ∈ A, from h.left)
+(assume x,
+  assume h : x ∈ A,
+  have h₁ : x ∈ A ∪ B, from or.inl h,
+  show x ∈ A ∩ (A ∪ B), from and.intro h h₁) \end{lstlisting}
+
+$\qquad$
+
+\item Resposta:
+\begin{lstlisting}
+import data.set
+open set
+open classical
+
+variable U : Type
+variables A B : set U
+
+example : -(A ∩ B) = -A ∪ -B :=
+ext (assume x, iff.intro
+(assume h₁ : x ∈ -(A ∩ B),
+  have g₁ : x ∈ (A ∪ -A), from em (x ∈ A),
+  have g₂ : x ∈ (B ∪ -B), from em (x ∈ B),
+  or.elim g₁
+    (assume h₂ : x ∈ A, or.elim g₂
+      (assume h₃ : x ∈ B, show x ∈ -A ∪ -B,
+      from false.elim (h₁ ⟨h₂,h₃⟩))
+      (assume h₃ : x ∈ -B, show x ∈ -A ∪ -B,
+      from or.inr h₃))
+    (assume h₂ : x ∈ -A, show x ∈ -A ∪ -B,
+    from or.inl h₂))
+(assume h₁ : x ∈ -A ∪ -B,
+  assume h₂ : x ∈ (A ∩ B), show false,
+  from or.elim h₁
+    (assume h₃ : x ∈ -A, h₃ h₂.left )
+    (assume h₃ : x ∈ -B, h₃ h₂.right)))
+
+example : -(A ∪ B) = -A ∩ -B :=
+ext (assume x, iff.intro
+(assume h₁ : x ∈ -(A ∪ B),
+  have g₁ : x ∈ -A, from
+    assume h₂ : x ∈ A,
+    have h₃ : x ∈ A ∪ B, from or.inl h₂, (h₁ h₃),
+  have g₂ : x ∈ -B, from
+    assume h₂ : x ∈ B,
+    have h₃ : x ∈ A ∪ B, from or.inr h₂, (h₁ h₃),
+    show x ∈ -A ∩ -B, from ⟨g₁, g₂⟩)
+(assume h₁ : x ∈ -A ∩ -B,
+  show x ∈ -(A ∪ B), from
+    assume h₂ : x ∈ A ∪ B,
+    or.elim h₂
+      (assume h3 : x ∈ A, h₁.left h3)
+      (assume h3 : x ∈ B, h₁.right h3))) \end{lstlisting}
+\end{enumerate}
+
+\item Resposta:
+\begin{lstlisting}
+import data.set
+open set
+
 section
 variable {U : Type}
-
---definindo "conjuntos disjuntos"
 def disj (A B : set U) : Prop := ∀ ⦃x⦄, x ∈ A → x ∈ B → false
-
-example (A B : set U) (h : ∀ x, ¬ (x ∈ A ∧ x ∈ B)) :
-  disj A B :=
-assume x,
-assume h1 : x ∈ A,
-assume h2 : x ∈ B,
-have h3 : x ∈ A ∧ x ∈ B, from and.intro h1 h2,
-show false, from h x h3
-
--- observe que é excessivo mencionar x ao aplicar
--- h : disj A B
-example (A B : set U) (h1 : disj A B) (x : U)
-    (h2 : x ∈ A) (h3 : x ∈ B) :
-  false :=
-h1 h2 h3
-
--- o mesmo vale para ⊆
-example (A B : set U) (x : U) (h : A ⊆ B) (h1 : x ∈ A) :
-  x ∈ B :=
-h h1
 
 example (A B C D : set U) (h1 : disj A B) (h2 : C ⊆ A)
     (h3 : D ⊆ B) : disj C D :=
@@ -2057,66 +2155,108 @@ have h6 : x ∈ A, from h2 h4,
 have h7 : x ∈ B, from h3 h5,
 show false, from h1 h6 h7
 end
+\end{lstlisting}
 
---Item 3 - Prove os seguintes exemplos sobre unioes e intersecoes indexadas,
---usando os teoremas: Inter.intro; Inter.elim; Union.intro; e Union.elim listados abaixo:
+\item Resposta:
+\begin{lstlisting}
+import data.set
+open set
+
+def demorgan {U : Type} {X Y: set U} {x:U} : (x ∈ -(X ∩ Y)) ↔ (x ∈ -X ∪ -Y) := sorry
+
+theorem term_mode {U : Type} {A B : set U} : 
+(A \ B) ∪ (B \ A) = (A ∪ B) \ (A ∩ B) :=
+eq_of_subset_of_subset
+  (assume x,
+  assume l : x ∈ (A \ B) ∪ (B \ A),
+  or.elim l
+    (assume : x ∈ (A \ B),
+      have h1 : x ∈ A ∧ x ∈ -B, from this,
+      have h2 : x ∈ A ∪ B, from or.inl h1.left,
+      have h3 : x ∈ -A ∪ -B, from or.inr h1.right,      
+      have h4 : x ∈ -(A ∩ B), from iff.mpr demorgan h3,
+      show x ∈ (A ∪ B) ∧ x ∈ -(A ∩ B), from and.intro h2 h4 )
+    (assume : x ∈ (B \ A),
+      have h1 : x ∈ B ∧ x ∈ -A, from this,
+      have h2 : x ∈ A ∪ B, from or.inr h1.left,
+      have h3 : x ∈ -A ∪ -B, from or.inl h1.right,
+      have h4 : x ∈ -(A ∩ B), from iff.mpr demorgan h3,
+      show x ∈ (A ∪ B) ∧ x ∈ -(A ∩ B), from and.intro h2 h4 )
+  )
+  (assume x,
+  assume r : x ∈ (A ∪ B) \ (A ∩ B),
+  have r1 : x ∈ (A ∪ B) ∧ x ∈ -(A ∩ B), from r,
+  have r2 : x ∈ (A ∪ B), from r1.left,
+  have r3 : x ∈ (-A ∪ -B), from iff.mp demorgan r.right,
+  or.elim r2
+    (assume h : x ∈ A,
+    or.elim r3
+      (assume h1 : x ∈ -A,
+        show x ∈ (A ∩ -B) ∪ (B ∩ -A), from false.elim (h1 h))
+      (assume h1 : x ∈ -B,
+        have h2 : x ∈ A ∩ -B, from and.intro h h1,
+        show x ∈ (A ∩ -B) ∪ (B ∩ -A), from or.inl h2))
+    (assume h : x ∈ B,
+    or.elim r3
+      (assume h1 : x ∈ -A,
+        have h2 : x ∈ B ∩ -A, from and.intro h h1,
+        show x ∈ (A ∩ -B) ∪ (B ∩ -A), from or.inr h2)
+      (assume h1 : x ∈ -B,
+        show x ∈ (A ∩ -B) ∪ (B ∩ -A), from false.elim (h1 h))))\end{lstlisting}
+
+\item Resposta:
+\begin{lstlisting}
+import data.set
+open set
+  
 section
 variables {I U : Type}
 variables {A B : I → set U}
-
+  
 theorem Inter.intro {x : U} (h : ∀ i, x ∈ A i) : x ∈ ⋂ i, A i :=
 by simp; assumption
-
-@[elab_simple]
+  
 theorem Inter.elim {x : U} (h : x ∈ ⋂ i, A i) (i : I) : x ∈ A i :=
 by simp at h; apply h
-
+  
 theorem Union.intro {x : U} (i : I) (h : x ∈ A i) : x ∈ ⋃ i, A i :=
 by {simp, existsi i, exact h}
-
+  
 theorem Union.elim {b : Prop} {x : U}
 (h₁ : x ∈ ⋃ i, A i) (h₂ : ∀ (i : I), x ∈ A i → b) : b :=
 by {simp at h₁, cases h₁ with i h, exact h₂ i h}
-
 end
-
--- Exemplos
-section
+  
 variables {I U : Type}
 variables (A : I → set U) (B : I → set U) (C : set U)
-
+  
 example : (⋂ i, A i) ∩ (⋂ i, B i) ⊆ (⋂ i, A i ∩ B i) :=
 assume x,
 assume h : x ∈ (⋂ i, A i) ∩ (⋂ i, B i),
 Inter.intro
-    (assume i : I,
-    have h1 : x ∈ A i, from Inter.elim h.left i,
-    have h2 : x ∈ B i, from Inter.elim h.right i,
-    show x ∈ A i ∩ B i, from and.intro h1 h2)
-
+  (assume i : I,
+  have h1 : x ∈ A i, from Inter.elim h.left i,
+  have h2 : x ∈ B i, from Inter.elim h.right i,
+  show x ∈ A i ∩ B i, from and.intro h1 h2)
+  
 example : C ∩ (⋃ i, A i) ⊆ ⋃ i, C ∩ A i :=
 assume x,
 assume h : x ∈ C ∩ (⋃ i, A i),
 have h1 : x ∈ ⋃ i, A i, from h.right,
 Union.elim h1
-    (assume i : I,
-    assume h2 : x ∈ A i,
-    have h3 : x ∈ C ∩ A i, from and.intro h.left h2,
-    show x ∈ ⋃ i, C ∩ A i, from Union.intro i h3)
-end
+  (assume i : I,
+  assume h2 : x ∈ A i,
+  have h3 : x ∈ C ∩ A i, from and.intro h.left h2,
+  show x ∈ ⋃ i, C ∩ A i, from Union.intro i h3)
+end\end{lstlisting}
 
+\item Resposta:
+\begin{lstlisting}
+import data.set
+open set
 
---Item 4 -Prove os seguintes exemplos sobre conjunto das partes.
-section
 variable  {U : Type}
 variables A B C : set U
-
---Use os teoremas: subset.trans e subset.refl
-example (h1 : A ⊆ B) (h2 : B ⊆ C) : A ⊆ C :=
-subset.trans h1 h2
-
-example : A ⊆ A :=
-subset.refl A
 
 example (h : A ⊆ B) : powerset A ⊆ powerset B :=
 assume x,
@@ -2128,26 +2268,28 @@ show x ∈ powerset B, from h3
 example (h : powerset A ⊆ powerset B) : A ⊆ B :=
 have h1 : ∀ x, x ∈ powerset A → x ∈ powerset B, from h,
 have h2 : ∀ x, x ⊆ A → x ⊆ B, from
-    (assume y,
-    assume g1 : y ⊆ A,
-    have g2 : y ∈ powerset A, from g1,
-    have g3 : y ∈ powerset A → y ∈ powerset B, from h1 y,
-    have g4 : y ∈ powerset B, from g3 g2,
-    show y ⊆ B, from g4),
+  (assume y,
+  assume g1 : y ⊆ A,
+  have g2 : y ∈ powerset A, from g1,
+  have g3 : y ∈ powerset A → y ∈ powerset B, from h1 y,
+  have g4 : y ∈ powerset B, from g3 g2,
+  show y ⊆ B, from g4),
 have h3 : A ⊆ A → A ⊆ B, from h2 A,
-show A ⊆ B, from h3 (subset.refl A)
-end \end{lstlisting}
+show A ⊆ B, from h3 (subset.refl A)\end{lstlisting}
 
-$\qquad$
-
-
-\item Prove que $A \cup \overline A = \mathcal U$. (Fornecendo uma prova tradicional e uma em Lean.)
-
-\textbf{Resposta}
-
-$\qquad$
-\item Questões com calc
-
-%adicionar questões do LEAN
+\item Resposta:
+\begin{lstlisting}
+import data.set
+open set
+  
+variable  U : Type
+variables A B C : set U
+  
+example : (A ∩ -B) ∪ B = A ∪ B :=
+calc
+  (A ∩ -B) ∪ B = (A ∪ B) ∩ (-B ∪ B) : by rw union_distrib_right
+           ... = (A ∪ B) ∩ univ     : by rw compl_union_self
+           ... = A ∪ B              : by rw inter_univ
+\end{lstlisting}
 
 \end{enumerate}
