@@ -58,9 +58,9 @@ begin
 end
 \end{lstlisting}
 
-A tática \lstinline{induction} separa o nosso objetivo dado o construtor do tipo da variável passada, que no nosso caso é \lstinline{x}. Como ela é de um tipo enumerado, o princípio indutivo é simplesmente provar para cada possível valor, logo nosso objetivo é dividido em três objetivos diferentes: uma prova para cada valor possível.
+A tática \lstinline{induction} separa o nosso objetivo dado o construtor do tipo da variável passada, que no nosso caso é \lstinline{x} do tipo período. Como ela é de um tipo enumerado, o princípio indutivo é simplesmente provar para cada possível valor, logo nosso objetivo é dividido em três objetivos diferentes: uma prova para cada valor possível.
 
-O operador \lstinline{rfl} funciona da seguinte maneira: ele tenta simplificar ambos os lados da igualdade seguindo definições e propriedades. Caso ele consiga chegar na igualdade desejada apenas simplificando, ele considera como trivial o objetivo.
+O operador \lstinline{rfl} funciona da seguinte maneira: ele tenta simplificar ambos os lados da igualdade seguindo definições e propriedades. Caso ele consiga chegar na igualdade desejada apenas simplificando, ele considera como verdadeiro a equivalência de equações.
 
 \section{Os Naturais}
 \label{sec:naturais}
@@ -126,18 +126,18 @@ Indução começando em um natural k e indução completa . . .
 
 Na seção~\ref{sec:naturais} definimos três exemplos de funções recursivas, a multiplicação por $5$, o fatorial e a Fibonacci.
 Por exemplo, na função \lstinline{five_mult} definimos:
-\begin{center}
-    \[ f(0) = 0 \] 
-    \[ f(n+1) = 5 + f(n) \]
-\end{center}
+\begin{align*}
+    f(0) &= 0  \\
+     f(n+1) &= 5 + f(n) 
+\end{align*}
 Sabemos que esta função também pode escrita como $f(n) = 5\cdot n$, no entanto, as duas condições estabelecidas
 no modo recursivo definem o comportamento de $f$ para todo o conjunto $\mathbb{N}$.
 \newline \textbf{Definição: Princípio de definição por recursão} Seja $A$ um conjunto, e $\alpha \in A$,
 e $g : \mathbb{N} \times A \to A$. Então existe uma unica função $f$ que satisfaça:
-\begin{center}
-    \[ f(0) = \alpha \]
-    \[ f(n+1) = g(n, f(n))\]
-\end{center} 
+\begin{align*}
+     f(0) &= \alpha \\
+     f(n+1) &= g(n, f(n))
+\end{align*} 
 \textbf{Exemplo} Indo no caminho contrário, temos $f : \mathbb{N} \to \mathbb{N}$, $f(n) = 2^n$, vamos
 tentar expressar a função de forma recursiva. Nosso conjunto é o conjunto dos naturais, e temos $f(0) = 1$,
 além disso, como podemos expressar $2^{n+1} = 2\cdot 2^{n}$, temos que $f(n+1) = g(n, f(n)) = 2\cdot f(n)$.
@@ -147,26 +147,26 @@ iremos utilizar o princípio da indução para provar igualdades de funções re
 \newline \textbf{Proposição} Tanto a notação do somatório de uma função de $\mathbb{N}$, quanto a notação
 do produtório podem ser descritas através de definições recursivas. Ou seja, seja $f : \mathbb{N} \to 
 \mathbb{N}$, $s(n) = \sum_{i=0}^{n} f(i)$, é:
-\begin{center}
-    \[ s(0) = 0\]
-    \[s(n+1)=s(n)+f(n)\]
-\end{center}
+\begin{align*}
+     s(0) &= 0 \\
+    s(n+1) &= s(n)+f(n)
+\end{align*}
 e $p(n) = \prod_{i=0}^n f(i)$, é:
-\begin{center}
-    \[ p(0) = 1\]
-    \[ p(n+1)=p(n)\cdot f(n)\]
-\end{center}
+\begin{align*}
+    p(0) &= 1 \\
+    p(n+1) &= p(n)\cdot f(n)
+\end{align*}
 Da mesma forma que o princípio da indução completo, o princípio da definição por recursão também pode ser
 extendido.
 \newline \textbf{Proposição} Seja $A$ um conjunto, e $\alpha_0, \alpha_1, \dots, \alpha_m \in A$,
 e $g : \mathbb{N}^m \times A \to A$. Então existe uma única função $f$ que satisfaça:
-\begin{center}
-    \[ f(0) = \alpha_0 \]
-    \[ f(1) = \alpha_1 \]
-    \[ \dots \]
-    \[ f(m) = \alpha_m \]
-    \[ f(n+1) = g(n, f(n), f(n-1), \dots, f(n-m))\]
-\end{center} 
+\begin{align*}
+     f(0) &= \alpha_0 \\
+     f(1) &= \alpha_1 \\
+     &\dots \\
+     f(m) &= \alpha_m \\
+     f(n+1) &= g(n, f(n), f(n-1), \dots, f(n-m))
+\end{align*} 
 \textbf{Exemplo} A ideia de extensão é que podemos definir de forma não recursiva o comportamento da
 função até um número $m$ e a partir disso a recursão em $n$ pode depender dos $m$ valores anteriores da 
 função. Como já apresentado na seção 8.2, os números de Fibonacci podem ser definidos através de 
@@ -187,15 +187,15 @@ Para o caso $n=1$ temos que $F(1) = 1$ (definição recursiva) e
 \end{center}
 \textbf{ii)} Pela hipótese de indução, supomos que a propriedade vale para $F(p-2)$ e para $F(p-1)$,
 para $F(p)$ teremos:
-\begin{center}
-    \[ F(p) = F(p-1) + F(p-2) = \]
-    \[ = \frac{1}{\sqrt{5}}\bigg \{ \Big (\frac{1+\sqrt{5}}{2} \Big )^{p-1} + \Big (\frac{1-\sqrt{5}}{2}\Big )^{p-1}\bigg \} + \frac{1}{\sqrt{5}}\bigg \{ \Big (\frac{1+\sqrt{5}}{2} \Big )^{p-2} + \Big (\frac{1-\sqrt{5}}{2}\Big )^{p-2}\bigg \}\]
-    \[ = \frac{1}{\sqrt{5}}\bigg \{ \Big (\frac{1+\sqrt{5}}{2} \Big )^{p-2} \Big( 1 + \frac{1+\sqrt{5}}{2}\Big) + \Big (\frac{1-\sqrt{5}}{2}\Big )^{p-2} \Big( 1 +\frac{1 - \sqrt{5}}{2}\Big)\bigg \}\]
-    \[ = \frac{1}{\sqrt{5}}\bigg \{ \Big (\frac{1+\sqrt{5}}{2} \Big )^{p-2} \Big( \frac{3+\sqrt{5}}{2}\Big) + \Big (\frac{1-\sqrt{5}}{2}\Big )^{p-2} \Big( \frac{3 - \sqrt{5}}{2}\Big)\bigg \}\]
-    \[ = \frac{1}{\sqrt{5}}\bigg \{ \Big (\frac{1+\sqrt{5}}{2} \Big )^{p-2} \Big( \frac{1+2\cdot \sqrt{5} + 5}{4}\Big) + \Big (\frac{1-\sqrt{5}}{2}\Big )^{p-2} \Big( \frac{1 - 2\cdot \sqrt{5} +5}{4}\Big)\bigg \}\]
-    \[ = \frac{1}{\sqrt{5}}\bigg \{ \Big (\frac{1+\sqrt{5}}{2} \Big )^{p-2} \Big( \frac{1+\sqrt{5}}{2}\Big)^2 + \Big (\frac{1-\sqrt{5}}{2}\Big )^{p-2} \Big( \frac{1 - \sqrt{5}}{2}\Big)^2 \bigg \}\]
-    \[ = \frac{1}{\sqrt{5}}\bigg \{ \Big (\frac{1+\sqrt{5}}{2} \Big )^p + \Big (\frac{1-\sqrt{5}}{2}\Big )^p\bigg \} \]
-\end{center}
+\begin{align*}
+    F(p) &= F(p-1) + F(p-2) = \\
+    &= \frac{1}{\sqrt{5}}\bigg \{ \Big (\frac{1+\sqrt{5}}{2} \Big )^{p-1} + \Big (\frac{1-\sqrt{5}}{2}\Big )^{p-1}\bigg \} + \frac{1}{\sqrt{5}}\bigg \{ \Big (\frac{1+\sqrt{5}}{2} \Big )^{p-2} + \Big (\frac{1-\sqrt{5}}{2}\Big )^{p-2}\bigg \}\\
+    &= \frac{1}{\sqrt{5}}\bigg \{ \Big (\frac{1+\sqrt{5}}{2} \Big )^{p-2} \Big( 1 + \frac{1+\sqrt{5}}{2}\Big) + \Big (\frac{1-\sqrt{5}}{2}\Big )^{p-2} \Big( 1 +\frac{1 - \sqrt{5}}{2}\Big)\bigg \}\\
+     &= \frac{1}{\sqrt{5}}\bigg \{ \Big (\frac{1+\sqrt{5}}{2} \Big )^{p-2} \Big( \frac{3+\sqrt{5}}{2}\Big) + \Big (\frac{1-\sqrt{5}}{2}\Big )^{p-2} \Big( \frac{3 - \sqrt{5}}{2}\Big)\bigg \}\\
+     &= \frac{1}{\sqrt{5}}\bigg \{ \Big (\frac{1+\sqrt{5}}{2} \Big )^{p-2} \Big( \frac{1+2\cdot \sqrt{5} + 5}{4}\Big) + \Big (\frac{1-\sqrt{5}}{2}\Big )^{p-2} \Big( \frac{1 - 2\cdot \sqrt{5} +5}{4}\Big)\bigg \}\\
+     &= \frac{1}{\sqrt{5}}\bigg \{ \Big (\frac{1+\sqrt{5}}{2} \Big )^{p-2} \Big( \frac{1+\sqrt{5}}{2}\Big)^2 + \Big (\frac{1-\sqrt{5}}{2}\Big )^{p-2} \Big( \frac{1 - \sqrt{5}}{2}\Big)^2 \bigg \}\\
+     &= \frac{1}{\sqrt{5}}\bigg \{ \Big (\frac{1+\sqrt{5}}{2} \Big )^p + \Big (\frac{1-\sqrt{5}}{2}\Big )^p\bigg \} \\
+\end{align*}
 Como queriamos demonstrar. Observe que o principal truque para a demonstração ocorreu na linha 5, 
 em que multiplicamos a fração por $2$ no numerador e denominador e separamos $\frac{6}{4}$ em $\frac{1+5}{4}$
 e em seguida concluímos que é o formato de um quadrado perfeito.
@@ -362,8 +362,263 @@ Repare que o Lean preserva o operador que estabelece a maior restrição quando 
 
 \subsection{Aritmética nos Inteiros}
 
-Operadores aritméticos nos inteiros . . .
+Apesar dos naturais servirem para muitas coisas (como contagem e ordenação), eles apresentam um problema: não é possível subtrair $x$ de $y$ se $x > y$. O conjunto dos inteiros consiste de uma extensão dos naturais com valores negativos de modo a corrigir este impecilho. O conjunto dos números inteiros é o conjunto:
+
+\[ \mathbb{Z} = \{...,-2,-1,0,1,2,...\}\]
+
+Outros conjuntos como os racionais, reais e complexos podem ser extendidos a partir dos inteiros, mas não serão comentados neste livro. Para construir os inteiros a partir dos naturais, basta adicionar uma função que indica que todo número natural tem seu inverso aditivo, isto é, para todo número natural $n$, existe um número $-n$ tal que $n+(-n)=0$. Esse valor é chamado a negação de $n$.
+
+Grande parte das propriedades provadas nas seções anteriores sobre o conjunto dos naturais também se aplicam aos inteiros, mas não todas. Por exemplo, o teorema \lstinline{∀ n : ℕ, n + 1 ≠ 0} não é válido nos inteiros pois $n=-1$ é um contraexemplo.
+
+No Lean os inteiros são definidos da seguinte maneira:
+
+\begin{lstlisting}
+namespace hidden
+    open nat
+
+    inductive int : Type
+    | of_nat : nat → int
+    | neg_succ_of_nat : nat → int
+end hidden
+\end{lstlisting}
+
+A primeira função \lstinline{of_nat} simplesmente converte um natural para um inteiro, enquanto a segunda função \lstinline{neg_succ_of_nat} retornaria o inverso aditivo do sucessor do número, isto é, passado $n$, ela retorna $-(n+1)$. Com essa construção é possível definir várias definições indutivas, mas não serão comentadas.
+
+Nos inteiros não conseguimos mais usar nossas definições tradicionais da indução, entretanto conseguimos adaptá-la. Por exemplo, podemos mostrar que alguma propriedade é válida para todos números não negativos usando nossa indução conhecida. Para os números negativos, cada um deles é a negação de um positivo. Logo, provas por indução nos inteiros se resumem a dois casos: um deles prova a propriedade para os não negativos e o outro para os negativos.
 
 \section{Exercícios}
 
-Alguns exercícios de indução . . .
+\begin{enumerate}
+    \item inducao basica
+    
+    \item inducao completa
+    
+    \item recursao
+    
+    \item Complete os \lstinline{sorry} com provas no seguinte código:
+    
+    \begin{lstlisting}
+    --1.a.
+    example : ∀ m n k : nat, m * (n + k) = m * n + m * k := sorry
+    
+    --1.b.
+    example : ∀ n : nat, 0 * n = 0 := sorry
+    
+    --1.c.
+    example : ∀ n : nat, 1 * n = n := sorry
+    
+    --1.d.
+    example : ∀ m n k : nat, (m * n) * k = m * (n * k) := sorry
+    
+    --1.e.
+    example : ∀ m n : nat, m * n= n * m := sorry
+    \end{lstlisting}
+    
+    \item Complete os \lstinline{sorry} com provas no seguinte código (não se esqueça de explorar as funções internas do Lean):
+    
+    \begin{lstlisting}
+    --2.a.
+    example : ∀ m n k : nat, n ≤ m → n + k ≤ m  + k := sorry
+    
+    --2.b.
+    example : ∀ m n k : nat, n + k ≤ m + k → n ≤ m := sorry
+    
+    --2.c.
+    example : ∀ m n k : nat, n ≤ m → n * k ≤ m * k := sorry
+    
+    --2.d.
+    example : ∀ m n : nat, m ≥ n → m = n ∨ m ≥ n+1 := sorry
+    
+    --2.e.
+    example : ∀ n : nat, 0 ≤ n := sorry
+    \end{lstlisting}
+\end{enumerate}
+
+\section{Soluções}
+
+\begin{enumerate}
+    \item resposta inducao basica
+    
+    \item resposta inducao completa
+    
+    \item resposta recursao
+    
+    \item Segue o código abaixo com as respostas:
+    
+    \begin{lstlisting}
+    open nat
+    
+    --1.a.
+    example : ∀ m n k : nat, m * (n + k) = m * n + m * k := 
+    assume m n k : nat,
+    nat.rec_on k
+     (show m * (n + 0 ) = m * n + m * 0, from
+       calc 
+        m * (n + 0 ) = m * n : rfl 
+                 ... = m * n + m * 0 : rfl
+     )
+     (assume k,
+      assume ih : m * (n + k) = m * n + m * k,
+       show m * (n + succ k) = m * n + m * succ k, from
+        calc
+           m * (n + succ k) = m * (succ ( n + k )) : rfl
+                        ... = m * (n + k) + m : by rw mul_succ 
+                        ... = m * n + m * k + m : by rw ih
+                        ... = m * n + (m * k + m) : by rw add_assoc
+                        ... = (m * k + m) + m * n : by rw add_comm
+                        ... = m * succ k + m * n : by rw mul_succ
+                        ... = m * n + m * succ k : by rw add_comm
+     )
+    
+    
+    --1.b.
+    theorem mul_zero_left : ∀ n : nat, 0 * n = 0 :=
+    assume n : nat,
+    nat.rec_on n
+     (show 0 * 0 = 0, from mul_zero 0)
+     (assume k,
+      assume ih : 0 * k = 0,
+       show 0 * succ k = 0, from
+        calc
+         0 * succ k = 0 * k + 0 : by rw mul_succ
+                ... = 0 + 0 : by rw ih
+                ... = 0 : by rw add_zero
+     )
+    
+    --1.c.
+    theorem mul_one_left : ∀ n : nat, 1 * n = n := 
+    assume n : nat,
+    nat.rec_on n
+     (show 1 * 0 = 0, from mul_zero 1)
+     (assume k,
+      assume ih : 1 * k = k,
+       show 1 * succ k = succ k, from
+        calc
+         1 * succ k = 1 * k + 1 : by rw mul_succ
+                ... = k + 1 : by rw ih
+     )
+    
+    --1.d.
+    example : ∀ m n k : nat, (m * n) * k = m * (n * k) := 
+    assume m n k : nat,
+    nat.rec_on k
+     (show (m * n) * 0 = m * (n * 0), by rw [mul_zero, mul_zero, mul_zero]
+     )
+     (assume k,
+      assume ih : (m * n) * k = m * (n * k),
+       show (m * n) * (succ k) = m * (n * succ k), from
+       calc 
+        (m * n) * (succ k) = (m * n) * k + (m * n) : by rw mul_succ
+                       ... = m * (n * k) + (m * n) : by rw ih
+                       ... = m * (n * k) + m * n : rfl
+                       ... = m * (n * k + n) : by rw mul_add
+                       ... = m * (n * succ k) : by rw mul_succ
+     )
+    
+    --1.e.
+    example : ∀ m n : nat, m * n = n * m := 
+    assume m n : nat,
+    nat.rec_on n 
+     (show m * 0 = 0 * m, from
+      calc
+       m * 0 = 0 : by rw mul_zero
+         ... = 0 * m : by rw mul_zero_left
+     )
+     (assume n,
+       assume ih : m * n = n * m,
+        show m * succ n = succ n * m, from
+        calc
+         m * succ n = m * n + m : by rw mul_succ
+                ... = n * m + m : by rw ih
+                ... = n * m + 1 * m : by rw mul_one_left
+                ... = succ n * m : by rw ← right_distrib
+     )
+    \end{lstlisting}
+    
+    \item Segue o código abaixo com as respostas:
+    
+    \begin{lstlisting}
+    open nat
+    
+    --2.a.
+    example : ∀ m n k : nat, n ≤ m → n + k ≤ m + k := 
+    assume m n k : nat,
+    assume h : n ≤ m,
+    nat.rec_on k 
+     (show n + 0 ≤ m + 0, from 
+       (show n + 0 ≤ m + 0, from eq.subst (add_zero n) h
+       )
+     )
+     (assume k,
+       assume ih : n + k ≤ m + k,
+        show n + succ k ≤ m + succ k, from
+         (have h3 : m + k < succ ( m + k), from lt_succ_self (m + k),
+          have h4 : n + k < succ ( m + k), from lt_of_le_of_lt ih h3,
+          h4
+         )
+     )
+    
+    --2.b.
+    example : ∀ m n k : nat, n + k ≤ m + k → n ≤ m := 
+    assume m n k,
+    nat.rec_on k 
+        (assume h1 : n + 0 ≤ m + 0,
+            show n ≤ m, from calc
+                n = n + 0 : by rw add_zero
+              ... ≤ m + 0 : h1
+              ... = m : by rw add_zero
+              ... ≤ m : nat.le_refl m)
+        (assume p h1 h2,
+            have h3 : succ(n + p) ≤ succ(m + p), from calc
+                succ(n + p) = n + succ(p) : by rw add_succ
+                ... ≤ m + succ(p) : h2
+                ... = succ(m + p) : by rw add_succ,
+            have h4 : pred(succ(n + p)) ≤ pred(succ(m + p)), from pred_le_pred h3,
+            have h5 : n + p ≤ m + p, from calc
+                n + p = pred(succ(n + p)) : by rw pred_succ
+                  ... ≤ pred(succ(m + p)) : h4
+                  ... = m + p : by rw pred_succ, 
+            show n ≤ m, from  h1 h5)
+    --2.c.
+    example : ∀ m n k : nat, n ≤ m → n * k ≤ m * k := 
+    assume m n k,
+    nat.rec_on k
+        (assume h, show n * 0 ≤ m * 0, from calc
+            n * 0 = 0 : by rw mul_zero
+            ... = m * 0 : by rw mul_zero
+            ... ≤ m * 0 : nat.le_refl (m * 0))
+        (assume p h, assume h1, 
+            have h2 : n * p ≤ m * p, from h h1,
+            show n * succ(p) ≤ m * succ(p), from calc
+            n * succ(p) = n * p + n : by rw mul_succ
+                    ... ≤ n * p + m : nat.add_le_add_left h1 (n * p)
+                    ... ≤ m * p + m : nat.add_le_add_right h2 (m))
+    
+    --2.e.
+    theorem le_gt_zero : ∀ n : nat, 0 ≤ n :=
+    assume n,
+    nat.rec_on n
+        (show 0≤ 0, from nat.le_refl 0)
+        (assume p h, show 0 ≤ succ(p), from calc
+            0 ≤ p : h
+            ... ≤ succ(p) : le_succ p)
+    --2.d.
+    example : ∀ m n : nat, m ≥ n → m = n ∨ m ≥ n + 1 :=
+    show ∀ m n : nat, n ≤ m → m = n ∨ n + 1 ≤ m, from
+    assume m n : nat,
+    nat.rec_on m
+     (assume h : n ≤ 0,
+       show 0 = n ∨ 0 ≥ n + 1, from or.inl (show 0 = n, from le_antisymm (le_gt_zero n) h)
+     )
+     (assume m,
+       assume ih : n ≤ m → m = n ∨ n + 1 ≤ m,
+        show n ≤ succ m → succ m = n ∨ n + 1 ≤ succ m, from
+        (assume h1 : n ≤ succ m,
+         have h2 : n < succ m ∨ n = succ m, from iff.elim_left (le_iff_lt_or_eq) h1, 
+         or.elim h2
+          (assume h3 : n < succ m, or.inr h3)
+          (assume h3 : n = succ m, or.inl (iff.elim_left eq_comm h3))
+        )
+     )
+    \end{lstlisting}
+\end{enumerate}
