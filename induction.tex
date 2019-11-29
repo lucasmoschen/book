@@ -115,11 +115,56 @@ No Lean, $n + 1$ é reconhecido da mesma maneira que \lstinline{(succ n)}. Todas
 \section{O Príncipio de Indução}
 \label{sec:inducao}
 
-P(0) e P(n) -> P(n+1) e alguns exemplos . . .
+\textbf{Princípio da indução.} Seja P uma propriedade de números naturais. Suponha que P seja uma propriedade de 0 e que, se P é uma propriedade de n, então P é uma propriedade de n+1. Segue que P é uma propriedade de todos os números naturais.
+
+Em outras palavras, se vale P(0) e P(n) implica em P(n+1), vale P(m) para todo m natural.
+Este princípio sintetiza a ideia apresentada anteriormente de que os naturais podem ser construídos a partir do 0 e da função sucessor, evitando qualquer definição cíclica. É também, de fato, um método poderoso para provar fatos sobre números naturais, conhecida como Prova por Indução. Normalmente, consiste em provar que determinada propriedade vale para 0, etapa chamada de ‘base da indução’, e provar que, se tal propriedade vale para n, também vale para n + 1, etapa chamada de ‘passo indutivo. O passo indutivo frequentemente requer que tratemos n como uma constante para chegar de P(n) em P(n+1).
+
+É intuitivo que o Princípio da Indução seja uma propriedade dos números naturais. Podemos pensar que, se P(0) é verdade, então P(1) é verdade; se P(1) é verdade, então P(2) é verdade; e assim por diante, como se P(0), P(1), P(2)... fossem dominós em uma sequência derrubando uns aos outros. Segue abaixo um exemplo de prova por indução;
+
+
+ \textbf{Teorema.} Para todo natural n:
+\begin{center}
+\[0 + 1 + 2 + ... + n = \frac{n(n+1)}{2}\]
+\end{center}
+
+Primeiro, verificamos que a igualdade vale quando $n = 0$, afinal, $0 = \frac{0\cdot1}{2} = 0$. Para realizar o passo indutivo, assumimos que a igualdade vale para um n fixo e verificamos que também vale para n+1:
+\begin{center}
+\[0 + 1 + 2 + ... + n + (n + 1)= \frac{n(n+1)}{2} + (n + 1)\]
+\[=\frac{n(n+1) + 2(n + 1)}{2}\]
+\[=\frac{(n+1)(n + 2)}{2}\]
+\end{center}
+
+Em termos de lógica de primeira ordem, o princípio da indução é o seguinte:
+\begin{center}
+\[P(0)  \land \forall n \ (P(n) \to P(n+1)) \to \forall n \ P(n) \]
+\end{center}
+
+Como o Princípio da Indução é verdadeiro para \textbf{todas} as prorpeidades P dos naturais, podemos usar um quantificador universal para enunciá-lo:
+\begin{center}
+\[\forall P \ (P(0)  \land \forall n \ (P(n) \to P(n+1)) \to \forall n \ P(n)) \]
+\end{center}
+
+Para deixar ainda mais clara a relação entre o Princípio da Indução e a construção dos naturais, podemos enunciá-lo da seguinte maneira:
+
+\textbf{Princípio da indução.} Seja S um subconjunto de N tal que $0 \in S$ e $n \in S \to s(n) \in S$, onde s é a função sucessor. Então S = N
 
 \section{Variantes da Indução}
+Existem algumas maneiras comuns de aplicar o Princípio da Indução que se diferem, de alguma maneira, do método apresentado na seção anterior. Todas estas maneiras são deriváveis do Princípio da Indução, não sendo fundamentalmente diferentes dele de nenhuma forma.
 
-Indução começando em um natural k e indução completa . . .
+\textbf{Indução a partir de um ponto.} Seja P uma propriedade dos naturais e m um número natural. Se P é propriedade de m e se para todo n maior ou igual a m $(P(n) \to P(n+1))$, então P(n) para todo n maior ou igual a m.
+
+Para ver como esta variante decorre diretamente do Princípio de Indução, basta definir a propriedade T dos naturais, sendo T(n) a propriedade de que P vale para o natural n+m. Então, aplica-se normalmente o Princípio de Indução em T.
+
+\textbf{Indução completa.} Seja P uma propriedade dos naturais que vale para 0, e que satisfaça o seguinte: Se P vale para todo natural menor que n, então P vale para n. Segue que P vale para todos os naturais.
+
+Esta variante também é derivável diretamente do Princípio da Indução. Basta definir a propriedade T(n) como 'P vale para todo natural menor ou igual a n' e aplicar o Princípio em T.
+
+\textbf{O princípio do menor elemento.} Seja P uma propriedade dos naturais que vale para pelo menos algum n. Então existe um natural mínimo m para o qual P vale.
+
+Note que esta variante é derivável da anterior (Indução completa). Podemos mostrar isso por absurdo:
+
+Suponha que exista uma propriedade P que vale para algum n, mas não exista um m mínimo para o qual vale P. Evidentemente, P não vale para 0 e para 1 (caso contrário algum deles seria o mínimo). Seja T a seguinte propriedade: se T(n), então P não vale para nenhum $m < n$. Temos que T vale para 1, e se T vale para k, T vale para k+1 (caso contrário, k+1 seria o mínimo para o qual P vale). Concluímos que T vale para todo n, e portanto, que P não vale para nenhum n, o que é absurdo.
 
 \section{Recursão}
 \label{sec:recursao}
@@ -202,11 +247,71 @@ e em seguida concluímos que é o formato de um quadrado perfeito.
 
 \section{Operadores Aritméticos}
 
-Operadores aritméticos em um contexto global . . .
+Utilizando os conceitos já abordados até aqui, podemos começar a definir operadores aritméticos. Trataremos a função sucessor por succ(n).
+
+Conforme o princípio da definição por recursão, visto anteirormente, podemos fazer a seguinte proposição:
+
+Seja A um conjunto qualquer, $a \in A$, e g uma função N x A $\to$ N. Existe uma única função $f : N \to A$ que satisfaça: 
+\begin{center}
+\[f(0) = a\]
+\[f(succ(n)) = g(n, f(n)) \ \forall n \in N\] 
+\end{center}
+Assim, podemos usar o princípio da definição por recursão para definir precisamente a adição, a partir destas 2 condições:
+\begin{center}
+\[m+0=m\]
+\[m + succ(n) = succ(m +n)\] 
+\end{center}
+Note que m é fixo e estamos definindo f em função de n. Variando m, é fácil provar que $n + 1 = succ(n)$, por exemplo.
+
+Analogamente, podemos definir o operador da multiplicação, a partir das 2 condições:
+\begin{center}
+\[m\cdot0=0\]
+\[m\cdot succ(n) = m\cdot n + n\] 
+\end{center}
+
+Defina também a função antecessor, pred(n):
+\begin{center}
+\[pred(0)=0\]
+\[pred(succ(n)) = n\] 
+\end{center}
+
+As seguintes propriedades valem para estes operadores. Todas elas podem ser provadas a partir das quatro condições estabelecidas. 
+
+\begin{center}
+\[succ(pred(n) = n, n \neq 0\]
+\[0 + n  = n\]
+\[succ(m) + n = succ(m+n)\] 
+\[(m+n)+k = m+(n+k)\] 
+\[m(n+k)=mk+nk\] 
+\[0\cdot k = 0\] 
+\[1\cdot k = k\] 
+\[(mn)k = m(nk)\] 
+\[mn = nm\] 
+\end{center}
+Encorajamos o leitor a prová-las - em muitas delas, o Princípio da Indução é útil.
+
 
 \subsection{Aritmética nos Naturais}
 
-Operadores aritméticos nos naturais . . .
+Vamos nomear as propriedades dos operadores que estamos estudando nos números naturais, para facilitar futura referência.
+\begin{center}
+\[m+n=n+m \ \textrm{(comutatividade da adição)}\]
+\[(m+n)+k = m+(n+k) \textrm{(associatividade da adição)}\] 
+\[0 + n  = n \ \textrm{(0 é o elemento neutro da adição)}\]
+\[mn = nm \ \textrm{(comutatividade da multiplicação)}\] 
+\[(mn)k = m(nk)\ \textrm{(associatividade da multiplicação)}\] 
+\[1\cdot k = k \ \textrm{(1 é o elemento neutro da multiplicação)}\] 
+\[m(n+k)=mk+nk\ \textrm{(propriedade distributiva)}\] 
+\[0\cdot k = 0\ \textrm{((0 é o elemento absorvente da multiplicação)}\] 
+\end{center}
+Podemos definir a relação m $\leq$ n, isto é, 'm é menor ou igual a n'. Esta proposição significa que existe k tal que $m+k=n$. A notação $n < m$ significa $n \leq n$ e $n \neq m$. $m \geq n$ equivale a $n \leq m$.
+
+Há propriedades úteis destas relações com as quais trabalharemos:
+\begin{center}
+\[n < n \ \textrm{nunca é verdade (irreflexividade)}\]
+\[(n<m) e (m<k) implicam em n < k \ \textrm{(transitividade)}\] 
+\[\textrm{Para todos} \ n \ e \ m, n < m \ ou \ n = m \ ou \ m < n \ \textrm{(tricotomia)}\]
+\[n < m \ e \ m < n  \ \textrm{não podem ser ambos verdadeiros (assimetria)}\] 
 
 Agora que temos a base dos axiomas para cada operador nos naturais, podemos definir alguns deles em Lean e realizar provas por indução. Para criar uma função de potência por exemplo, o seguinte código funciona muito bem e inclusive é a definição da biblioteca \lstinline{nat}, que pode ser chamada por \textit{nat.pow}.
 
@@ -389,12 +494,6 @@ Nos inteiros não conseguimos mais usar nossas definições tradicionais da indu
 \section{Exercícios}
 
 \begin{enumerate}
-    \item inducao basica
-    
-    \item inducao completa
-    
-    \item recursao
-    
     \item Complete os \lstinline{sorry} com provas no seguinte código:
     
     \begin{lstlisting}
@@ -437,11 +536,6 @@ Nos inteiros não conseguimos mais usar nossas definições tradicionais da indu
 \section{Soluções}
 
 \begin{enumerate}
-    \item resposta inducao basica
-    
-    \item resposta inducao completa
-    
-    \item resposta recursao
     
     \item Segue o código abaixo com as respostas:
     
