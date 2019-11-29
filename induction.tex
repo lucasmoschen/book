@@ -493,6 +493,42 @@ A primeira função \lstinline{of_nat} simplesmente converte um natural para um 
 Nos inteiros não conseguimos mais usar nossas definições tradicionais da indução, entretanto conseguimos adaptá-la. Por exemplo, podemos mostrar que alguma propriedade é válida para todos números não negativos usando nossa indução conhecida. Para os números negativos, cada um deles é a negação de um positivo. Logo, provas por indução nos inteiros se resumem a dois casos: um deles prova a propriedade para os não negativos e o outro para os negativos.
 
 \section{Exercícios}
+\begin{questions}
+\question Prove que existe um inteiro $M$ tal que $\forall n>M$ temos $2^n>n^2$.
+
+ 
+ 
+\question (Desigualdade de Bernoulli) Prove que $1+x \cdot n \leq (1+x)^n$ se $0 \leq n$ e $x>-1$.
+\question Prove que $n^2-1$ é divisível por 8 para todo n inteiro ímpar.
+\question Prove que todo número natural pode ser escrito como soma de potências de dois distintas. \\ (Note que $1=2^0$ também é considerado uma potência de 2)
+\question Prove que todo número natural pode ser escrito como uma soma de números distintos não consecutivos de Fibonacci. \\ Por exemplo, 22 = 1 + 3 + 5 + 13 não é permitido, pois 3 e 5 são números consecutivos de Fibonacci, mas 22 = 1 + 21 é permitido.
+\question Prove que $9 \mid 4^n +15n-1 $ $\forall n>1$ \\ Aqui, a notação $a \mid b$ é lida como a divide b.
+\question Prove que todo natural $n>1$ pode ser escrito como o produto de potências de primos.
+\end{questions}
+\subsection{Exercícios extras}
+\begin{questions}
+\question Provaremos
+por indução de que todos os cavalos são da mesma cor. Mais precisamente, mostraremos que todos os n cavalos são todos
+a mesma cor para cada n ≥ 1 - isso deve ser feito.
+O caso base (n = 1) é óbvio, então vamos supor que, dado um conjunto de n cavalos, eles sejam todos iguais
+cor. Pegue um conjunto de n + 1 cavalos e designe um deles como o “cavalo de teste”. Remova um dos
+outros cavalos, deixando um rebanho de n; pela hipótese indutiva, eles são todos da mesma cor e, em
+em particular, são todas da mesma cor que o cavalo de teste. Coloque o cavalo que você removeu de volta e remova
+um dos outros, deixando novamente um conjunto de n cavalos; pela suposição indutiva, eles são todos iguais
+cor, e vemos que o cavalo removido anteriormente é da mesma cor que o cavalo de teste também. Então tudo
+n + 1 deles são da mesma cor, o que prova o passo indutivo. Então todos os cavalos são da mesma cor.
+Exercício 4. Encontre a falha nesse argumento!
+\question A função $f(x)$ está definida nos naturais e satisfaz $f(1)=1996$ e $f(1)+f(2)+...+f(n)=n^2 \cdot f(n)$ $\forall n>1$. Calcule $f(1996)$.
+\question Prove a desigualdade das médias aritmética e geométrica para n termos por indução. (Dica: Use o fato de que $0 \leq (a-b)^2$ para provar o caso base n=2)
+\question Em um tabuleiro $(2m+1) \times (2n+1)$ pintado como o de xadrez, supondo que os quatro cantos são pretos, prove que se forem removidos um quadrado branco e dois quadrados pretos quaisquer, o tabuleiro restante pode ser preenchido por peças de dominó (retângulos $1 \times 2$). 
+\question Suponha que n discos, pretos de um lado e brancos do outro, estejam dispostos em uma linha reta com
+um arranjo aleatório de lados pretos para cima. Você está jogando um jogo de paciência, no qual cada jogada
+consiste em remover um disco preto e virar os vizinhos imediatos, se houver. Um jogo pode ser vencido se for possível remover todos os n discos. Descreva todos os jogos vencíveis,
+e descreva uma estratégia que vencerá todos os jogos vencíveis. \\
+Dica: Depois de pensar que pode descrever todos os jogos vencíveis, prove seu palpite usando indução.\\
+Observe que não apenas você deve mostrar que pode vencer todos os jogos que considera vencíveis, mas também
+também prova que todos os outros não são vencíveis. Faça isso por indução também.
+\end{questions}
 
 \begin{enumerate}
     \item Complete os \lstinline{sorry} com provas no seguinte código:
