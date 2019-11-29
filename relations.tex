@@ -283,6 +283,303 @@ Portanto o quociente $A/R = \{[0],[1],[2]\}$
 \end{enumerate}
 
 \section{Relações em Lean}
+Até agora, nós tratamos uma relação binária \textit{R} em um conjunto \textit{A} como sendo um conjunto de pares ordenados, ou seja, \textit{R(a,b)} significa que \textit{(a,b)} $\in$ \textit{R}.
+Porém, podemos pensar na relação \textit{R} como sendo uma função que, aplicada aos elementos \textit{a} e \textit{b}, retorna se a relação é válida.
+Esta é a interpretação feita pelo Lean: Uma relação binária em um tipo \textit{A} é uma função \textit{ A $\rightarrow$ A $\rightarrow$ Prop }, que é equivalente a \textit{A $\rightarrow$ (A $\rightarrow$ Prop)}.
+Então, dado \textit{a : A, R a} é um predicado, e \textit{a b : A, R a b} é uma proposição.
+
+\subsection{Relações de Ordem em Lean}
+
+Utilizando Lógica de Primeira Ordem, podemos definir as propriedades de uma relação ser reflexiva, simétrica, transitiva e anti-simétrica:
+\begin{lstlisting}
+namespace hidden
+
+variable {A : Type}
+
+def reflexiva (R : A \rightarrow A \rightarrow Prop) : Prop :=
+\forall x, R x x
+
+def simetrica (R : A  \rightarrow A \rightarrow Prop) : Prop :=
+\forall x y, R x y \rightarrow R y x
+
+def transitiva (R : A \rightarrow A  Prop) : Prop :=
+\forall x y z, R x y \rightarrow R y z \rightarrow R x z
+
+def anti_simetrica (R : A \rightarrow A \rightarrow Prop) : Prop :=
+\forall x y, R x y \rightarrow R y x \rightarrow x = y
+
+end hidden
+\end{lstlisting}
+Desta forma, podemos utilizar estas propriedades pela própria definição como, por exemplo, tratar \textit{reflexiva R} como sendo \textit{\forall x, R x x}, como nos exemplos abaixo:
+\begin{lstlisting}
+variable R : A → A → Prop
+
+example (h : reflexive R) (x : A) : R x x := h x
+
+example (h : symmetric R) (x y : A) (h1 : R x y) : R y x :=
+h x y h1
+
+example (h : transitive R) (x y z : A) (h1 : R x y) (h2 : R y z) :
+  R x z :=
+h x y z h1 h2
+
+example (h : anti_symmetric R) (x y : A) (h1 : R x y)
+    (h2 : R y x) :
+  x = y :=
+h x y h1 h2
+\end{lstlisting}
+Neste exemplo, não seria necessária a argumentação explícita do tipo A, pois como R é uma relação entre elementos do tipo A, o Lean consegue inferir o tipo das variáveis da relação.
+Se utilizarmos \textit{h : reflexiva R, h1 : R x y, h2 : R y z}, poderíamos provar \textit{R x z} com \textit{h x y z h1 h2}.
+Porém, o Lean é capaz de inferir que estamos falando das variáveis \textit{x, y, z}, ou seja, poderíamos realizar esta prova da seguinte forma:
+\begin{lstlisting}
+variable {A : Type}
+
+variable R : A \rightarrow A \rightarrow Prop
+
+example (h : transitive R) (x y z : A) (h1 : R x y) (h2 : R y z) :
+  R x z :=
+h h1 h2
+\end{lstlisting}
+É claro que o Lean possui estas definições em sua biblioteca original, com os nomes de transitive, symmetric, transitive e anti\_symmetric, respectivamente.
+Portanto, as nossas definições possuem hidden. antes do nome (hidden.transitiva, por exemplo).
+Podemos também provar que uma ordem parcial estrita - relação binária que é transitiva e reflexiva - também é assimétrica, da seguinte forma:
+\begin{lstlisting}
+variable A : Type
+variable R : A \rightarrow A \rightarrow Prop
+
+example (h1 : irreflexive R) (h2 : transitive R) :
+  \forall x y, R x y \rightarrow \neg R y x :=
+assume x y,
+assume h3 : R x y,
+assume h4 : R y x,
+have h5 : R x x, from h2 h3 h4,
+have h6 : \neg R x x, from h1 x,
+show false, from h6 h5
+\end{lstlisting}
+É comum, em matemática, usarmos notação infixa e um símbolo como $\leq$ para representarmos uma ordem parcial.
+O Lean permite este uso, através do comando \textit{local infix}. 
+\begin{lstlisting}
+section
+parameter A : Type
+parameter R : A \rightarrow A \rightarrow Prop
+
+local infix \leq := R
+
+example (h1 : irreflexive R) (h2 : transitive R) :
+  \forall x y, x \leq y \rightarrow \neg y \leq x :=
+assume x y,
+assume h3 : x \leq y,
+assume h4 : y \leq x,
+have h5 : x \leq x, from h2 h3 h4,
+have h6 : \neg x \leq x, from h1 x,
+show false, from h6 h5
+
+end
+\end{lstlisting}
+Os comandos \textit{parameter} e \textit{parameters} são similares aos comandos \textit{variable} e \textit{variables}, com a diferença de que parâmetros são fixados com uma seção.
+Isto significa que se você provar uma propriedade de um teorema para uma relação R numa seção acima, você não poderá aplicar este teorema para uma relação S sem fechar a seção. Desde que o parâmetro R esteja fixado, o Lean nos permite definir uma notação para R para ser utilizado localmente na seção.
+No exemplo abaixo, fixando uma ordem parcial, R, nós definimos a ordem parcial estrita respectiva e provamos que ela é, de fato, uma ordem estrita.
+\begin{lstlisting}
+section
+parameters {A : Type} (R : A \rightarrow A \rightarrow Prop)
+parameter (reflR : reflexive R)
+parameter (transR : transitive R)
+parameter (antisimR : \forall {a b : A}, R a b \rightarrow R b a \rightarrow a = b)
+
+local infix \leq := R
+
+definition R' (a b : A) : Prop := a \leq b \wedge a \neq b
+
+local infix < := R'
+
+theorem irreflR (a : A) : \neg a < a :=
+assume : a < a,
+have a \neq a, from and.right this,
+have a = a, from rfl,
+show false, from <\neq a> <a = a>
+
+theorem transR {a b c : A} (h1 : a < b) (h2 : b < c) : a < c :=
+have a \leq b, from and.left h1,
+have a \neq b, from and.right h1,
+have b \leq c, from and.left h2,
+have b \neq c, from and.right h2,
+have a \leq c, from transR <a \leqb> <b \leq c>,
+have a \neq c, from
+    assume : a = c,
+    have c \leq b, from eq.subst <a = c> <a \leq b>,
+    have b = c, from antisimR <b \leq c> <c \leq b>,
+    show false, from <b \neq c> <b = c>,
+show a < c, from and.intro <a \leq c> <a \neq c>
+end
+
+\end{lstlisting}
+A prova acima utiliza \textit{have} e \textit{assume} anônimos, através das aspas francesas, \let e \get, a partir dos comandos \backslash f \textless $_$ e $_$  \backslash f \textgreater.
+
+Aqui está mais um exemplo, onde provamos que, dada uma relação binária \textit{R} no tipo \textit{A}, definindo \textit{S x y} como uma relação que mostra que valem tanto \textit{R x y} quanto \textit{R y x}, S é reflexivo e simétrico.
+\begin{lstlisting}
+section
+parameter A : Type
+parameter R : A \rightarrow A \rightarrow Prop
+
+variable h1 : transitiva R
+variable h2 : reflexiva R
+
+def S (x y : A) := R x y \wedge R y x
+
+example : reflexiva S :=
+assume x,
+have R x x, from h2 x,
+show S x x, from and.intro this this
+
+example : simetrica S :=
+assume x y,
+assume h : S x y,
+have h1 : R x y, from h.left,
+have h2 : R y x, from h.right,
+show S y x, from \textless h.right, h.left \textgreater
+end
+\end{lstlisting}
+ \subsection{Ordenamentos em números}
+ Convenientemente, o Lean já possui um ordenamento normal para os números naturais e inteiros, já definidos.
+ \begin{lstlisting}
+ open nat
+variables n m : \mathds{N}
+
+#check 0 \leq n
+#check n \let n + 1
+
+example : 0 \leq n := zero_le n
+example : n \let n + 1 := lt_succ_self n
+
+example (h : n + 1 \leq m) : n < m + 1 :=
+have h1 : n \let n + 1, from lt_succ_self n,
+have h2 : n \let m, from lt_of_lt_of_le h1 h,
+have h3 : m \let m + 1, from lt_succ_self m,
+show n \let m + 1, from lt.trans h2 h3
+
+ \end{lstlisting}
+ 
+ Existem vários teoremas no Lean úteis para provarmos relações de desigualdade. Alguns comumente usados estão listados a seguir.
+ 
+ \begin{lstlisting}
+ variables (A : Type) [partial_order A]
+variables a b c : A
+
+#check (le_trans : a \leq b \rightarrow b \leq c \rightarrow a \leq c)
+#check (lt_trans : a \let b \rightarrow b \let c \rightarrow a \let c)
+#check (lt_of_lt_of_le : a \let b \rightarrow b \leq c \rightarrow a \let c)
+#check (lt_of_le_of_lt : a \leq b \rightarrow b \let c \rightarrow a \let c)
+#check (le_of_lt : a \let b \rightarrow a \leq b)
+ \end{lstlisting}
+ Neste caso, a declaração no topo diz que A deve ter uma estrutura de ordem parcial. Existem também teoremas para domínios específicos, como o dos números naturais:
+ 
+ \begin{lstlisting}
+ variable n : \mathds{N}
+
+#check (nat.zero_le : \forall n : \mathds{N}, 0 \leq n)
+#check (nat.lt_succ_self : \forall n : \mathds{N}, n \let n + 1)
+#check (nat.le_succ : \forall n : \mathds{N}, n \leq n + 1)
+ \end{lstlisting}
+ 
+ \subsection{Relações de Equivalência em Lean}
+ Uma relação de equivalência é uma relação binária em um domínio A que é reflexiva, transitiva e simétrica.
+ Inicialmente, vamos definir uma preordem, que é uma relação binária reflexiva e transitiva:
+ 
+ \begin{lstlisting}
+ namespace hidden
+
+variable {A : Type}
+
+def preorder (R : A \rightarrow A \rightarrow Prop) : Prop :=
+reflexive R \wedge transitive R
+
+end hidden
+ \end{lstlisting}
+A biblioteca do Lean possui uma formulação diferente de preordens, por isso é necessário usar o \textit{namespace hidden} para usarmos os mesmos nomes. A biblioteca do Lean também define outras propriedades de relações, tais como:
+
+\begin{lstlisting}
+namespace hidden
+
+variables {A : Type} (R : A \rightarrow A \rightarrow Prop)
+
+def equivalence := reflexive R \wedge symmetric R \wedge transitive R
+
+def total := \forall x y, R x y \vee R y x
+
+def irreflexive := \forall x, \neg R x x
+
+def anti_symmetric := \forall ⦃x y⦄, R x y \rightarrow R y x \rightarrow x = y
+
+end hidden
+\end{lstlisting}
+ 
+ Porém, caso queira trabalhar com as definições do Lean, você pode vê-las:
+ \begin{lstlisting}
+#print equivalence
+#print total
+#print irreflexive
+#print anti_symmetric
+ \end{lstlisting}
+
+A partir da nossa definição de preordem, podemos descrever uma ordem parcial como uma preordem assimétrica, e mostrar que uma relação de equivalência é uma preordem simétrica.
+\begin{lstlisting}
+namespace hidden
+
+variable {A : Type}
+
+def preorder (R : A \rightarrow A \rightarrow Prop) : Prop :=
+reflexive R \wedge transitive R
+
+def partial_order (R : A \rightarrow A \rightarrow Prop) : Prop :=
+preorder R \wedge anti_symmetric R
+
+example (R : A \rightarrow A \rightarrow Prop):
+  equivalence R \Leftrightarrow preorder R \wedge symmetric R :=
+iff.intro
+  (assume h1 : equivalence R,
+    have h2 : reflexive R, from and.left h1,
+    have h3 : symmetric R, from and.left (and.right h1),
+    have h4 : transitive R, from and.right (and.right h1),
+    show preorder R \wedge symmetric R,
+      from and.intro (and.intro h2 h4) h3)
+  (assume h1 : preorder R \wedge symmetric R,
+    have h2 : preorder R, from and.left h1,
+    show equivalence R,
+      from and.intro (and.left h2)
+             (and.intro (and.right h1) (and.right h2)))
+
+end hidden
+
+\end{lstlisting}
+
+Outra maneira de definirmos uma relação de equivalência é com duas propriedades:
+
+$\forall a (a\equiv a)$
+
+$\forall a,b,c (a\equiv b \wedge c\equiv b \rightarrow a\equiv c$
+
+Vamos provar isto em Lean. Lembre que os comandos \textit{parameters} e \textit{local infix} servem para fixarmos uma relação R e introduzirmos a notação $\approx$ para denotá-lo.(Você pode escrevê-lo com $\backslash \sim \sim$. Ou seja, $\approx$ está sendo usado para denotar \textit{R}.
+\begin{lstlisting}
+section
+parameters {A : Type} (R : A \rightarrow A \rightarrow Prop)
+local infix \approx := R
+
+variable (h1 : reflexive (\approx))
+variable (h2 : \forall {a b c}, a \approx b \wedge c \approx b \rightarrow a \approx c)
+
+example : symmetric (\approx) :=
+assume a b (h : a \approx b),
+have b \approx b \wedge a \approx b, from and.intro (h1 b) h,
+show b \approx a, from h2 this
+
+example : transitive (\approx) :=
+assume a b c (h3 : a \approx b) (h4 : b \approx c),
+have c \approx b, from h2 (and.intro (h1 c) h4),
+have a \approx b \wedge c \approx b, from and.intro h3 this,
+show a \approx c, from h2 this
+
+end
+\end{lstlisting}
 
 \section{Exemplos}
 Os exemplos abaixo serão eventuais exercícios.
