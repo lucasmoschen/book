@@ -310,7 +310,7 @@ def anti_simetrica (R : A \rightarrow A \rightarrow Prop) : Prop :=
 
 end hidden
 \end{lstlisting}
-Desta forma, podemos utilizar estas propriedades pela própria definição como, por exemplo, tratar \textit{reflexiva R} como sendo \textit{\forall x, R x x}, como nos exemplos abaixo:
+Desta forma, podemos utilizar estas propriedades pela própria definição como, por exemplo, tratar $reflexiva \ R$ como sendo $\forall x, R \ x \ x$, como nos exemplos abaixo:
 \begin{lstlisting}
 variable R : A → A → Prop
 
@@ -413,7 +413,7 @@ show a < c, from and.intro <a \leq c> <a \neq c>
 end
 
 \end{lstlisting}
-A prova acima utiliza \textit{have} e \textit{assume} anônimos, através das aspas francesas, \let e \get, a partir dos comandos \backslash f \textless $_$ e $_$  \backslash f \textgreater.
+A prova acima utiliza \textit{have} e \textit{assume} anônimos, através das aspas francesas, $<$ e $>$, a partir dos comandos \textit{\textbackslash f \textless \_} e \textit{\textbackslash f \textgreater \_}.
 
 Aqui está mais um exemplo, onde provamos que, dada uma relação binária \textit{R} no tipo \textit{A}, definindo \textit{S x y} como uma relação que mostra que valem tanto \textit{R x y} quanto \textit{R y x}, S é reflexivo e simétrico.
 \begin{lstlisting}
