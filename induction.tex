@@ -58,9 +58,9 @@ begin
 end
 \end{lstlisting}
 
-A tática \lstinline{induction} separa o nosso objetivo dado o construtor do tipo da variável passada, que no nosso caso é \lstinline{x}. Como ela é de um tipo enumerado, o princípio indutivo é simplesmente provar para cada possível valor, logo nosso objetivo é dividido em três objetivos diferentes: uma prova para cada valor possível.
+A tática \lstinline{induction} separa o nosso objetivo dado o construtor do tipo da variável passada, que no nosso caso é \lstinline{x} do tipo período. Como ela é de um tipo enumerado, o princípio indutivo é simplesmente provar para cada possível valor, logo nosso objetivo é dividido em três objetivos diferentes: uma prova para cada valor possível.
 
-O operador \lstinline{rfl} funciona da seguinte maneira: ele tenta simplificar ambos os lados da igualdade seguindo definições e propriedades. Caso ele consiga chegar na igualdade desejada apenas simplificando, ele considera como trivial o objetivo.
+O operador \lstinline{rfl} funciona da seguinte maneira: ele tenta simplificar ambos os lados da igualdade seguindo definições e propriedades. Caso ele consiga chegar na igualdade desejada apenas simplificando, ele considera como verdadeiro a equivalência de equações.
 
 \section{Os Naturais}
 \label{sec:naturais}
@@ -115,29 +115,74 @@ No Lean, $n + 1$ é reconhecido da mesma maneira que \lstinline{(succ n)}. Todas
 \section{O Príncipio de Indução}
 \label{sec:inducao}
 
-P(0) e P(n) -> P(n+1) e alguns exemplos . . .
+\textbf{Princípio da indução.} Seja P uma propriedade de números naturais. Suponha que P seja uma propriedade de 0 e que, se P é uma propriedade de n, então P é uma propriedade de n+1. Segue que P é uma propriedade de todos os números naturais.
+
+Em outras palavras, se vale P(0) e P(n) implica em P(n+1), vale P(m) para todo m natural.
+Este princípio sintetiza a ideia apresentada anteriormente de que os naturais podem ser construídos a partir do 0 e da função sucessor, evitando qualquer definição cíclica. É também, de fato, um método poderoso para provar fatos sobre números naturais, conhecida como Prova por Indução. Normalmente, consiste em provar que determinada propriedade vale para 0, etapa chamada de ‘base da indução’, e provar que, se tal propriedade vale para n, também vale para n + 1, etapa chamada de ‘passo indutivo. O passo indutivo frequentemente requer que tratemos n como uma constante para chegar de P(n) em P(n+1).
+
+É intuitivo que o Princípio da Indução seja uma propriedade dos números naturais. Podemos pensar que, se P(0) é verdade, então P(1) é verdade; se P(1) é verdade, então P(2) é verdade; e assim por diante, como se P(0), P(1), P(2)... fossem dominós em uma sequência derrubando uns aos outros. Segue abaixo um exemplo de prova por indução;
+
+
+ \textbf{Teorema.} Para todo natural n:
+\begin{center}
+\[0 + 1 + 2 + ... + n = \frac{n(n+1)}{2}\]
+\end{center}
+
+Primeiro, verificamos que a igualdade vale quando $n = 0$, afinal, $0 = \frac{0\cdot1}{2} = 0$. Para realizar o passo indutivo, assumimos que a igualdade vale para um n fixo e verificamos que também vale para n+1:
+\begin{center}
+\[0 + 1 + 2 + ... + n + (n + 1)= \frac{n(n+1)}{2} + (n + 1)\]
+\[=\frac{n(n+1) + 2(n + 1)}{2}\]
+\[=\frac{(n+1)(n + 2)}{2}\]
+\end{center}
+
+Em termos de lógica de primeira ordem, o princípio da indução é o seguinte:
+\begin{center}
+\[P(0)  \land \forall n \ (P(n) \to P(n+1)) \to \forall n \ P(n) \]
+\end{center}
+
+Como o Princípio da Indução é verdadeiro para \textbf{todas} as prorpeidades P dos naturais, podemos usar um quantificador universal para enunciá-lo:
+\begin{center}
+\[\forall P \ (P(0)  \land \forall n \ (P(n) \to P(n+1)) \to \forall n \ P(n)) \]
+\end{center}
+
+Para deixar ainda mais clara a relação entre o Princípio da Indução e a construção dos naturais, podemos enunciá-lo da seguinte maneira:
+
+\textbf{Princípio da indução.} Seja S um subconjunto de N tal que $0 \in S$ e $n \in S \to s(n) \in S$, onde s é a função sucessor. Então S = N
 
 \section{Variantes da Indução}
+Existem algumas maneiras comuns de aplicar o Princípio da Indução que se diferem, de alguma maneira, do método apresentado na seção anterior. Todas estas maneiras são deriváveis do Princípio da Indução, não sendo fundamentalmente diferentes dele de nenhuma forma.
 
-Indução começando em um natural k e indução completa . . .
+\textbf{Indução a partir de um ponto.} Seja P uma propriedade dos naturais e m um número natural. Se P é propriedade de m e se para todo n maior ou igual a m $(P(n) \to P(n+1))$, então P(n) para todo n maior ou igual a m.
+
+Para ver como esta variante decorre diretamente do Princípio de Indução, basta definir a propriedade T dos naturais, sendo T(n) a propriedade de que P vale para o natural n+m. Então, aplica-se normalmente o Princípio de Indução em T.
+
+\textbf{Indução completa.} Seja P uma propriedade dos naturais que vale para 0, e que satisfaça o seguinte: Se P vale para todo natural menor que n, então P vale para n. Segue que P vale para todos os naturais.
+
+Esta variante também é derivável diretamente do Princípio da Indução. Basta definir a propriedade T(n) como 'P vale para todo natural menor ou igual a n' e aplicar o Princípio em T.
+
+\textbf{O princípio do menor elemento.} Seja P uma propriedade dos naturais que vale para pelo menos algum n. Então existe um natural mínimo m para o qual P vale.
+
+Note que esta variante é derivável da anterior (Indução completa). Podemos mostrar isso por absurdo:
+
+Suponha que exista uma propriedade P que vale para algum n, mas não exista um m mínimo para o qual vale P. Evidentemente, P não vale para 0 e para 1 (caso contrário algum deles seria o mínimo). Seja T a seguinte propriedade: se T(n), então P não vale para nenhum $m < n$. Temos que T vale para 1, e se T vale para k, T vale para k+1 (caso contrário, k+1 seria o mínimo para o qual P vale). Concluímos que T vale para todo n, e portanto, que P não vale para nenhum n, o que é absurdo.
 
 \section{Recursão}
 \label{sec:recursao}
 
 Na seção~\ref{sec:naturais} definimos três exemplos de funções recursivas, a multiplicação por $5$, o fatorial e a Fibonacci.
 Por exemplo, na função \lstinline{five_mult} definimos:
-\begin{center}
-    \[ f(0) = 0 \] 
-    \[ f(n+1) = 5 + f(n) \]
-\end{center}
+\begin{align*}
+    f(0) &= 0  \\
+     f(n+1) &= 5 + f(n) 
+\end{align*}
 Sabemos que esta função também pode escrita como $f(n) = 5\cdot n$, no entanto, as duas condições estabelecidas
 no modo recursivo definem o comportamento de $f$ para todo o conjunto $\mathbb{N}$.
 \newline \textbf{Definição: Princípio de definição por recursão} Seja $A$ um conjunto, e $\alpha \in A$,
 e $g : \mathbb{N} \times A \to A$. Então existe uma unica função $f$ que satisfaça:
-\begin{center}
-    \[ f(0) = \alpha \]
-    \[ f(n+1) = g(n, f(n))\]
-\end{center} 
+\begin{align*}
+     f(0) &= \alpha \\
+     f(n+1) &= g(n, f(n))
+\end{align*} 
 \textbf{Exemplo} Indo no caminho contrário, temos $f : \mathbb{N} \to \mathbb{N}$, $f(n) = 2^n$, vamos
 tentar expressar a função de forma recursiva. Nosso conjunto é o conjunto dos naturais, e temos $f(0) = 1$,
 além disso, como podemos expressar $2^{n+1} = 2\cdot 2^{n}$, temos que $f(n+1) = g(n, f(n)) = 2\cdot f(n)$.
@@ -147,26 +192,26 @@ iremos utilizar o princípio da indução para provar igualdades de funções re
 \newline \textbf{Proposição} Tanto a notação do somatório de uma função de $\mathbb{N}$, quanto a notação
 do produtório podem ser descritas através de definições recursivas. Ou seja, seja $f : \mathbb{N} \to 
 \mathbb{N}$, $s(n) = \sum_{i=0}^{n} f(i)$, é:
-\begin{center}
-    \[ s(0) = 0\]
-    \[s(n+1)=s(n)+f(n)\]
-\end{center}
+\begin{align*}
+     s(0) &= 0 \\
+    s(n+1) &= s(n)+f(n)
+\end{align*}
 e $p(n) = \prod_{i=0}^n f(i)$, é:
-\begin{center}
-    \[ p(0) = 1\]
-    \[ p(n+1)=p(n)\cdot f(n)\]
-\end{center}
+\begin{align*}
+    p(0) &= 1 \\
+    p(n+1) &= p(n)\cdot f(n)
+\end{align*}
 Da mesma forma que o princípio da indução completo, o princípio da definição por recursão também pode ser
 extendido.
 \newline \textbf{Proposição} Seja $A$ um conjunto, e $\alpha_0, \alpha_1, \dots, \alpha_m \in A$,
 e $g : \mathbb{N}^m \times A \to A$. Então existe uma única função $f$ que satisfaça:
-\begin{center}
-    \[ f(0) = \alpha_0 \]
-    \[ f(1) = \alpha_1 \]
-    \[ \dots \]
-    \[ f(m) = \alpha_m \]
-    \[ f(n+1) = g(n, f(n), f(n-1), \dots, f(n-m))\]
-\end{center} 
+\begin{align*}
+     f(0) &= \alpha_0 \\
+     f(1) &= \alpha_1 \\
+     &\dots \\
+     f(m) &= \alpha_m \\
+     f(n+1) &= g(n, f(n), f(n-1), \dots, f(n-m))
+\end{align*} 
 \textbf{Exemplo} A ideia de extensão é que podemos definir de forma não recursiva o comportamento da
 função até um número $m$ e a partir disso a recursão em $n$ pode depender dos $m$ valores anteriores da 
 função. Como já apresentado na seção 8.2, os números de Fibonacci podem ser definidos através de 
@@ -187,26 +232,87 @@ Para o caso $n=1$ temos que $F(1) = 1$ (definição recursiva) e
 \end{center}
 \textbf{ii)} Pela hipótese de indução, supomos que a propriedade vale para $F(p-2)$ e para $F(p-1)$,
 para $F(p)$ teremos:
-\begin{center}
-    \[ F(p) = F(p-1) + F(p-2) = \]
-    \[ = \frac{1}{\sqrt{5}}\bigg \{ \Big (\frac{1+\sqrt{5}}{2} \Big )^{p-1} + \Big (\frac{1-\sqrt{5}}{2}\Big )^{p-1}\bigg \} + \frac{1}{\sqrt{5}}\bigg \{ \Big (\frac{1+\sqrt{5}}{2} \Big )^{p-2} + \Big (\frac{1-\sqrt{5}}{2}\Big )^{p-2}\bigg \}\]
-    \[ = \frac{1}{\sqrt{5}}\bigg \{ \Big (\frac{1+\sqrt{5}}{2} \Big )^{p-2} \Big( 1 + \frac{1+\sqrt{5}}{2}\Big) + \Big (\frac{1-\sqrt{5}}{2}\Big )^{p-2} \Big( 1 +\frac{1 - \sqrt{5}}{2}\Big)\bigg \}\]
-    \[ = \frac{1}{\sqrt{5}}\bigg \{ \Big (\frac{1+\sqrt{5}}{2} \Big )^{p-2} \Big( \frac{3+\sqrt{5}}{2}\Big) + \Big (\frac{1-\sqrt{5}}{2}\Big )^{p-2} \Big( \frac{3 - \sqrt{5}}{2}\Big)\bigg \}\]
-    \[ = \frac{1}{\sqrt{5}}\bigg \{ \Big (\frac{1+\sqrt{5}}{2} \Big )^{p-2} \Big( \frac{1+2\cdot \sqrt{5} + 5}{4}\Big) + \Big (\frac{1-\sqrt{5}}{2}\Big )^{p-2} \Big( \frac{1 - 2\cdot \sqrt{5} +5}{4}\Big)\bigg \}\]
-    \[ = \frac{1}{\sqrt{5}}\bigg \{ \Big (\frac{1+\sqrt{5}}{2} \Big )^{p-2} \Big( \frac{1+\sqrt{5}}{2}\Big)^2 + \Big (\frac{1-\sqrt{5}}{2}\Big )^{p-2} \Big( \frac{1 - \sqrt{5}}{2}\Big)^2 \bigg \}\]
-    \[ = \frac{1}{\sqrt{5}}\bigg \{ \Big (\frac{1+\sqrt{5}}{2} \Big )^p + \Big (\frac{1-\sqrt{5}}{2}\Big )^p\bigg \} \]
-\end{center}
+\begin{align*}
+    F(p) &= F(p-1) + F(p-2) = \\
+    &= \frac{1}{\sqrt{5}}\bigg \{ \Big (\frac{1+\sqrt{5}}{2} \Big )^{p-1} + \Big (\frac{1-\sqrt{5}}{2}\Big )^{p-1}\bigg \} + \frac{1}{\sqrt{5}}\bigg \{ \Big (\frac{1+\sqrt{5}}{2} \Big )^{p-2} + \Big (\frac{1-\sqrt{5}}{2}\Big )^{p-2}\bigg \}\\
+    &= \frac{1}{\sqrt{5}}\bigg \{ \Big (\frac{1+\sqrt{5}}{2} \Big )^{p-2} \Big( 1 + \frac{1+\sqrt{5}}{2}\Big) + \Big (\frac{1-\sqrt{5}}{2}\Big )^{p-2} \Big( 1 +\frac{1 - \sqrt{5}}{2}\Big)\bigg \}\\
+     &= \frac{1}{\sqrt{5}}\bigg \{ \Big (\frac{1+\sqrt{5}}{2} \Big )^{p-2} \Big( \frac{3+\sqrt{5}}{2}\Big) + \Big (\frac{1-\sqrt{5}}{2}\Big )^{p-2} \Big( \frac{3 - \sqrt{5}}{2}\Big)\bigg \}\\
+     &= \frac{1}{\sqrt{5}}\bigg \{ \Big (\frac{1+\sqrt{5}}{2} \Big )^{p-2} \Big( \frac{1+2\cdot \sqrt{5} + 5}{4}\Big) + \Big (\frac{1-\sqrt{5}}{2}\Big )^{p-2} \Big( \frac{1 - 2\cdot \sqrt{5} +5}{4}\Big)\bigg \}\\
+     &= \frac{1}{\sqrt{5}}\bigg \{ \Big (\frac{1+\sqrt{5}}{2} \Big )^{p-2} \Big( \frac{1+\sqrt{5}}{2}\Big)^2 + \Big (\frac{1-\sqrt{5}}{2}\Big )^{p-2} \Big( \frac{1 - \sqrt{5}}{2}\Big)^2 \bigg \}\\
+     &= \frac{1}{\sqrt{5}}\bigg \{ \Big (\frac{1+\sqrt{5}}{2} \Big )^p + \Big (\frac{1-\sqrt{5}}{2}\Big )^p\bigg \} \\
+\end{align*}
 Como queriamos demonstrar. Observe que o principal truque para a demonstração ocorreu na linha 5, 
 em que multiplicamos a fração por $2$ no numerador e denominador e separamos $\frac{6}{4}$ em $\frac{1+5}{4}$
 e em seguida concluímos que é o formato de um quadrado perfeito.
 
 \section{Operadores Aritméticos}
 
-Operadores aritméticos em um contexto global . . .
+Utilizando os conceitos já abordados até aqui, podemos começar a definir operadores aritméticos. Trataremos a função sucessor por succ(n).
+
+Conforme o princípio da definição por recursão, visto anteirormente, podemos fazer a seguinte proposição:
+
+Seja A um conjunto qualquer, $a \in A$, e g uma função N x A $\to$ N. Existe uma única função $f : N \to A$ que satisfaça: 
+\begin{center}
+\[f(0) = a\]
+\[f(succ(n)) = g(n, f(n)) \ \forall n \in N\] 
+\end{center}
+Assim, podemos usar o princípio da definição por recursão para definir precisamente a adição, a partir destas 2 condições:
+\begin{center}
+\[m+0=m\]
+\[m + succ(n) = succ(m +n)\] 
+\end{center}
+Note que m é fixo e estamos definindo f em função de n. Variando m, é fácil provar que $n + 1 = succ(n)$, por exemplo.
+
+Analogamente, podemos definir o operador da multiplicação, a partir das 2 condições:
+\begin{center}
+\[m\cdot0=0\]
+\[m\cdot succ(n) = m\cdot n + n\] 
+\end{center}
+
+Defina também a função antecessor, pred(n):
+\begin{center}
+\[pred(0)=0\]
+\[pred(succ(n)) = n\] 
+\end{center}
+
+As seguintes propriedades valem para estes operadores. Todas elas podem ser provadas a partir das quatro condições estabelecidas. 
+
+\begin{center}
+\[succ(pred(n) = n, n \neq 0\]
+\[0 + n  = n\]
+\[succ(m) + n = succ(m+n)\] 
+\[(m+n)+k = m+(n+k)\] 
+\[m(n+k)=mk+nk\] 
+\[0\cdot k = 0\] 
+\[1\cdot k = k\] 
+\[(mn)k = m(nk)\] 
+\[mn = nm\] 
+\end{center}
+Encorajamos o leitor a prová-las - em muitas delas, o Princípio da Indução é útil.
+
 
 \subsection{Aritmética nos Naturais}
 
-Operadores aritméticos nos naturais . . .
+Vamos nomear as propriedades dos operadores que estamos estudando nos números naturais, para facilitar futura referência.
+\begin{center}
+\[m+n=n+m \ \textrm{(comutatividade da adição)}\]
+\[(m+n)+k = m+(n+k) \textrm{(associatividade da adição)}\] 
+\[0 + n  = n \ \textrm{(0 é o elemento neutro da adição)}\]
+\[mn = nm \ \textrm{(comutatividade da multiplicação)}\] 
+\[(mn)k = m(nk)\ \textrm{(associatividade da multiplicação)}\] 
+\[1\cdot k = k \ \textrm{(1 é o elemento neutro da multiplicação)}\] 
+\[m(n+k)=mk+nk\ \textrm{(propriedade distributiva)}\] 
+\[0\cdot k = 0\ \textrm{((0 é o elemento absorvente da multiplicação)}\] 
+\end{center}
+Podemos definir a relação m $\leq$ n, isto é, 'm é menor ou igual a n'. Esta proposição significa que existe k tal que $m+k=n$. A notação $n < m$ significa $n \leq n$ e $n \neq m$. $m \geq n$ equivale a $n \leq m$.
+
+Há propriedades úteis destas relações com as quais trabalharemos:
+\begin{center}
+\[n < n \ \textrm{nunca é verdade (irreflexividade)}\]
+\[(n<m) e (m<k) implicam em n < k \ \textrm{(transitividade)}\] 
+\[\textrm{Para todos} \ n \ e \ m, n < m \ ou \ n = m \ ou \ m < n \ \textrm{(tricotomia)}\]
+\[n < m \ e \ m < n  \ \textrm{não podem ser ambos verdadeiros (assimetria)}\] 
+\end{center}
 
 Agora que temos a base dos axiomas para cada operador nos naturais, podemos definir alguns deles em Lean e realizar provas por indução. Para criar uma função de potência por exemplo, o seguinte código funciona muito bem e inclusive é a definição da biblioteca \lstinline{nat}, que pode ser chamada por \textit{nat.pow}.
 
@@ -362,8 +468,284 @@ Repare que o Lean preserva o operador que estabelece a maior restrição quando 
 
 \subsection{Aritmética nos Inteiros}
 
-Operadores aritméticos nos inteiros . . .
+Apesar dos naturais servirem para muitas coisas (como contagem e ordenação), eles apresentam um problema: não é possível subtrair $x$ de $y$ se $x > y$. O conjunto dos inteiros consiste de uma extensão dos naturais com valores negativos de modo a corrigir este impecilho. O conjunto dos números inteiros é o conjunto:
+
+\[ \mathbb{Z} = \{...,-2,-1,0,1,2,...\}\]
+
+Outros conjuntos como os racionais, reais e complexos podem ser extendidos a partir dos inteiros, mas não serão comentados neste livro. Para construir os inteiros a partir dos naturais, basta adicionar uma função que indica que todo número natural tem seu inverso aditivo, isto é, para todo número natural $n$, existe um número $-n$ tal que $n+(-n)=0$. Esse valor é chamado a negação de $n$.
+
+Grande parte das propriedades provadas nas seções anteriores sobre o conjunto dos naturais também se aplicam aos inteiros, mas não todas. Por exemplo, o teorema \lstinline{∀ n : ℕ, n + 1 ≠ 0} não é válido nos inteiros pois $n=-1$ é um contraexemplo.
+
+No Lean os inteiros são definidos da seguinte maneira:
+
+\begin{lstlisting}
+namespace hidden
+    open nat
+
+    inductive int : Type
+    | of_nat : nat → int
+    | neg_succ_of_nat : nat → int
+end hidden
+\end{lstlisting}
+
+A primeira função \lstinline{of_nat} simplesmente converte um natural para um inteiro, enquanto a segunda função \lstinline{neg_succ_of_nat} retornaria o inverso aditivo do sucessor do número, isto é, passado $n$, ela retorna $-(n+1)$. Com essa construção é possível definir várias definições indutivas, mas não serão comentadas.
+
+Nos inteiros não conseguimos mais usar nossas definições tradicionais da indução, entretanto conseguimos adaptá-la. Por exemplo, podemos mostrar que alguma propriedade é válida para todos números não negativos usando nossa indução conhecida. Para os números negativos, cada um deles é a negação de um positivo. Logo, provas por indução nos inteiros se resumem a dois casos: um deles prova a propriedade para os não negativos e o outro para os negativos.
 
 \section{Exercícios}
+\subsection{Lean}
+\begin{enumerate}
+    \item Complete os \lstinline{sorry} com provas no seguinte código:
+    
+    \begin{lstlisting}
+    --1.a.
+    example : ∀ m n k : nat, m * (n + k) = m * n + m * k := sorry
+    
+    --1.b.
+    example : ∀ n : nat, 0 * n = 0 := sorry
+    
+    --1.c.
+    example : ∀ n : nat, 1 * n = n := sorry
+    
+    --1.d.
+    example : ∀ m n k : nat, (m * n) * k = m * (n * k) := sorry
+    
+    --1.e.
+    example : ∀ m n : nat, m * n= n * m := sorry
+    \end{lstlisting}
+    
+    \item Complete os \lstinline{sorry} com provas no seguinte código (não se esqueça de explorar as funções internas do Lean):
+    
+    \begin{lstlisting}
+    --2.a.
+    example : ∀ m n k : nat, n ≤ m → n + k ≤ m  + k := sorry
+    
+    --2.b.
+    example : ∀ m n k : nat, n + k ≤ m + k → n ≤ m := sorry
+    
+    --2.c.
+    example : ∀ m n k : nat, n ≤ m → n * k ≤ m * k := sorry
+    
+    --2.d.
+    example : ∀ m n : nat, m ≥ n → m = n ∨ m ≥ n+1 := sorry
+    
+    --2.e.
+    example : ∀ n : nat, 0 ≤ n := sorry
+    \end{lstlisting}
+    \end{enumerate}
+    \subsection{Matemática}
+    \begin{enumerate}
+    \item Prove que existe um inteiro $M$ tal que $\forall n>M$ temos $2^n>n^2$.
+    
+    \item (Desigualdade de Bernoulli) Prove que $1+x \cdot n \leq (1+x)^n$ se $0 \leq n$ e $x>-1$.
+    
+    \item Prove que $n^2-1$ é divisível por 8 para todo n inteiro ímpar.
+    
+    \item Prove que todo número natural pode ser escrito como soma de potências de dois distintas. \\ (Note que $1=2^0$ também é considerado uma potência de 2)
+    
+    \item Prove que todo número natural pode ser escrito como uma soma de números distintos não consecutivos de Fibonacci. \\ Por exemplo, 22 = 1 + 3 + 5 + 13 não é permitido, pois 3 e 5 são números consecutivos de Fibonacci, mas 22 = 1 + 21 é permitido.
+    
+    \item Prove que $9 \mid 4^n +15n-1 $ $\forall n>1$ \\ Aqui, a notação $a \mid b$ é lida como a divide b.
+    
+    \item Prove que todo natural $n>1$ pode ser escrito como o produto de potências de primos.
+\end{enumerate}
+\subsection{Exercícios extras}
+\begin{enumerate}
+    \item Provaremos por indução de que todos os cavalos são da mesma cor. Mais precisamente, mostraremos que todos os n cavalos são todos a mesma cor para cada n ≥ 1 - isso deve ser feito. O caso base (n = 1) é óbvio, então vamos supor que, dado um conjunto de n cavalos, eles sejam todos iguais cor. Pegue um conjunto de n + 1 cavalos e designe um deles como o “cavalo de teste”. Remova um dos outros cavalos, deixando um rebanho de n; pela hipótese indutiva, eles são todos da mesma cor e, em particular, são todas da mesma cor que o cavalo de teste. Coloque o cavalo que você removeu de volta e remova um dos outros, deixando novamente um conjunto de n cavalos; pela suposição indutiva, eles são todos iguais cor, e vemos que o cavalo removido anteriormente é da mesma cor que o cavalo de teste também. Então tudo n + 1 deles são da mesma cor, o que prova o passo indutivo. Então todos os cavalos são da mesma cor. Encontre a falha nesse argumento!
+    
+    \item A função $f(x)$ está definida nos naturais e satisfaz $f(1)=1996$ e $f(1)+f(2)+...+f(n)=n^2 \cdot f(n)$ $\forall n>1$. Calcule $f(1996)$.
+    
+    \item Prove a desigualdade das médias aritmética e geométrica para n termos por indução (Dica: Use o fato de que $0 \leq (a-b)^2$ para provar o caso base n=2).
+    
+    \item Em um tabuleiro $(2m+1) \times (2n+1)$ pintado como o de xadrez, supondo que os quatro cantos são pretos, prove que se forem removidos um quadrado branco e dois quadrados pretos quaisquer, o tabuleiro restante pode ser preenchido por peças de dominó (retângulos $1 \times 2$). 
+    
+    \item Suponha que n discos, pretos de um lado e brancos do outro, estejam dispostos em uma linha reta com um arranjo aleatório de lados pretos para cima. Você está jogando um jogo de paciência, no qual cada jogada
+    consiste em remover um disco preto e virar os vizinhos imediatos, se houver. Um jogo pode ser vencido se for possível remover todos os n discos. Descreva todos os jogos vencíveis, e descreva uma estratégia que vencerá todos os jogos vencíveis. \\
+    Dica: Depois de pensar que pode descrever todos os jogos vencíveis, prove seu palpite usando indução.\\
+    Observe que não apenas você deve mostrar que pode vencer todos os jogos que considera vencíveis, mas também
+    também prova que todos os outros não são vencíveis. Faça isso por indução também.
+\end{enumerate}
 
-Alguns exercícios de indução . . .
+\section{Soluções}
+\subsection{Lean}
+\begin{enumerate}
+    
+    \item Segue o código abaixo com as respostas:
+    
+    \begin{lstlisting}
+    open nat
+    
+    --1.a.
+    example : ∀ m n k : nat, m * (n + k) = m * n + m * k := 
+    assume m n k : nat,
+    nat.rec_on k
+     (show m * (n + 0 ) = m * n + m * 0, from
+       calc 
+        m * (n + 0 ) = m * n : rfl 
+                 ... = m * n + m * 0 : rfl
+     )
+     (assume k,
+      assume ih : m * (n + k) = m * n + m * k,
+       show m * (n + succ k) = m * n + m * succ k, from
+        calc
+           m * (n + succ k) = m * (succ ( n + k )) : rfl
+                        ... = m * (n + k) + m : by rw mul_succ 
+                        ... = m * n + m * k + m : by rw ih
+                        ... = m * n + (m * k + m) : by rw add_assoc
+                        ... = (m * k + m) + m * n : by rw add_comm
+                        ... = m * succ k + m * n : by rw mul_succ
+                        ... = m * n + m * succ k : by rw add_comm
+     )
+    
+    
+    --1.b.
+    theorem mul_zero_left : ∀ n : nat, 0 * n = 0 :=
+    assume n : nat,
+    nat.rec_on n
+     (show 0 * 0 = 0, from mul_zero 0)
+     (assume k,
+      assume ih : 0 * k = 0,
+       show 0 * succ k = 0, from
+        calc
+         0 * succ k = 0 * k + 0 : by rw mul_succ
+                ... = 0 + 0 : by rw ih
+                ... = 0 : by rw add_zero
+     )
+    
+    --1.c.
+    theorem mul_one_left : ∀ n : nat, 1 * n = n := 
+    assume n : nat,
+    nat.rec_on n
+     (show 1 * 0 = 0, from mul_zero 1)
+     (assume k,
+      assume ih : 1 * k = k,
+       show 1 * succ k = succ k, from
+        calc
+         1 * succ k = 1 * k + 1 : by rw mul_succ
+                ... = k + 1 : by rw ih
+     )
+    
+    --1.d.
+    example : ∀ m n k : nat, (m * n) * k = m * (n * k) := 
+    assume m n k : nat,
+    nat.rec_on k
+     (show (m * n) * 0 = m * (n * 0), by rw [mul_zero, mul_zero, mul_zero]
+     )
+     (assume k,
+      assume ih : (m * n) * k = m * (n * k),
+       show (m * n) * (succ k) = m * (n * succ k), from
+       calc 
+        (m * n) * (succ k) = (m * n) * k + (m * n) : by rw mul_succ
+                       ... = m * (n * k) + (m * n) : by rw ih
+                       ... = m * (n * k) + m * n : rfl
+                       ... = m * (n * k + n) : by rw mul_add
+                       ... = m * (n * succ k) : by rw mul_succ
+     )
+    
+    --1.e.
+    example : ∀ m n : nat, m * n = n * m := 
+    assume m n : nat,
+    nat.rec_on n 
+     (show m * 0 = 0 * m, from
+      calc
+       m * 0 = 0 : by rw mul_zero
+         ... = 0 * m : by rw mul_zero_left
+     )
+     (assume n,
+       assume ih : m * n = n * m,
+        show m * succ n = succ n * m, from
+        calc
+         m * succ n = m * n + m : by rw mul_succ
+                ... = n * m + m : by rw ih
+                ... = n * m + 1 * m : by rw mul_one_left
+                ... = succ n * m : by rw ← right_distrib
+     )
+    \end{lstlisting}
+    
+    \item Segue o código abaixo com as respostas:
+    
+    \begin{lstlisting}
+    open nat
+    
+    --2.a.
+    example : ∀ m n k : nat, n ≤ m → n + k ≤ m + k := 
+    assume m n k : nat,
+    assume h : n ≤ m,
+    nat.rec_on k 
+     (show n + 0 ≤ m + 0, from 
+       (show n + 0 ≤ m + 0, from eq.subst (add_zero n) h
+       )
+     )
+     (assume k,
+       assume ih : n + k ≤ m + k,
+        show n + succ k ≤ m + succ k, from
+         (have h3 : m + k < succ ( m + k), from lt_succ_self (m + k),
+          have h4 : n + k < succ ( m + k), from lt_of_le_of_lt ih h3,
+          h4
+         )
+     )
+    
+    --2.b.
+    example : ∀ m n k : nat, n + k ≤ m + k → n ≤ m := 
+    assume m n k,
+    nat.rec_on k 
+        (assume h1 : n + 0 ≤ m + 0,
+            show n ≤ m, from calc
+                n = n + 0 : by rw add_zero
+              ... ≤ m + 0 : h1
+              ... = m : by rw add_zero
+              ... ≤ m : nat.le_refl m)
+        (assume p h1 h2,
+            have h3 : succ(n + p) ≤ succ(m + p), from calc
+                succ(n + p) = n + succ(p) : by rw add_succ
+                ... ≤ m + succ(p) : h2
+                ... = succ(m + p) : by rw add_succ,
+            have h4 : pred(succ(n + p)) ≤ pred(succ(m + p)), from pred_le_pred h3,
+            have h5 : n + p ≤ m + p, from calc
+                n + p = pred(succ(n + p)) : by rw pred_succ
+                  ... ≤ pred(succ(m + p)) : h4
+                  ... = m + p : by rw pred_succ, 
+            show n ≤ m, from  h1 h5)
+    --2.c.
+    example : ∀ m n k : nat, n ≤ m → n * k ≤ m * k := 
+    assume m n k,
+    nat.rec_on k
+        (assume h, show n * 0 ≤ m * 0, from calc
+            n * 0 = 0 : by rw mul_zero
+            ... = m * 0 : by rw mul_zero
+            ... ≤ m * 0 : nat.le_refl (m * 0))
+        (assume p h, assume h1, 
+            have h2 : n * p ≤ m * p, from h h1,
+            show n * succ(p) ≤ m * succ(p), from calc
+            n * succ(p) = n * p + n : by rw mul_succ
+                    ... ≤ n * p + m : nat.add_le_add_left h1 (n * p)
+                    ... ≤ m * p + m : nat.add_le_add_right h2 (m))
+    
+    --2.e.
+    theorem le_gt_zero : ∀ n : nat, 0 ≤ n :=
+    assume n,
+    nat.rec_on n
+        (show 0≤ 0, from nat.le_refl 0)
+        (assume p h, show 0 ≤ succ(p), from calc
+            0 ≤ p : h
+            ... ≤ succ(p) : le_succ p)
+    --2.d.
+    example : ∀ m n : nat, m ≥ n → m = n ∨ m ≥ n + 1 :=
+    show ∀ m n : nat, n ≤ m → m = n ∨ n + 1 ≤ m, from
+    assume m n : nat,
+    nat.rec_on m
+     (assume h : n ≤ 0,
+       show 0 = n ∨ 0 ≥ n + 1, from or.inl (show 0 = n, from le_antisymm (le_gt_zero n) h)
+     )
+     (assume m,
+       assume ih : n ≤ m → m = n ∨ n + 1 ≤ m,
+        show n ≤ succ m → succ m = n ∨ n + 1 ≤ succ m, from
+        (assume h1 : n ≤ succ m,
+         have h2 : n < succ m ∨ n = succ m, from iff.elim_left (le_iff_lt_or_eq) h1, 
+         or.elim h2
+          (assume h3 : n < succ m, or.inr h3)
+          (assume h3 : n = succ m, or.inl (iff.elim_left eq_comm h3))
+        )
+     )
+    \end{lstlisting}
+\end{enumerate}
